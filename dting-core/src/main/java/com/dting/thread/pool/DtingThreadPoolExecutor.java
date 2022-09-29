@@ -27,6 +27,18 @@ public class DtingThreadPoolExecutor extends ThreadPoolExecutor {
         super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
     }
 
+    public DtingThreadPoolExecutor(ThreadPoolExecutor oldThreadPoolExecutor) {
+        this(
+                oldThreadPoolExecutor.getCorePoolSize(),
+                oldThreadPoolExecutor.getMaximumPoolSize(),
+                oldThreadPoolExecutor.getKeepAliveTime(TimeUnit.MILLISECONDS),
+                TimeUnit.MILLISECONDS,
+                oldThreadPoolExecutor.getQueue(),
+                oldThreadPoolExecutor.getThreadFactory(),
+                new DtingRejectedExecutionHandler(oldThreadPoolExecutor.getRejectedExecutionHandler())
+        );
+    }
+
     @Override
     public void execute(Runnable command) {
         super.execute(command);

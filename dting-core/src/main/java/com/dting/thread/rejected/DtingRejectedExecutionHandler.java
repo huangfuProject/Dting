@@ -9,7 +9,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @author huangfu
  * @date 2022年9月29日10:33:58
  */
-public class DtingRejectedExecutionHandler implements RejectedExecutionHandler {
+public final class DtingRejectedExecutionHandler implements RejectedExecutionHandler {
 
     private final RejectedExecutionHandler rejectedExecutionHandler;
 
