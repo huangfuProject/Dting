@@ -55,8 +55,12 @@ public class DtingThreadPoolExecutor extends ThreadPoolExecutor {
     @Override
     public void execute(Runnable command) {
         //包装任务执行操作
-        DtingRunnable dtingRunnable = new DtingRunnable(command, DEFAULT_TASK_NAME);
-        super.execute(dtingRunnable);
+        DtingRunnable dtingRunnable = new DtingRunnable(DEFAULT_TASK_NAME, command);
+        this.execute(dtingRunnable);
+    }
+
+    public void execute(DtingRunnable command) {
+        super.execute(command);
     }
 
     @Override
@@ -65,12 +69,17 @@ public class DtingThreadPoolExecutor extends ThreadPoolExecutor {
             DtingRunnable dtingRunnable = (DtingRunnable) r;
             //拼装线程名称   线程池名称/线程名称/任务名称
             dtingRunnable.setTaskName(String.format("%s/%s/%s", threadPoolName, t.getName(), dtingRunnable.getTaskName()));
+            System.out.println(dtingRunnable.getTaskName() + ": 开始运行");
         }
         super.beforeExecute(t, r);
     }
 
     @Override
     protected void afterExecute(Runnable r, Throwable t) {
+        if (r instanceof DtingRunnable) {
+            DtingRunnable dtingRunnable = (DtingRunnable) r;
+            System.out.println(dtingRunnable.getTaskName() + ": 运行完毕");
+        }
         super.afterExecute(r, t);
     }
 

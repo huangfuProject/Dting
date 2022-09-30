@@ -18,7 +18,7 @@ public class DtingRunnable implements Runnable {
      */
     private String taskName;
 
-    public DtingRunnable(Runnable runnable, String taskName) {
+    public DtingRunnable(String taskName, Runnable runnable) {
         this.runnable = runnable;
         this.taskName = taskName;
     }
