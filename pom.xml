@@ -20,6 +20,7 @@
         <maven.compiler.target>8</maven.compiler.target>
 
         <hutool-all.version>5.8.8</hutool-all.version>
+        <protostuff.version>1.8.0</protostuff.version>
     </properties>
 
     <dependencyManagement>
@@ -36,35 +37,56 @@
                 <version>${version}</version>
             </dependency>
 
+            <!--dting公共包-->
             <dependency>
                 <groupId>com.dting</groupId>
                 <artifactId>dting-common</artifactId>
                 <version>${version}</version>
             </dependency>
 
+            <!--消息服务公共包-->
             <dependency>
                 <groupId>com.dting</groupId>
                 <artifactId>dting-message-common</artifactId>
                 <version>${version}</version>
             </dependency>
 
+            <!--消息传递客户端包-->
             <dependency>
                 <groupId>com.dting</groupId>
                 <artifactId>dting-message-client</artifactId>
                 <version>${version}</version>
             </dependency>
 
+            <!--消息传递服务包-->
             <dependency>
                 <groupId>com.dting</groupId>
                 <artifactId>dting-message-server</artifactId>
                 <version>${version}</version>
             </dependency>
 
+            <!--开发工具包-->
             <dependency>
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool-all.version}</version>
             </dependency>
+
+            <!--序列化包-->
+            <dependency>
+                <groupId>io.protostuff</groupId>
+                <artifactId>protostuff-core</artifactId>
+                <version>${protostuff.version}</version>
+            </dependency>
+
+            <!--序列化包-->
+            <dependency>
+                <groupId>io.protostuff</groupId>
+                <artifactId>protostuff-runtime</artifactId>
+                <version>${protostuff.version}</version>
+            </dependency>
+
+
         </dependencies>
     </dependencyManagement>
 </project>
