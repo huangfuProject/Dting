@@ -21,6 +21,7 @@
 
         <hutool-all.version>5.8.8</hutool-all.version>
         <protostuff.version>1.8.0</protostuff.version>
+        <netty.version>4.1.82.Final</netty.version>
     </properties>
 
     <dependencyManagement>
@@ -86,6 +87,12 @@
                 <version>${protostuff.version}</version>
             </dependency>
 
+            <!--netty服务包-->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>${netty.version}</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>
