@@ -13,7 +13,7 @@ import com.dting.message.common.serializes.ProtostuffSerialize;
  * @author huangfu
  * @date 2022/10/9 9:39
  */
-public class MessageContext {
+public class MessageCommunicationConfig {
     /**
      * 消息协议体编排处理器
      */
