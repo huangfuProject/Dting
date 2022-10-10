@@ -26,7 +26,7 @@ public class NettyEventLoopUtils {
     /**
      * 根据当前环境信息生成一个EventLoopGroup
      *
-     * @param threads           线程池4
+     * @param threads           线程池
      * @param threadFactoryName 线程名称
      * @return 事件循环
      */
