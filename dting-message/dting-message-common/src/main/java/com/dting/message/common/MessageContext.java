@@ -2,6 +2,8 @@ package com.dting.message.common;
 
 import com.dting.message.common.agreement.DefaultMessageAgreementLayout;
 import com.dting.message.common.agreement.MessageAgreementLayout;
+import com.dting.message.common.serializes.DtingSerialize;
+import com.dting.message.common.serializes.ProtostuffSerialize;
 
 /**
  * *************************************************<br/>
@@ -17,11 +19,24 @@ public class MessageContext {
      */
     private MessageAgreementLayout agreementLayout = new DefaultMessageAgreementLayout();
 
+    /**
+     * 默认的对象序列化协议
+     */
+    private DtingSerialize dtingSerialize = new ProtostuffSerialize();
+
     public MessageAgreementLayout getAgreementLayout() {
         return agreementLayout;
     }
 
     public void setAgreementLayout(MessageAgreementLayout agreementLayout) {
         this.agreementLayout = agreementLayout;
+    }
+
+    public DtingSerialize getDtingSerialize() {
+        return dtingSerialize;
+    }
+
+    public void setDtingSerialize(DtingSerialize dtingSerialize) {
+        this.dtingSerialize = dtingSerialize;
     }
 }
