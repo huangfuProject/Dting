@@ -1,4 +1,4 @@
-package com.dting.message.common.agreement;
+package com.dting.message.common.agreement.implementation;
 
 import io.netty.buffer.ByteBuf;
 
@@ -16,9 +16,9 @@ public interface MessageAgreementLayout {
      * 消息编码
      *
      * @param data 数据包
-     * @param byteBuf 协议编排完成之后需要放入的容器
+     * @return 编码成功后的数据
      */
-    void messageEncode(ByteBuf byteBuf,  byte[] data);
+    ByteBuf messageEncode(byte[] data);
 
     /**
      * 消息解码

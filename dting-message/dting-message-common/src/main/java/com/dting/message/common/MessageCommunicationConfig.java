@@ -1,9 +1,6 @@
 package com.dting.message.common;
 
-import com.dting.message.common.agreement.DefaultMessageAgreementLayout;
-import com.dting.message.common.agreement.MessageAgreementLayout;
-import com.dting.message.common.serializes.DtingSerialize;
-import com.dting.message.common.serializes.ProtostuffSerialize;
+import com.dting.message.common.agreement.DefaultAgreementChoreography;
 
 /**
  * *************************************************<br/>
@@ -15,28 +12,15 @@ import com.dting.message.common.serializes.ProtostuffSerialize;
  */
 public class MessageCommunicationConfig {
     /**
-     * 消息协议体编排处理器
+     * 网络数据包的编解码处理程序
      */
-    private MessageAgreementLayout agreementLayout = new DefaultMessageAgreementLayout();
+    private DefaultAgreementChoreography agreementChoreography = new DefaultAgreementChoreography();
 
-    /**
-     * 默认的对象序列化协议
-     */
-    private DtingSerialize dtingSerialize = new ProtostuffSerialize();
-
-    public MessageAgreementLayout getAgreementLayout() {
-        return agreementLayout;
+    public DefaultAgreementChoreography getAgreementChoreography() {
+        return agreementChoreography;
     }
 
-    public void setAgreementLayout(MessageAgreementLayout agreementLayout) {
-        this.agreementLayout = agreementLayout;
-    }
-
-    public DtingSerialize getDtingSerialize() {
-        return dtingSerialize;
-    }
-
-    public void setDtingSerialize(DtingSerialize dtingSerialize) {
-        this.dtingSerialize = dtingSerialize;
+    public void setAgreementChoreography(DefaultAgreementChoreography agreementChoreography) {
+        this.agreementChoreography = agreementChoreography;
     }
 }

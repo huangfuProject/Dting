@@ -1,6 +1,7 @@
-package com.dting.message.common.agreement;
+package com.dting.message.common.agreement.implementation;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
 
 /**
  * *************************************************<br/>
@@ -24,7 +25,8 @@ public class DefaultMessageAgreementLayout implements MessageAgreementLayout {
 
 
     @Override
-    public void messageEncode(ByteBuf byteBuf, byte[] data) {
+    public ByteBuf messageEncode(byte[] data) {
+        ByteBuf byteBuf = ByteBufAllocator.DEFAULT.directBuffer(data.length);
         // 写入数据校验位
         byteBuf.writeShort(MAGIC);
         // 写入字段数据长度
@@ -33,6 +35,7 @@ public class DefaultMessageAgreementLayout implements MessageAgreementLayout {
         byteBuf.writeInt(dataLength);
         // 写入数据
         byteBuf.writeBytes(data);
+        return byteBuf;
     }
 
     @Override
