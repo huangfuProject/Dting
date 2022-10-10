@@ -1,6 +1,8 @@
 package com.dting.message.common;
 
 import com.dting.message.common.agreement.DefaultAgreementChoreography;
+import com.dting.message.common.serializes.DtingSerialize;
+import com.dting.message.common.serializes.ProtostuffSerialize;
 
 /**
  * *************************************************<br/>
@@ -16,11 +18,24 @@ public class MessageCommunicationConfig {
      */
     private DefaultAgreementChoreography agreementChoreography = new DefaultAgreementChoreography();
 
+    /**
+     * 对象序列化和反序列化的工具包
+     */
+    private DtingSerialize dtingSerialize = new ProtostuffSerialize();
+
     public DefaultAgreementChoreography getAgreementChoreography() {
         return agreementChoreography;
     }
 
     public void setAgreementChoreography(DefaultAgreementChoreography agreementChoreography) {
         this.agreementChoreography = agreementChoreography;
+    }
+
+    public DtingSerialize getDtingSerialize() {
+        return dtingSerialize;
+    }
+
+    public void setDtingSerialize(DtingSerialize dtingSerialize) {
+        this.dtingSerialize = dtingSerialize;
     }
 }
