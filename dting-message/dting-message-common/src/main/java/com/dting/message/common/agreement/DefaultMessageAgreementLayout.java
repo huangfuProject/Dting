@@ -42,6 +42,8 @@ public class DefaultMessageAgreementLayout implements MessageAgreementLayout {
         // 获取数据长度
         int dataLength = byteBuf.readInt();
         // 读取数据
-        return new byte[dataLength];
+        byte[] data = new byte[dataLength];
+        byteBuf.readBytes(data);
+        return data;
     }
 }
