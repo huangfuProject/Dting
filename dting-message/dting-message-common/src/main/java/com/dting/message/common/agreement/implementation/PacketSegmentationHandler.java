@@ -1,6 +1,7 @@
 package com.dting.message.common.agreement.implementation;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
@@ -11,7 +12,7 @@ import io.netty.channel.ChannelHandlerContext;
  * @author huangfu
  * @date 2022年10月10日14:43:49
  */
-public interface PacketSegmentationHandler {
+public interface PacketSegmentationHandler extends ChannelHandler {
 
     /**
      * 数据切分  将数据切分为一个完整的数据包返回回来
@@ -21,5 +22,5 @@ public interface PacketSegmentationHandler {
      * @return 返回一个拆解好的数据包，当返回为null的时候证明这个拆解没有拆分出来，跳过拆分
      * @throws Exception 异常信息
      */
-    Object segmentation(ChannelHandlerContext ctx, ByteBuf in) throws Exception;
+    ByteBuf segmentation(ChannelHandlerContext ctx, ByteBuf in) throws Exception;
 }

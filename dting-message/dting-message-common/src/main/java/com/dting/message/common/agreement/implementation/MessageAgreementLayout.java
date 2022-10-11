@@ -20,6 +20,7 @@ public interface MessageAgreementLayout {
      */
     ByteBuf messageEncode(byte[] data);
 
+
     /**
      * 消息解码
      *

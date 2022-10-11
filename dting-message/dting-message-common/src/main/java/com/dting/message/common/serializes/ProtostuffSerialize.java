@@ -11,7 +11,7 @@ import io.protostuff.runtime.RuntimeSchema;
  * @author huangfu
  * @date 2022年10月10日08:36:36
  */
-public class ProtostuffSerialize implements DtingSerialize {
+public class ProtostuffSerialize<T> implements DtingSerialize<T> {
 
     /**
      * 编解码对象载体对象
@@ -44,7 +44,7 @@ public class ProtostuffSerialize implements DtingSerialize {
     }
 
     @Override
-    public <T> T objectDeserialize(byte[] data, Class<T> clazz) {
+    public T objectDeserialize(byte[] data, Class<T> clazz) {
         try {
             //获取序列化模式  注意需要和和序列化的时候保持一致
             Schema<SerializeData> schema = getSerializeDataSchema(SerializeData.class);

@@ -32,7 +32,7 @@ public class DefaultPacketSegmentationHandler extends LengthFieldBasedFrameDecod
     }
 
     @Override
-    public Object segmentation(ChannelHandlerContext ctx, ByteBuf in) throws Exception {
+    public ByteBuf segmentation(ChannelHandlerContext ctx, ByteBuf in) throws Exception {
         //如果可读字节小于魔数长度  证明包不完整  返回一个空
         if (in.readableBytes() < MAGIC_COUNT) {
             return null;
@@ -44,6 +44,6 @@ public class DefaultPacketSegmentationHandler extends LengthFieldBasedFrameDecod
             return null;
         }
 
-        return super.decode(ctx, in);
+        return (ByteBuf)super.decode(ctx, in);
     }
 }

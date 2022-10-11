@@ -6,7 +6,7 @@ package com.dting.message.common.serializes;
  * @author huangfu
  * @date 2022年10月10日08:33:35
  */
-public interface DtingSerialize {
+public interface DtingSerialize<T> {
     /**
      * 对象序列化
      * @param object 要序列化的对象
@@ -18,8 +18,7 @@ public interface DtingSerialize {
      * 反序列化对象
      * @param data 要反序列化成对象的字节
      * @param clazz 要反序列化成的类型
-     * @param <T> 具体的类型
      * @return 返回序列化好的对象
      */
-    <T> T objectDeserialize(byte[] data, Class<T> clazz);
+    T objectDeserialize(byte[] data, Class<T> clazz);
 }
