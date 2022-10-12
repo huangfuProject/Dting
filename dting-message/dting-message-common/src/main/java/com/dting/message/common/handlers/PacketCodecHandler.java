@@ -1,7 +1,8 @@
-package com.dting.message.common.agreement.implementation;
+package com.dting.message.common.handlers;
 
 import com.dting.message.common.MessageCommunicationConfig;
 import com.dting.message.common.agreement.AgreementChoreography;
+import com.dting.message.common.agreement.implementation.MessageAgreementLayout;
 import com.dting.message.common.agreement.packet.DtingMessage;
 import com.dting.message.common.serializes.DtingSerialize;
 import io.netty.buffer.ByteBuf;
