@@ -1,4 +1,4 @@
-package com.dting.message.server.packet;
+package com.dting.message.common.agreement.packet;
 
 import com.dting.message.common.agreement.packet.DtingMessage;
 

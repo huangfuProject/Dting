@@ -1,9 +1,9 @@
 package com.dting.message.server.handler;
 
-import com.dting.message.common.cache.CommunicationConnectionPool;
-import com.dting.message.server.packet.ConnectionMessage;
+import com.dting.message.common.agreement.packet.ConnectionMessage;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import com.dting.message.server.cache.ClientCommunicationConnectionPool;
 
 /**
  * 连接监控处理器
@@ -20,16 +20,16 @@ public class ConnectionMonitoringHandler extends SimpleChannelInboundHandler<Con
 
         if (ConnectionMessage.ConnectionStatus.OPEN.equals(connectionStatus)) {
             System.out.println(">>>>>>>>>>>新服务连接接入<<<<<<<<<<<<<");
-            CommunicationConnectionPool.addConnection(channelHandlerContext.channel());
+            ClientCommunicationConnectionPool.addConnection(channelHandlerContext.channel());
         } else {
             System.out.println(">>>>>>>>>>>服务连接关闭<<<<<<<<<<<<<");
-            CommunicationConnectionPool.removeConnection(channelHandlerContext.channel());
+            ClientCommunicationConnectionPool.removeConnection(channelHandlerContext.channel());
         }
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         System.out.println(">>>>>>>>>>>服务连接关闭<<<<<<<<<<<<<");
-        CommunicationConnectionPool.removeConnection(ctx.channel());
+        ClientCommunicationConnectionPool.removeConnection(ctx.channel());
     }
 }

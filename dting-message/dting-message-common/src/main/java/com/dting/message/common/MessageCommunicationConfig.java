@@ -29,11 +29,6 @@ public class MessageCommunicationConfig {
      */
     private DtingSerialize<DtingMessage> dtingSerialize = new ProtostuffSerialize<>();
 
-    /**
-     * 构建一个业务处理器
-     */
-    private final Map<String, SimpleChannelInboundHandler<? extends DtingMessage>> businessProcessingUnit = new ConcurrentHashMap<>(8);
-
     public AgreementChoreography getAgreementChoreography() {
         return agreementChoreography;
     }
@@ -48,35 +43,5 @@ public class MessageCommunicationConfig {
 
     public void setDtingSerialize(DtingSerialize<DtingMessage> dtingSerialize) {
         this.dtingSerialize = dtingSerialize;
-    }
-
-    /**
-     * 追加一个业务处理器
-     *
-     * @param businessProcessingName 业务处理器的名称
-     * @param handler                处理器
-     */
-    public void addBusinessProcessing(String businessProcessingName, SimpleChannelInboundHandler<? extends DtingMessage> handler) {
-        businessProcessingUnit.put(businessProcessingName, handler);
-    }
-
-    /**
-     * 追加一个业务处理器  默认的名称是类名
-     *
-     * @param handler 处理器
-     */
-    public void addBusinessProcessing(SimpleChannelInboundHandler<? extends DtingMessage> handler) {
-        this.addBusinessProcessing(handler.getClass().getSimpleName(), handler);
-    }
-
-    /**
-     * 返回构建的所有的业务处理器
-     *
-     * @return 业务处理器的拷贝对象
-     */
-    public Map<String, SimpleChannelInboundHandler<? extends DtingMessage>> getBusinessProcessingUnit() {
-        Map<String, SimpleChannelInboundHandler<? extends DtingMessage>> businessProcessingUnitCopy = new ConcurrentHashMap<>(8);
-        businessProcessingUnitCopy.putAll(businessProcessingUnit);
-        return businessProcessingUnitCopy;
     }
 }

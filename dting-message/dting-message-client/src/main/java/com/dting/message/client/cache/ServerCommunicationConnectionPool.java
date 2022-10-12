@@ -1,5 +1,6 @@
-package com.dting.message.common.cache;
+package com.dting.message.client.cache;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.dting.message.common.Communication;
 import com.dting.message.common.agreement.packet.DtingMessage;
 import com.dting.message.common.utils.ChannelUtil;
@@ -10,12 +11,12 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 连接池
+ * 连接池  主要存储连接的服务端的通道
  *
  * @author huangfu
  * @date 2022年10月12日08:45:00
  */
-public class CommunicationConnectionPool {
+public class ServerCommunicationConnectionPool {
 
     /**
      * 通讯器的连接对象
@@ -78,7 +79,10 @@ public class CommunicationConnectionPool {
      */
     public static void asyncAllSendMessage(DtingMessage message) {
         Collection<Communication> communicationCollection = CONNECTION_POOL.values();
-        communicationCollection.forEach(communication -> communication.asyncSendMessage(message));
+        if(CollectionUtil.isNotEmpty(communicationCollection)) {
+            communicationCollection.forEach(communication -> communication.asyncSendMessage(message));
+        }
+
     }
 
 

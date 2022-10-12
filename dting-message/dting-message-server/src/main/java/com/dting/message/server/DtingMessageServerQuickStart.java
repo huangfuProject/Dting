@@ -81,7 +81,7 @@ public class DtingMessageServerQuickStart {
                         PacketSegmentationHandler packetSegmentationHandler = agreementChoreography.segmentationHandler();
 
                         //获取业务模型处理器
-                        Map<String, SimpleChannelInboundHandler<? extends DtingMessage>> businessProcessingUnit = communicationConfig.getBusinessProcessingUnit();
+                        Map<String, SimpleChannelInboundHandler<? extends DtingMessage>> businessProcessingUnit = config.getServerBusinessProcessingUnit();
                         //数据通讯管道编排
                         //写入数据包分割器
                         socketChannel.pipeline().addLast("PacketSegmentationHandler", packetSegmentationHandler);
