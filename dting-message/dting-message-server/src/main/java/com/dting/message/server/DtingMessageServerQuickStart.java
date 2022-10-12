@@ -3,11 +3,12 @@ package com.dting.message.server;
 import cn.hutool.core.util.StrUtil;
 import com.dting.message.common.MessageCommunicationConfig;
 import com.dting.message.common.agreement.AgreementChoreography;
-import com.dting.message.common.agreement.implementation.PacketCodecHandler;
+import com.dting.message.common.handlers.PacketCodecHandler;
 import com.dting.message.common.agreement.implementation.PacketSegmentationHandler;
 import com.dting.message.common.agreement.packet.DtingMessage;
 import com.dting.message.common.utils.NettyEventLoopUtils;
 import com.dting.message.server.config.MessageServerConfig;
+import com.dting.message.server.handler.ConnectionMonitoringHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.*;
@@ -86,6 +87,8 @@ public class DtingMessageServerQuickStart {
                         socketChannel.pipeline().addLast("PacketSegmentationHandler", packetSegmentationHandler);
                         //写入数据编解码器
                         socketChannel.pipeline().addLast("PacketCodecHandler", new PacketCodecHandler(communicationConfig));
+                        //写入连接监控
+                        socketChannel.pipeline().addLast("ConnectionMonitoringHandler", new ConnectionMonitoringHandler());
                         //开始写入业务处理器
                         businessProcessingUnit.forEach((handlerName, handler) -> socketChannel.pipeline().addLast(handlerName, handler));
                     }
