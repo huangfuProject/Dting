@@ -19,14 +19,17 @@ public class ConnectionMonitoringHandler extends SimpleChannelInboundHandler<Con
         ConnectionMessage.ConnectionStatus connectionStatus = connectionMessage.getConnectionStatus();
 
         if (ConnectionMessage.ConnectionStatus.OPEN.equals(connectionStatus)) {
+            System.out.println(">>>>>>>>>>>新服务连接接入<<<<<<<<<<<<<");
             CommunicationConnectionPool.addConnection(channelHandlerContext.channel());
         } else {
+            System.out.println(">>>>>>>>>>>服务连接关闭<<<<<<<<<<<<<");
             CommunicationConnectionPool.removeConnection(channelHandlerContext.channel());
         }
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        System.out.println(">>>>>>>>>>>服务连接关闭<<<<<<<<<<<<<");
         CommunicationConnectionPool.removeConnection(ctx.channel());
     }
 }
