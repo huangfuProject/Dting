@@ -3,6 +3,7 @@ package com.dting.message.server;
 import cn.hutool.core.util.StrUtil;
 import com.dting.message.common.MessageCommunicationConfig;
 import com.dting.message.common.agreement.AgreementChoreography;
+import com.dting.message.common.handlers.DtingSimpleChannelInboundHandler;
 import com.dting.message.common.handlers.PacketCodecHandler;
 import com.dting.message.common.agreement.implementation.PacketSegmentationHandler;
 import com.dting.message.common.agreement.packet.DtingMessage;
@@ -81,7 +82,7 @@ public class DtingMessageServerQuickStart {
                         PacketSegmentationHandler packetSegmentationHandler = agreementChoreography.segmentationHandler();
 
                         //获取业务模型处理器
-                        Map<String, SimpleChannelInboundHandler<? extends DtingMessage>> businessProcessingUnit = config.getServerBusinessProcessingUnit();
+                        Map<String, DtingSimpleChannelInboundHandler<? extends DtingMessage>> businessProcessingUnit = config.getServerBusinessProcessingUnit();
                         //数据通讯管道编排
                         //写入数据包分割器
                         socketChannel.pipeline().addLast("PacketSegmentationHandler", packetSegmentationHandler);

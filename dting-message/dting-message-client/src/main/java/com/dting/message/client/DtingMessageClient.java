@@ -8,6 +8,7 @@ import com.dting.message.common.agreement.AgreementChoreography;
 import com.dting.message.common.agreement.implementation.PacketSegmentationHandler;
 import com.dting.message.common.agreement.packet.ConnectionMessage;
 import com.dting.message.common.agreement.packet.DtingMessage;
+import com.dting.message.common.handlers.DtingSimpleChannelInboundHandler;
 import com.dting.message.common.handlers.PacketCodecHandler;
 import com.dting.message.common.utils.NettyEventLoopUtils;
 import io.netty.bootstrap.Bootstrap;
@@ -75,7 +76,7 @@ public class DtingMessageClient {
                 PacketSegmentationHandler packetSegmentationHandler = agreementChoreography.segmentationHandler();
 
                 //获取业务模型处理器
-                Map<String, SimpleChannelInboundHandler<? extends DtingMessage>> businessProcessingUnit = config.getClientBusinessProcessingUnit();
+                Map<String, DtingSimpleChannelInboundHandler<? extends DtingMessage>> businessProcessingUnit = config.getClientBusinessProcessingUnit();
                 //数据通讯管道编排
                 //写入数据包分割器
                 socketChannel.pipeline().addLast("PacketSegmentationHandler", packetSegmentationHandler);

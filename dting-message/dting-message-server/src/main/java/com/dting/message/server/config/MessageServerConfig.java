@@ -2,6 +2,7 @@ package com.dting.message.server.config;
 
 import com.dting.message.common.MessageCommunicationConfig;
 import com.dting.message.common.agreement.packet.DtingMessage;
+import com.dting.message.common.handlers.DtingSimpleChannelInboundHandler;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.util.Map;
@@ -22,7 +23,7 @@ public class MessageServerConfig {
     /**
      * 构建一个业务处理器 服务端
      */
-    private final Map<String, SimpleChannelInboundHandler<? extends DtingMessage>> serverBusinessProcessingUnit = new ConcurrentHashMap<>(8);
+    private final Map<String, DtingSimpleChannelInboundHandler<? extends DtingMessage>> serverBusinessProcessingUnit = new ConcurrentHashMap<>(8);
 
 
     private final Integer port;
@@ -61,7 +62,7 @@ public class MessageServerConfig {
      * @param businessProcessingName 业务处理器的名称
      * @param handler                处理器
      */
-    public void addServerBusinessProcessing(String businessProcessingName, SimpleChannelInboundHandler<? extends DtingMessage> handler) {
+    public void addServerBusinessProcessing(String businessProcessingName, DtingSimpleChannelInboundHandler<? extends DtingMessage> handler) {
         serverBusinessProcessingUnit.put(businessProcessingName, handler);
     }
 
@@ -71,7 +72,7 @@ public class MessageServerConfig {
      *
      * @param handler 处理器
      */
-    public void addServerBusinessProcessing(SimpleChannelInboundHandler<? extends DtingMessage> handler) {
+    public void addServerBusinessProcessing(DtingSimpleChannelInboundHandler<? extends DtingMessage> handler) {
         this.addServerBusinessProcessing(handler.getClass().getSimpleName(), handler);
     }
 
@@ -80,8 +81,8 @@ public class MessageServerConfig {
      *
      * @return 业务处理器的拷贝对象
      */
-    public Map<String, SimpleChannelInboundHandler<? extends DtingMessage>> getServerBusinessProcessingUnit() {
-        Map<String, SimpleChannelInboundHandler<? extends DtingMessage>> businessProcessingUnitCopy = new ConcurrentHashMap<>(8);
+    public Map<String, DtingSimpleChannelInboundHandler<? extends DtingMessage>> getServerBusinessProcessingUnit() {
+        Map<String, DtingSimpleChannelInboundHandler<? extends DtingMessage>> businessProcessingUnitCopy = new ConcurrentHashMap<>(8);
         businessProcessingUnitCopy.putAll(serverBusinessProcessingUnit);
         return businessProcessingUnitCopy;
     }
