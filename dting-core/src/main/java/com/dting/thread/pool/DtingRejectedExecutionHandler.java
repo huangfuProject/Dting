@@ -1,4 +1,6 @@
-package com.dting.thread.rejected;
+package com.dting.thread.pool;
+
+import com.dting.model.TaskInfo;
 
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -20,9 +22,15 @@ public final class DtingRejectedExecutionHandler implements RejectedExecutionHan
     @Override
     public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
         try {
+            TaskInfo taskInfo = DtingThreadPoolExecutor.TASK_INFO_THREAD_LOCAL.get();
+            taskInfo.setRejected(true);
             rejectedExecutionHandler.rejectedExecution(r, executor);
         } finally {
             System.out.println("拒绝策略");
         }
+    }
+
+    public RejectedExecutionHandler getRejectedExecutionHandler() {
+        return rejectedExecutionHandler;
     }
 }

@@ -1,7 +1,6 @@
 package com.dting.thread.pool;
 
 
-import com.dting.thread.DtingRunnable;
 import org.junit.Test;
 
 import java.util.concurrent.LinkedBlockingQueue;
