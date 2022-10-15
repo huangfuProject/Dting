@@ -1,6 +1,7 @@
 package com.dting.thread.pool;
 
 import com.dting.model.TaskInfo;
+import com.dting.utils.DtingLogUtil;
 
 import java.util.concurrent.*;
 
@@ -20,7 +21,7 @@ public class DtingThreadPoolExecutor extends ThreadPoolExecutor {
     /**
      * 线程池的名称
      */
-    private final String threadPoolName;
+    protected final String threadPoolName;
 
     /**
      * 默认的线程名称
@@ -28,20 +29,15 @@ public class DtingThreadPoolExecutor extends ThreadPoolExecutor {
     private final static String DEFAULT_TASK_NAME = "DEFAULT";
 
     public DtingThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, String threadPoolName) {
-        this(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, Executors.defaultThreadFactory(), new DtingRejectedExecutionHandler(new AbortPolicy()), threadPoolName);
+        this(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, Executors.defaultThreadFactory(), new AbortPolicy(), threadPoolName);
     }
 
     public DtingThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory, String threadPoolName) {
-        this(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, new DtingRejectedExecutionHandler(new AbortPolicy()), threadPoolName);
+        this(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, new AbortPolicy(), threadPoolName);
     }
 
-    public DtingThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, DtingRejectedExecutionHandler handler, String threadPoolName) {
+    public DtingThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, RejectedExecutionHandler handler, String threadPoolName) {
         this(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, Executors.defaultThreadFactory(), handler, threadPoolName);
-    }
-
-    public DtingThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory, DtingRejectedExecutionHandler handler, String threadPoolName) {
-        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
-        this.threadPoolName = threadPoolName;
     }
 
     public DtingThreadPoolExecutor(ThreadPoolExecutor oldThreadPoolExecutor, String threadPoolName) {
@@ -52,9 +48,19 @@ public class DtingThreadPoolExecutor extends ThreadPoolExecutor {
                 TimeUnit.MILLISECONDS,
                 oldThreadPoolExecutor.getQueue(),
                 oldThreadPoolExecutor.getThreadFactory(),
-                new DtingRejectedExecutionHandler(oldThreadPoolExecutor.getRejectedExecutionHandler()),
+                oldThreadPoolExecutor.getRejectedExecutionHandler(),
                 threadPoolName);
     }
+
+
+    public DtingThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory, RejectedExecutionHandler handler, String threadPoolName) {
+        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
+        DtingRejectedExecutionHandler dtingRejectedExecutionHandler = new DtingRejectedExecutionHandler(handler, this);
+        //二次修正拒绝策略  这里是为了解决父类没有初始化完成,拒绝策略中不允许传递this变量
+        setRejectedExecutionHandler(dtingRejectedExecutionHandler);
+        this.threadPoolName = threadPoolName;
+    }
+
 
     @Override
     public void execute(Runnable command) {
@@ -69,12 +75,13 @@ public class DtingThreadPoolExecutor extends ThreadPoolExecutor {
 
     @Override
     protected void beforeExecute(Thread t, Runnable r) {
+
         try {
             if (r instanceof DtingRunnable) {
                 DtingRunnable dtingRunnable = (DtingRunnable) r;
                 //拼装线程名称   线程池名称/线程名称/任务名称
                 dtingRunnable.setTaskName(String.format("%s/%s/%s", threadPoolName, t.getName(), dtingRunnable.getTaskName()));
-                System.out.println(dtingRunnable.getTaskName() + ": 开始运行");
+                //缓存任务
                 cacheTaskInfo(dtingRunnable);
             }
         } finally {
@@ -107,14 +114,14 @@ public class DtingThreadPoolExecutor extends ThreadPoolExecutor {
 
     @Override
     protected void afterExecute(Runnable r, Throwable t) {
+        TaskInfo taskInfo = TASK_INFO_THREAD_LOCAL.get();
         try {
-            if (r instanceof DtingRunnable) {
-                DtingRunnable dtingRunnable = (DtingRunnable) r;
-                System.out.println(dtingRunnable.getTaskName() + ": 运行完毕");
+            if (t != null) {
+                taskInfo.setSuccess(false);
+                taskInfo.setErrorMsg(DtingLogUtil.messageRead(t, false));
             }
             super.afterExecute(r, t);
         } finally {
-            TaskInfo taskInfo = TASK_INFO_THREAD_LOCAL.get();
             taskInfo.setEndTime(System.nanoTime());
             //通知观察者
             taskInfo.noticeAllDtingObserver();
@@ -144,3 +151,5 @@ public class DtingThreadPoolExecutor extends ThreadPoolExecutor {
         return rejectedExecutionHandler;
     }
 }
+
+

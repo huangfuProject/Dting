@@ -1,7 +1,9 @@
 package com.dting.thread.pool;
 
 import com.dting.model.TaskInfo;
+import com.dting.utils.DtingLogUtil;
 
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 
@@ -11,22 +13,54 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @author huangfu
  * @date 2022年9月29日10:33:58
  */
-public final class DtingRejectedExecutionHandler implements RejectedExecutionHandler {
+class DtingRejectedExecutionHandler implements RejectedExecutionHandler {
 
     private final RejectedExecutionHandler rejectedExecutionHandler;
+    private final DtingThreadPoolExecutor dtingThreadPoolExecutor;
 
-    public DtingRejectedExecutionHandler(RejectedExecutionHandler rejectedExecutionHandler) {
+
+    protected DtingRejectedExecutionHandler(RejectedExecutionHandler rejectedExecutionHandler, DtingThreadPoolExecutor dtingThreadPoolExecutor) {
         this.rejectedExecutionHandler = rejectedExecutionHandler;
+        this.dtingThreadPoolExecutor = dtingThreadPoolExecutor;
     }
 
     @Override
     public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+        TaskInfo taskInfo = new TaskInfo();
+        taskInfo.setStartTime(System.nanoTime());
+        taskInfo.setThreadPoolName(dtingThreadPoolExecutor.threadPoolName);
+
+        //设置当前线程的活跃数量
+        taskInfo.setActiveCount(dtingThreadPoolExecutor.getActiveCount());
+        //任务名称
+        if (r instanceof DtingRunnable) {
+            taskInfo.setTaskName(((DtingRunnable) r).getTaskName());
+        }
+
+        //线程池名称
+        BlockingQueue<Runnable> queue = dtingThreadPoolExecutor.getQueue();
+        //队列剩余
+        taskInfo.setQueueRemainingCapacity(queue.remainingCapacity());
+        //队列长度
+        taskInfo.setQueueSize(queue.size());
+
+
         try {
-            TaskInfo taskInfo = DtingThreadPoolExecutor.TASK_INFO_THREAD_LOCAL.get();
-            taskInfo.setRejected(true);
             rejectedExecutionHandler.rejectedExecution(r, executor);
+        } catch (Throwable e) {
+            taskInfo.setErrorMsg(DtingLogUtil.messageRead(e, false));
+            throw e;
         } finally {
-            System.out.println("拒绝策略");
+            if (r instanceof DtingRunnable) {
+                DtingRunnable target = (DtingRunnable) r;
+                taskInfo.setTaskName(target.getTaskName());
+            }
+
+            taskInfo.setRejected(true);
+            taskInfo.setSuccess(false);
+            taskInfo.setEndTime(System.nanoTime());
+            //通知观察者
+            taskInfo.noticeAllDtingObserver();
         }
     }
 

@@ -144,4 +144,20 @@ public class TaskInfo extends Subject implements Serializable {
     public void setQueueSize(int queueSize) {
         this.queueSize = queueSize;
     }
+
+    @Override
+    public String toString() {
+        return "TaskInfo{" +
+                "threadPoolName='" + threadPoolName + '\'' +
+                ", taskName='" + taskName + '\'' +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", success=" + success +
+                ", rejected=" + rejected +
+                ", errorMsg='" + errorMsg + '\'' +
+                ", activeCount=" + activeCount +
+                ", queueRemainingCapacity=" + queueRemainingCapacity +
+                ", queueSize=" + queueSize +
+                '}';
+    }
 }

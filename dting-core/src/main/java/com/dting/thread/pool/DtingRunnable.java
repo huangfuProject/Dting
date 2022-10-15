@@ -1,8 +1,5 @@
 package com.dting.thread.pool;
 
-import com.dting.model.TaskInfo;
-import com.dting.utils.DtingLogUtil;
-
 /**
  * 任务接口
  *
@@ -31,14 +28,8 @@ public class DtingRunnable implements Runnable {
      */
     @Override
     public void run() {
-        try {
-            doRun();
-        }catch (Throwable e) {
-            TaskInfo taskInfo = DtingThreadPoolExecutor.TASK_INFO_THREAD_LOCAL.get();
-            taskInfo.setSuccess(false);
-            taskInfo.setErrorMsg(DtingLogUtil.messageRead(e, false));
-            throw e;
-        }
+        doRun();
+
     }
 
     /**

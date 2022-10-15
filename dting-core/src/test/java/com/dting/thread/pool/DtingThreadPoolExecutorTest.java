@@ -1,6 +1,9 @@
 package com.dting.thread.pool;
 
 
+import com.dting.DtingObserver;
+import com.dting.Subject;
+import com.dting.model.TaskInfo;
 import org.junit.Test;
 
 import java.util.concurrent.LinkedBlockingQueue;
@@ -12,10 +15,12 @@ public class DtingThreadPoolExecutorTest {
 
     @Test
     public void threadPoolExecThread() throws InterruptedException {
-        DtingThreadPoolExecutor threadPoolExecutor = new DtingThreadPoolExecutor(2,4,60L, TimeUnit.SECONDS,new LinkedBlockingQueue<>(1024),"tese-pool");
+        Subject.attachObserver(new TestDtingObserver());
+        DtingThreadPoolExecutor threadPoolExecutor = new DtingThreadPoolExecutor(1,1,60L, TimeUnit.SECONDS,new LinkedBlockingQueue<>(10),"tese-pool");
 
         threadPoolExecutor.execute(new DtingRunnable("test-task", () -> {
             try {
+
                 Thread.sleep(MILLIS);
             } catch (InterruptedException interruptedException) {
                 interruptedException.printStackTrace();
@@ -29,7 +34,50 @@ public class DtingThreadPoolExecutorTest {
                 interruptedException.printStackTrace();
             }
         }));
-        Thread.sleep(MILLIS * 2);
+
+        threadPoolExecutor.execute(new DtingRunnable("test-task", () -> {
+            try {
+                Thread.sleep(MILLIS);
+            } catch (InterruptedException interruptedException) {
+                interruptedException.printStackTrace();
+            }
+        }));
+
+
+        threadPoolExecutor.execute(new DtingRunnable("test-task", () -> {
+            try {
+                Thread.sleep(MILLIS);
+            } catch (InterruptedException interruptedException) {
+                interruptedException.printStackTrace();
+            }
+        }));
+
+
+        threadPoolExecutor.execute(new DtingRunnable("test-task", () -> {
+            try {
+                Thread.sleep(MILLIS);
+            } catch (InterruptedException interruptedException) {
+                interruptedException.printStackTrace();
+            }
+        }));
+        Thread.sleep(MILLIS * 10);
         threadPoolExecutor.shutdown();
+    }
+}
+
+class TestDtingObserver extends DtingObserver<TaskInfo> {
+    @Override
+    public void doUpdate(TaskInfo data) {
+        System.out.println(data);
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return false;
     }
 }
