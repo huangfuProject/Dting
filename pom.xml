@@ -23,6 +23,7 @@
         <junit.version>4.12</junit.version>
         <protostuff.version>1.8.0</protostuff.version>
         <netty.version>4.1.82.Final</netty.version>
+        <sigar.version>1.6.4</sigar.version>
     </properties>
 
     <dependencyManagement>
@@ -94,6 +95,15 @@
                 <artifactId>netty-all</artifactId>
                 <version>${netty.version}</version>
             </dependency>
+
+            <!--服务器负载情况工具包-->
+            <dependency>
+                <groupId>org.fusesource</groupId>
+                <artifactId>sigar</artifactId>
+                <version>${sigar.version}</version>
+            </dependency>
+
+
 
             <dependency>
                 <groupId>junit</groupId>

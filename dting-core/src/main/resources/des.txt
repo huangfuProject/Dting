@@ -1,0 +1,3 @@
+-- https://blog.csdn.net/m0_56202719/article/details/125988461
+-- no sigar-amd64-winnt.dll in java.library.path
+        windows 系统将该文件 sigar-amd64-winnt.dll 复制到 C:\Windows\System32下
