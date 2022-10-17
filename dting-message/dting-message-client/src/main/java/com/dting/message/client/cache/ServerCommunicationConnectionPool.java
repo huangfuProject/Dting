@@ -1,12 +1,16 @@
 package com.dting.message.client.cache;
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.dting.message.client.DtingMessageClient;
+import com.dting.message.client.config.MessageClientConfig;
 import com.dting.message.common.Communication;
 import com.dting.message.common.agreement.packet.DtingMessage;
 import com.dting.message.common.utils.ChannelUtil;
 import io.netty.channel.Channel;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -22,6 +26,8 @@ public class ServerCommunicationConnectionPool {
      * 通讯器的连接对象
      */
     private final static Map<String, Communication> CONNECTION_POOL = new ConcurrentHashMap<>(8);
+
+    private final static List<DtingMessageClient> MESSAGE_CLIENTS = new ArrayList<>(8);
 
     /**
      * 追加一个通讯器
@@ -79,11 +85,34 @@ public class ServerCommunicationConnectionPool {
      */
     public static void asyncAllSendMessage(DtingMessage message) {
         Collection<Communication> communicationCollection = CONNECTION_POOL.values();
-        if(CollectionUtil.isNotEmpty(communicationCollection)) {
+        if (CollectionUtil.isNotEmpty(communicationCollection)) {
             communicationCollection.forEach(communication -> communication.asyncSendMessage(message));
         }
+    }
 
+    /**
+     * 关闭全部的消息
+     */
+    public static void closeAll() {
+        Collection<Communication> communicationCollection = CONNECTION_POOL.values();
+        if (CollectionUtil.isNotEmpty(communicationCollection)) {
+            communicationCollection.forEach(Communication::closeCommunication);
+        }
+        //清空连接缓存
+        CONNECTION_POOL.clear();
     }
 
 
+    /**
+     * 开启全部的消息对象
+     *
+     * @param configList 配置集合
+     */
+    public static void startAll(List<MessageClientConfig> configList) {
+        for (MessageClientConfig config : configList) {
+            DtingMessageClient dtingMessageClient = new DtingMessageClient(config);
+            dtingMessageClient.connect();
+            MESSAGE_CLIENTS.add(dtingMessageClient);
+        }
+    }
 }
