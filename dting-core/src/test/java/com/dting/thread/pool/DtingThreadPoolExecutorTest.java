@@ -70,14 +70,4 @@ class TestDtingObserver extends DtingObserver<TaskInfo> {
     public void doUpdate(TaskInfo data) {
         System.out.println(data);
     }
-
-    @Override
-    public int hashCode() {
-        return 0;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return false;
-    }
 }

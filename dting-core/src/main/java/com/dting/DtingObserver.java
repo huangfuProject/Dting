@@ -23,11 +23,5 @@ public abstract class DtingObserver<T extends Subject> {
      * @param data 变更的数据
      */
     public abstract void doUpdate(T data);
-
-    @Override
-    public abstract int hashCode();
-
-    @Override
-    public abstract boolean equals(Object obj);
 }
 

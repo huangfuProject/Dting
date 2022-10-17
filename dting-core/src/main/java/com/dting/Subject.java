@@ -17,7 +17,7 @@ public abstract class Subject {
     /**
      * 复制写数组的集合
      */
-    private final static Map<String, CopyOnWriteArraySet<DtingObserver<?>>> OBSERVER_MAP = new ConcurrentHashMap<>();
+    private final static Map<String, Map<String, DtingObserver<?>>> OBSERVER_MAP = new ConcurrentHashMap<>();
 
     /**
      * 增加一个观察者
@@ -26,7 +26,7 @@ public abstract class Subject {
      */
     public static void attachObserver(DtingObserver<?> observer) {
         String genericClassName = genericClassName(observer);
-        OBSERVER_MAP.computeIfAbsent(genericClassName, fun -> new CopyOnWriteArraySet<>()).add(observer);
+        OBSERVER_MAP.computeIfAbsent(genericClassName, fun -> new ConcurrentHashMap<>()).put(observer.getClass().getName(), observer);
     }
 
     /**
@@ -36,9 +36,9 @@ public abstract class Subject {
      */
     public static void removeObserver(DtingObserver<?> observer) {
         String genericClassName = genericClassName(observer);
-        CopyOnWriteArraySet<DtingObserver<?>> dtingObservers = OBSERVER_MAP.get(genericClassName);
+        Map<String, DtingObserver<?>> dtingObservers = OBSERVER_MAP.get(genericClassName);
         if (CollectionUtil.isNotEmpty(dtingObservers)) {
-            dtingObservers.remove(observer);
+            dtingObservers.remove(observer.getClass().getName());
         }
     }
 
@@ -47,12 +47,10 @@ public abstract class Subject {
      */
     public void noticeAllDtingObserver() {
         String name = this.getClass().getName();
-        CopyOnWriteArraySet<DtingObserver<?>> dtingObservers = OBSERVER_MAP.get(name);
+        Map<String, DtingObserver<?>> dtingObservers = OBSERVER_MAP.get(name);
 
         if (CollectionUtil.isNotEmpty(dtingObservers)) {
-            dtingObservers.forEach(dtingObserver -> {
-                dtingObserver.update(this);
-            });
+            dtingObservers.forEach((k,v) -> v.update(this));
         }
     }
 
