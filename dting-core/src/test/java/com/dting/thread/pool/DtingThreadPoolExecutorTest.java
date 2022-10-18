@@ -3,7 +3,7 @@ package com.dting.thread.pool;
 
 import com.dting.DtingObserver;
 import com.dting.Subject;
-import com.dting.model.TaskInfo;
+import com.dting.model.TaskInfoSubject;
 import org.junit.Test;
 
 import java.util.concurrent.LinkedBlockingQueue;
@@ -65,9 +65,9 @@ public class DtingThreadPoolExecutorTest {
     }
 }
 
-class TestDtingObserver extends DtingObserver<TaskInfo> {
+class TestDtingObserver extends DtingObserver<TaskInfoSubject> {
     @Override
-    public void doUpdate(TaskInfo data) {
+    public void doUpdate(TaskInfoSubject data) {
         System.out.println(data);
     }
 }

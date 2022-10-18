@@ -1,6 +1,7 @@
 package com.dting.thread.pool;
 
-import com.dting.model.TaskInfo;
+import com.dting.common.datas.TaskInfo;
+import com.dting.model.TaskInfoSubject;
 import com.dting.utils.DtingLogUtil;
 
 import java.util.concurrent.BlockingQueue;
@@ -59,8 +60,9 @@ class DtingRejectedExecutionHandler implements RejectedExecutionHandler {
             taskInfo.setRejected(true);
             taskInfo.setSuccess(false);
             taskInfo.setEndTime(System.nanoTime());
+            TaskInfoSubject taskInfoSubject = new TaskInfoSubject(taskInfo);
             //通知观察者
-            taskInfo.noticeAllDtingObserver();
+            taskInfoSubject.noticeAllDtingObserver();
         }
     }
 

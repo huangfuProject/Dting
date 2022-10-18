@@ -1,4 +1,4 @@
-package com.dting.model;
+package com.dting.common.datas;
 
 import java.io.Serializable;
 

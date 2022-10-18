@@ -1,7 +1,7 @@
 package com.dting.utils;
 
-import com.dting.model.*;
-import com.dting.model.NetInfo;
+import com.dting.common.datas.*;
+import com.dting.common.datas.NetInfo;
 import org.hyperic.sigar.*;
 
 import java.net.InetAddress;

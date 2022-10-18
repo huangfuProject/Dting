@@ -1,6 +1,4 @@
-package com.dting.model;
-
-import com.dting.Subject;
+package com.dting.common.datas;
 
 import java.io.Serializable;
 
@@ -12,7 +10,7 @@ import java.io.Serializable;
  * @author huangfu
  * @date 2022年10月14日15:51:54
  */
-public class TaskInfo extends Subject implements Serializable {
+public class TaskInfo implements Serializable {
     private static final long serialVersionUID = 217021693585491436L;
 
     /**

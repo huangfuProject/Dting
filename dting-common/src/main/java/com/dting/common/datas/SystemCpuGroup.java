@@ -1,4 +1,4 @@
-package com.dting.model;
+package com.dting.common.datas;
 
 import java.io.Serializable;
 import java.util.List;
@@ -24,4 +24,5 @@ public class SystemCpuGroup extends SystemCpuInfo implements Serializable {
     public void setSystemCpus(List<SystemCpu> systemCpus) {
         this.systemCpus = systemCpus;
     }
+
 }

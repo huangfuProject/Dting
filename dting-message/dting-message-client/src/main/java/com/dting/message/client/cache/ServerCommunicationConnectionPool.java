@@ -1,6 +1,7 @@
 package com.dting.message.client.cache;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.IdUtil;
 import com.dting.message.client.DtingMessageClient;
 import com.dting.message.client.config.MessageClientConfig;
 import com.dting.message.common.Communication;
@@ -85,6 +86,8 @@ public class ServerCommunicationConnectionPool {
      * @param message 消息对象
      */
     public static void asyncAllSendMessage(DtingMessage message) {
+        //生成一个消息的唯一标识
+        message.setUnique(IdUtil.simpleUUID());
         Collection<Communication> communicationCollection = CONNECTION_POOL.values();
         if (CollectionUtil.isNotEmpty(communicationCollection)) {
             communicationCollection.forEach(communication -> communication.asyncSendMessage(message));
@@ -116,4 +119,5 @@ public class ServerCommunicationConnectionPool {
             MESSAGE_CLIENTS.add(dtingMessageClient);
         }
     }
+
 }

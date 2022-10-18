@@ -1,6 +1,7 @@
 package com.dting.thread.pool;
 
-import com.dting.model.TaskInfo;
+import com.dting.common.datas.TaskInfo;
+import com.dting.model.TaskInfoSubject;
 import com.dting.utils.DtingLogUtil;
 
 import java.util.concurrent.*;
@@ -123,8 +124,9 @@ public class DtingThreadPoolExecutor extends ThreadPoolExecutor {
             super.afterExecute(r, t);
         } finally {
             taskInfo.setEndTime(System.nanoTime());
+            TaskInfoSubject taskInfoSubject = new TaskInfoSubject(taskInfo);
             //通知观察者
-            taskInfo.noticeAllDtingObserver();
+            taskInfoSubject.noticeAllDtingObserver();
             //删除运行任务的缓存数据
             TASK_INFO_THREAD_LOCAL.remove();
         }

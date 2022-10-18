@@ -24,6 +24,7 @@ public class SdkTestExecutor {
     @Test
     public void threadPoolExecThread() throws InterruptedException {
         MessageClientConfig config = new MessageClientConfig("127.0.0.1", 8888);
+        config.setMessageTag("huangfu");
         MessageReactor.start(Collections.singletonList(config));
 
         DtingThreadPoolExecutor threadPoolExecutor = new DtingThreadPoolExecutor(1,1,60L, TimeUnit.SECONDS,new LinkedBlockingQueue<>(10),"tese-pool");
@@ -70,7 +71,7 @@ public class SdkTestExecutor {
                 interruptedException.printStackTrace();
             }
         }));
-        Thread.sleep(MILLIS * 10);
+        Thread.sleep(MILLIS * 1000000);
         threadPoolExecutor.shutdown();
     }
 }

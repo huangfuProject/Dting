@@ -10,4 +10,6 @@ import io.netty.channel.SimpleChannelInboundHandler;
 @ChannelHandler.Sharable
 public abstract class DtingSimpleChannelInboundHandler<I> extends SimpleChannelInboundHandler<I> {
 
+
+
 }

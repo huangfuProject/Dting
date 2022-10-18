@@ -1,4 +1,4 @@
-package com.dting.model;
+package com.dting.common.datas;
 
 import java.io.Serializable;
 
@@ -260,4 +260,5 @@ public class SystemPropertiesAbstract implements Serializable {
     public void setSystemVersion(String systemVersion) {
         this.systemVersion = systemVersion;
     }
+
 }

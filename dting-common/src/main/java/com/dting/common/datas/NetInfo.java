@@ -1,4 +1,4 @@
-package com.dting.model;
+package com.dting.common.datas;
 
 import java.io.Serializable;
 
@@ -154,4 +154,5 @@ public class NetInfo implements Serializable {
     public void setSendDiscardedDataPacketCount(Long sendDiscardedDataPacketCount) {
         this.sendDiscardedDataPacketCount = sendDiscardedDataPacketCount;
     }
+
 }
