@@ -4,7 +4,7 @@ import com.dting.Subject;
 import com.dting.message.client.cache.ServerCommunicationConnectionPool;
 import com.dting.message.client.config.MessageClientConfig;
 import com.dting.message.common.agreement.packet.DtingMessage;
-import com.dting.sdk.collects.MetricsCollectedHandler;
+import com.dting.sdk.collects.SystemMetricsCollectedHandler;
 import com.dting.sdk.observers.TaskInfoObserver;
 import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.EventFactory;
@@ -92,7 +92,7 @@ public class MessageReactor {
         //开始接收来自各方的消息
         SEND_QUEUE.start();
         //开启系统采集
-        MetricsCollectedHandler.run();
+        SystemMetricsCollectedHandler.run();
 
     }
 
@@ -100,7 +100,7 @@ public class MessageReactor {
      * 关闭处理器
      */
     public static void stop() {
-        MetricsCollectedHandler.stop();
+        SystemMetricsCollectedHandler.stop();
         SEND_QUEUE.shutdown();
         //将上下文状态修正为不可用
         CONTEXT_ACTIVE.compareAndSet(true, false);

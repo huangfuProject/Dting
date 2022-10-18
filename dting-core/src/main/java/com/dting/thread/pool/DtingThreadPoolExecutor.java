@@ -1,9 +1,11 @@
 package com.dting.thread.pool;
 
+import com.dting.cache.DtingThreadPoolCache;
 import com.dting.common.datas.TaskInfo;
 import com.dting.model.TaskInfoSubject;
 import com.dting.utils.DtingLogUtil;
 
+import java.util.List;
 import java.util.concurrent.*;
 
 /**
@@ -60,6 +62,8 @@ public class DtingThreadPoolExecutor extends ThreadPoolExecutor {
         //二次修正拒绝策略  这里是为了解决父类没有初始化完成,拒绝策略中不允许传递this变量
         setRejectedExecutionHandler(dtingRejectedExecutionHandler);
         this.threadPoolName = threadPoolName;
+        //注册线程池
+        DtingThreadPoolCache.register(this);
     }
 
 
@@ -151,6 +155,35 @@ public class DtingThreadPoolExecutor extends ThreadPoolExecutor {
             return targetRejectedExecutionHandler.getRejectedExecutionHandler();
         }
         return rejectedExecutionHandler;
+    }
+
+    @Override
+    public void shutdown() {
+        //删除线程池
+        DtingThreadPoolCache.unRegister(threadPoolName);
+        super.shutdown();
+    }
+
+    @Override
+    public List<Runnable> shutdownNow() {
+        //删除线程池
+        DtingThreadPoolCache.unRegister(threadPoolName);
+        return super.shutdownNow();
+    }
+
+    /**
+     * 获取拒绝数量
+     *
+     * @return 拒绝数量
+     */
+    public long getRejectedTaskCount() {
+        RejectedExecutionHandler rejectedExecutionHandler = super.getRejectedExecutionHandler();
+        //如果是包装后的对象
+        if (rejectedExecutionHandler instanceof DtingRejectedExecutionHandler) {
+            return ((DtingRejectedExecutionHandler) rejectedExecutionHandler).getRejectedCount();
+        }
+
+        throw new IllegalArgumentException("拒绝策略不是" + DtingRejectedExecutionHandler.class.getName() + "类型的");
     }
 }
 

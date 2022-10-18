@@ -7,6 +7,7 @@ import com.dting.utils.DtingLogUtil;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * 内部封装的拒绝策略，模板方法，埋点拒绝方法的执行
@@ -18,6 +19,8 @@ class DtingRejectedExecutionHandler implements RejectedExecutionHandler {
 
     private final RejectedExecutionHandler rejectedExecutionHandler;
     private final DtingThreadPoolExecutor dtingThreadPoolExecutor;
+
+    private final AtomicLong REJECTED_COUNT = new AtomicLong(0);
 
 
     protected DtingRejectedExecutionHandler(RejectedExecutionHandler rejectedExecutionHandler, DtingThreadPoolExecutor dtingThreadPoolExecutor) {
@@ -63,7 +66,16 @@ class DtingRejectedExecutionHandler implements RejectedExecutionHandler {
             TaskInfoSubject taskInfoSubject = new TaskInfoSubject(taskInfo);
             //通知观察者
             taskInfoSubject.noticeAllDtingObserver();
+            REJECTED_COUNT.incrementAndGet();
         }
+    }
+
+    /**
+     * 拒绝策略的执行次数
+     * @return 拒绝策略的执行次数
+     */
+    public long getRejectedCount(){
+        return REJECTED_COUNT.get();
     }
 
     public RejectedExecutionHandler getRejectedExecutionHandler() {

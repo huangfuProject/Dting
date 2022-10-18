@@ -9,31 +9,36 @@ import com.dting.sdk.reactor.MessageReactor;
 import com.dting.show.datas.SystemInfoMessage;
 import com.dting.utils.SystemPropertiesUtil;
 
-import java.net.UnknownHostException;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.*;
 
 /**
- * 指标采集器
+ * 操作系统指标采集器
  *
  * @author huangfu
  * @date 2022年10月18日09:26:56
  */
-public class MetricsCollectedHandler {
+public class SystemMetricsCollectedHandler {
 
-    private final static ScheduledThreadPoolExecutor COLLECTED = new ScheduledThreadPoolExecutor(1,r -> {
+    private final static ScheduledThreadPoolExecutor COLLECTED = new ScheduledThreadPoolExecutor(1, r -> {
         Thread thread = new Thread(r);
-        thread.setName("MetricsCollected");
+        thread.setName("SystemMetricsCollected");
         return thread;
     });
 
-    public static void run(){
+    /**
+     * 开始运行
+     */
+    public static void run() {
         COLLECTED.scheduleWithFixedDelay(() -> {
             try {
+                //获取操作系统摘要
                 SystemPropertiesAbstract envAbstract = SystemPropertiesUtil.getEnvAbstract();
+                //操作系统CPU指标
                 SystemCpuGroup systemCpuGroup = SystemPropertiesUtil.systemCpu();
+                //系统内存用度
                 SystemMemory systemMemory = SystemPropertiesUtil.getSystemMemory();
+                //网络用度
                 List<NetInfo> netInfos = SystemPropertiesUtil.systemNetwork();
                 SystemInfoMessage systemInfoMessage = new SystemInfoMessage();
                 systemInfoMessage.setSystemMemory(systemMemory);
@@ -50,7 +55,7 @@ public class MetricsCollectedHandler {
         }, 10L, 30, TimeUnit.SECONDS);
     }
 
-    public static void stop(){
+    public static void stop() {
         COLLECTED.shutdown();
     }
 
