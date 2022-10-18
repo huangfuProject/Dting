@@ -17,6 +17,13 @@ public class MessageBuffer implements Serializable {
      */
     private DtingMessage dtingMessage;
 
+    public MessageBuffer() {
+    }
+
+    public MessageBuffer(DtingMessage dtingMessage) {
+        this.dtingMessage = dtingMessage;
+    }
+
     public DtingMessage getDtingMessage() {
         return dtingMessage;
     }

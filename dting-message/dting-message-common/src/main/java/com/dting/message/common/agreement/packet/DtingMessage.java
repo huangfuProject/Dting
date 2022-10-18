@@ -1,13 +1,16 @@
 package com.dting.message.common.agreement.packet;
 
+import java.io.Serializable;
+
 /**
  * 消息定义的父类
  *
  * @author huangfu
  * @date 2022年10月11日08:22:33
  */
-public class DtingMessage {
+public class DtingMessage implements Serializable {
 
+    private static final long serialVersionUID = -60259995547914226L;
     private String messageTag;
 
     /**
