@@ -36,8 +36,8 @@ public class ClientCommunicationConnectionPool {
      *
      * @param channel 通道
      */
-    public static void addConnection(Channel channel) {
-        Communication communication = new Communication(channel);
+    public static void addConnection(Channel channel, String messageTag) {
+        Communication communication = new Communication(channel, messageTag);
         CONNECTION_POOL.put(communication.getAddress(), communication);
     }
 

@@ -1,6 +1,5 @@
 package com.dting.message.client;
 
-import com.dting.message.client.cache.ServerCommunicationConnectionPool;
 import com.dting.message.client.config.MessageClientConfig;
 import com.dting.message.client.handler.ConnectionMonitoringHandler;
 import com.dting.message.common.MessageCommunicationConfig;
@@ -83,7 +82,7 @@ public class DtingMessageClient {
                 //写入数据编解码器
                 socketChannel.pipeline().addLast("PacketCodecHandler", new PacketCodecHandler(communicationConfig));
                 //连接监控
-                socketChannel.pipeline().addLast("ConnectionMonitoringHandler", new ConnectionMonitoringHandler());
+                socketChannel.pipeline().addLast("ConnectionMonitoringHandler", new ConnectionMonitoringHandler(config.getMessageTag()));
                 //开始写入业务处理器
                 businessProcessingUnit.forEach((handlerName, handler) -> socketChannel.pipeline().addLast(handlerName, handler));
             }

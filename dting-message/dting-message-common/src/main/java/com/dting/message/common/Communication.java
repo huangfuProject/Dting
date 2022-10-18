@@ -26,9 +26,15 @@ public class Communication implements Serializable {
      */
     private final String address;
 
-    public Communication(Channel channel) {
+    /**
+     * 消息标签
+     */
+    private final String messageTag;
+
+    public Communication(Channel channel, String messageTag) {
         this.channel = channel;
         this.address = ChannelUtil.getChannelRemoteAddress(channel);
+        this.messageTag = messageTag;
     }
 
     /**
@@ -37,6 +43,7 @@ public class Communication implements Serializable {
      * @param dtingMessage 消息体
      */
     public void asyncSendMessage(DtingMessage dtingMessage) {
+        dtingMessage.setMessageTag(this.messageTag);
         channel.writeAndFlush(dtingMessage);
     }
 

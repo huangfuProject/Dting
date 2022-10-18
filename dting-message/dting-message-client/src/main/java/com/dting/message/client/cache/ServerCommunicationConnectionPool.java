@@ -42,9 +42,10 @@ public class ServerCommunicationConnectionPool {
      * 追加一个通讯器
      *
      * @param channel 通道
+     * @param messageTag 消息标签
      */
-    public static void addConnection(Channel channel) {
-        Communication communication = new Communication(channel);
+    public static void addConnection(Channel channel, String messageTag) {
+        Communication communication = new Communication(channel, messageTag);
         CONNECTION_POOL.put(communication.getAddress(), communication);
     }
 

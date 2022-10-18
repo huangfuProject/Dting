@@ -34,6 +34,11 @@ public class MessageClientConfig implements Serializable {
     private final Integer port;
 
     /**
+     * 消息的标签
+     */
+    private String messageTag;
+
+    /**
      * 构建一个业务处理器 客户端
      */
     private final Map<String, DtingSimpleChannelInboundHandler<? extends DtingMessage>> clientBusinessProcessingUnit = new ConcurrentHashMap<>(8);
@@ -89,5 +94,13 @@ public class MessageClientConfig implements Serializable {
         Map<String, DtingSimpleChannelInboundHandler<? extends DtingMessage>> businessProcessingUnitCopy = new ConcurrentHashMap<>(8);
         businessProcessingUnitCopy.putAll(clientBusinessProcessingUnit);
         return businessProcessingUnitCopy;
+    }
+
+    public String getMessageTag() {
+        return messageTag;
+    }
+
+    public void setMessageTag(String messageTag) {
+        this.messageTag = messageTag;
     }
 }

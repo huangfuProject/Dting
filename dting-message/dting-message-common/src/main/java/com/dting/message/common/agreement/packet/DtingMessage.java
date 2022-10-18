@@ -8,6 +8,8 @@ package com.dting.message.common.agreement.packet;
  */
 public class DtingMessage {
 
+    private String messageTag;
+
     /**
      * 获取当前类的类型
      *
@@ -15,5 +17,13 @@ public class DtingMessage {
      */
     public final String classType() {
         return this.getClass().getName();
+    }
+
+    public String getMessageTag() {
+        return messageTag;
+    }
+
+    public void setMessageTag(String messageTag) {
+        this.messageTag = messageTag;
     }
 }

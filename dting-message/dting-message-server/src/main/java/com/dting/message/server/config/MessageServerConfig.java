@@ -18,6 +18,11 @@ public class MessageServerConfig {
 
     private String host;
 
+    /**
+     * 消息标签
+     */
+    private String messageTag;
+
     private final MessageCommunicationConfig communicationConfig;
 
     /**
@@ -85,5 +90,13 @@ public class MessageServerConfig {
         Map<String, DtingSimpleChannelInboundHandler<? extends DtingMessage>> businessProcessingUnitCopy = new ConcurrentHashMap<>(8);
         businessProcessingUnitCopy.putAll(serverBusinessProcessingUnit);
         return businessProcessingUnitCopy;
+    }
+
+    public String getMessageTag() {
+        return messageTag;
+    }
+
+    public void setMessageTag(String messageTag) {
+        this.messageTag = messageTag;
     }
 }
