@@ -1,9 +1,9 @@
 package com.dting.message.server.config;
 
+import com.dting.message.common.DefaultMessageCommunicationConfig;
 import com.dting.message.common.MessageCommunicationConfig;
 import com.dting.message.common.agreement.packet.DtingMessage;
 import com.dting.message.common.handlers.DtingSimpleChannelInboundHandler;
-import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

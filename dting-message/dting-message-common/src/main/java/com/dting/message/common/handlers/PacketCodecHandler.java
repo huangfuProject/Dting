@@ -1,5 +1,6 @@
 package com.dting.message.common.handlers;
 
+import com.dting.message.common.DefaultMessageCommunicationConfig;
 import com.dting.message.common.MessageCommunicationConfig;
 import com.dting.message.common.agreement.AgreementChoreography;
 import com.dting.message.common.agreement.implementation.MessageAgreementLayout;

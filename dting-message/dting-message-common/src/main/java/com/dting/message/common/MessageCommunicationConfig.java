@@ -1,47 +1,42 @@
 package com.dting.message.common;
 
 import com.dting.message.common.agreement.AgreementChoreography;
-import com.dting.message.common.agreement.DefaultAgreementChoreography;
 import com.dting.message.common.agreement.packet.DtingMessage;
 import com.dting.message.common.serializes.DtingSerialize;
-import com.dting.message.common.serializes.ProtostuffSerialize;
-import io.netty.channel.SimpleChannelInboundHandler;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * *************************************************<br/>
- * 消息处理过程中出现的处理器等操作的暂存区<br/>
- * ************************************************<br/>
+ * 消息的编解码处理器
  *
  * @author huangfu
- * @date 2022/10/9 9:39
+ * @date 2022年10月18日12:02:40
  */
-public class MessageCommunicationConfig {
-    /**
-     * 网络数据包的编解码处理程序
-     */
-    private AgreementChoreography agreementChoreography = new DefaultAgreementChoreography();
+public interface MessageCommunicationConfig {
 
     /**
-     * 对象序列化和反序列化的工具包
+     * 返回 网络数据包的编解码处理程序
+     *
+     * @return 网络数据包的编解码处理程序
      */
-    private DtingSerialize<DtingMessage> dtingSerialize = new ProtostuffSerialize<>();
+    AgreementChoreography getAgreementChoreography();
 
-    public AgreementChoreography getAgreementChoreography() {
-        return agreementChoreography;
-    }
+    /**
+     * 设置 网络数据包的编解码处理程序
+     *
+     * @param agreementChoreography 网络数据包的编解码处理程序
+     */
+    void setAgreementChoreography(AgreementChoreography agreementChoreography);
 
-    public void setAgreementChoreography(AgreementChoreography agreementChoreography) {
-        this.agreementChoreography = agreementChoreography;
-    }
+    /**
+     * 返回 对象序列化和反序列化的工具包
+     *
+     * @return 对象序列化和反序列化的工具包
+     */
+    DtingSerialize<DtingMessage> getDtingSerialize();
 
-    public DtingSerialize<DtingMessage> getDtingSerialize() {
-        return dtingSerialize;
-    }
-
-    public void setDtingSerialize(DtingSerialize<DtingMessage> dtingSerialize) {
-        this.dtingSerialize = dtingSerialize;
-    }
+    /**
+     * 设置 对象序列化和反序列化的工具包
+     *
+     * @param dtingSerialize 对象序列化和反序列化的工具包
+     */
+    void setDtingSerialize(DtingSerialize<DtingMessage> dtingSerialize);
 }

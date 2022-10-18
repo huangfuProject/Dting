@@ -2,7 +2,7 @@ package com.dting.message.client;
 
 import com.dting.message.client.config.MessageClientConfig;
 import com.dting.message.client.handler.ConnectionMonitoringHandler;
-import com.dting.message.common.MessageCommunicationConfig;
+import com.dting.message.common.DefaultMessageCommunicationConfig;
 import com.dting.message.common.agreement.AgreementChoreography;
 import com.dting.message.common.agreement.implementation.PacketSegmentationHandler;
 import com.dting.message.common.agreement.packet.ConnectionMessage;
@@ -68,7 +68,7 @@ public class DtingMessageClient {
             @Override
             protected void initChannel(SocketChannel socketChannel) throws Exception {
                 //获取消息协议上下文
-                MessageCommunicationConfig communicationConfig = config.getCommunicationConfig();
+                DefaultMessageCommunicationConfig communicationConfig = config.getCommunicationConfig();
 
                 //获取网络数据包分割器
                 AgreementChoreography agreementChoreography = communicationConfig.getAgreementChoreography();

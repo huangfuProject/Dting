@@ -1,6 +1,6 @@
 package com.dting.message.client.config;
 
-import com.dting.message.common.MessageCommunicationConfig;
+import com.dting.message.common.DefaultMessageCommunicationConfig;
 import com.dting.message.common.agreement.packet.DtingMessage;
 import com.dting.message.common.handlers.DtingSimpleChannelInboundHandler;
 
@@ -26,7 +26,7 @@ public class MessageClientConfig implements Serializable {
     /**
      * 协议配置项
      */
-    private final MessageCommunicationConfig communicationConfig;
+    private final DefaultMessageCommunicationConfig communicationConfig;
 
     /**
      * 服务端端口
@@ -44,21 +44,21 @@ public class MessageClientConfig implements Serializable {
     private final Map<String, DtingSimpleChannelInboundHandler<? extends DtingMessage>> clientBusinessProcessingUnit = new ConcurrentHashMap<>(8);
 
 
-    public MessageClientConfig(String host, MessageCommunicationConfig communicationConfig, Integer port) {
+    public MessageClientConfig(String host, DefaultMessageCommunicationConfig communicationConfig, Integer port) {
         this.host = host;
         this.communicationConfig = communicationConfig;
         this.port = port;
     }
 
     public MessageClientConfig(String host, Integer port) {
-        this(host, new MessageCommunicationConfig(), port);
+        this(host, new DefaultMessageCommunicationConfig(), port);
     }
 
     public String getHost() {
         return host;
     }
 
-    public MessageCommunicationConfig getCommunicationConfig() {
+    public DefaultMessageCommunicationConfig getCommunicationConfig() {
         return communicationConfig;
     }
 

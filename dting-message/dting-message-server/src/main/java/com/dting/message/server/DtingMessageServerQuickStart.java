@@ -1,6 +1,7 @@
 package com.dting.message.server;
 
 import cn.hutool.core.util.StrUtil;
+import com.dting.message.common.DefaultMessageCommunicationConfig;
 import com.dting.message.common.MessageCommunicationConfig;
 import com.dting.message.common.agreement.AgreementChoreography;
 import com.dting.message.common.handlers.DtingSimpleChannelInboundHandler;
@@ -122,9 +123,9 @@ public class DtingMessageServerQuickStart {
     /**
      * 关闭服务端
      *
-     * @throws Throwable 异常信息
+     * @throws Exception 异常信息
      */
-    public void close() throws Throwable {
+    public void close() throws Exception {
         if (bootstrap != null) {
             bossGroup.shutdownGracefully().syncUninterruptibly();
             workerGroup.shutdownGracefully().syncUninterruptibly();

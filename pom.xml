@@ -26,6 +26,8 @@
         <netty.version>4.1.82.Final</netty.version>
         <sigar.version>1.6.4</sigar.version>
         <disruptor.version>3.4.4</disruptor.version>
+
+        <fastjson.version>1.2.62</fastjson.version>
     </properties>
 
     <dependencyManagement>
@@ -119,6 +121,11 @@
                 <version>${disruptor.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>junit</groupId>

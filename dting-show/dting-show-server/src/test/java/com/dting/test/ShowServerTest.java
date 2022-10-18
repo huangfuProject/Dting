@@ -1,16 +1,10 @@
 package com.dting.test;
 
-import com.alibaba.fastjson.JSON;
-import com.dting.message.common.MessageCommunicationConfig;
-import com.dting.message.common.MessageTest;
-import com.dting.message.common.handlers.DtingSimpleChannelInboundHandler;
+import com.dting.message.common.DefaultMessageCommunicationConfig;
 import com.dting.message.server.DtingMessageServerQuickStart;
 import com.dting.message.server.config.MessageServerConfig;
-import com.dting.show.datas.SystemInfoMessage;
-import com.dting.show.datas.TaskInfoMessage;
 import com.dting.show.server.processing.SystemInfoBusinessProcessing;
 import com.dting.show.server.processing.TaskInfoServerBusinessProcessing;
-import io.netty.channel.ChannelHandlerContext;
 
 import java.util.Scanner;
 
@@ -22,7 +16,7 @@ import java.util.Scanner;
  */
 public class ShowServerTest {
     public static void main(String[] args) throws InterruptedException {
-        MessageServerConfig config = new MessageServerConfig(new MessageCommunicationConfig(), 8888);
+        MessageServerConfig config = new MessageServerConfig(new DefaultMessageCommunicationConfig(), 8888);
         DtingMessageServerQuickStart quickStart = new DtingMessageServerQuickStart(config);
 
         config.addServerBusinessProcessing("test", new TaskInfoServerBusinessProcessing());
