@@ -1,8 +1,9 @@
 package com.dting.show.server.processing;
 
-import com.alibaba.fastjson.JSON;
 import com.dting.message.common.handlers.DtingSimpleChannelInboundHandler;
 import com.dting.show.datas.SystemInfoMessage;
+import com.dting.show.server.buffers.MessageCpuDataBufferReactor;
+import com.dting.show.server.utils.DtingMessageSupplement;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
@@ -10,8 +11,17 @@ import io.netty.channel.ChannelHandlerContext;
  * @date
  */
 public class SystemInfoBusinessProcessing extends DtingSimpleChannelInboundHandler<SystemInfoMessage> {
+
+    private final MessageCpuDataBufferReactor messageCpuDataBufferReactor;
+
+    public SystemInfoBusinessProcessing(MessageCpuDataBufferReactor messageCpuDataBufferReactor) {
+        this.messageCpuDataBufferReactor = messageCpuDataBufferReactor;
+    }
+
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, SystemInfoMessage systemInfoMessage) throws Exception {
-        System.out.println(JSON.toJSONString(systemInfoMessage));
+        DtingMessageSupplement.supplement(channelHandlerContext, systemInfoMessage);
+        messageCpuDataBufferReactor.addMaterial(systemInfoMessage);
     }
+
 }

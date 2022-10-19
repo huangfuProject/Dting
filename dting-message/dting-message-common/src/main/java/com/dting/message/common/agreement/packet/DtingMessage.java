@@ -19,6 +19,11 @@ public class DtingMessage implements Serializable {
     private String unique;
 
     /**
+     * 消息来源ip
+     */
+    private String messageSourceAddress;
+
+    /**
      * 获取当前类的类型
      *
      * @return 返回具体实现的类的全限定名
@@ -41,5 +46,13 @@ public class DtingMessage implements Serializable {
 
     public void setUnique(String unique) {
         this.unique = unique;
+    }
+
+    public String getMessageSourceAddress() {
+        return messageSourceAddress;
+    }
+
+    public void setMessageSourceAddress(String messageSourceAddress) {
+        this.messageSourceAddress = messageSourceAddress;
     }
 }

@@ -2,4 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dting.show.server.mapper.MessageCpuDataMapper">
 
+    <insert id="ignoreOnlyBatchInsert">
+        insert ignore into
+            message_cpu_data(`unique`,`message_tag`,`message_ip`,`collect_time`,`total_use`,`user_use`,`system_use`,`wait`,`error`,`idle`,`cpu_info`)
+        values
+        <foreach collection="messageCpuDataList" item="messageCpuData" separator=",">
+            (#{messageCpuData.unique}, #{messageCpuData.messageTag}, #{messageCpuData.messageIp},
+            #{messageCpuData.collectTime}, #{messageCpuData.totalUse}, #{messageCpuData.userUes},
+            #{messageCpuData.systemUes}, #{messageCpuData.wait}, #{messageCpuData.error}, #{messageCpuData.idle},
+            #{messageCpuData.cpuInfo})
+        </foreach>
+    </insert>
 </mapper>
