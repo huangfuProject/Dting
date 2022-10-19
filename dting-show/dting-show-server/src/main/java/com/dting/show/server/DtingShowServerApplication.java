@@ -1,5 +1,6 @@
 package com.dting.show.server;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -10,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @date 2022年10月18日11:48:03
  */
 @SpringBootApplication
+@MapperScan("com.dting.show.server.mapper")
 public class DtingShowServerApplication {
 
     public static void main(String[] args) {
