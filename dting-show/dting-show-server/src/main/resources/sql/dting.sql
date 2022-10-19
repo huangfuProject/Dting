@@ -71,6 +71,7 @@ CREATE TABLE `task_run_log`  (
                                  `unique` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '消息的唯一标识，当消息群发后，标记为一批数据，唯一不为空',
                                  `message_tag` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '消息标签，标记消息的来源',
                                  `message_ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '标记消息的ip地址',
+                                 `collect_time` bigint(32) NOT NULL COMMENT '采集的时间',
                                  `thread_pool_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '线程池名称',
                                  `thread_pool_group_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '拼接规则为 message_ip:thread_pool_name',
                                  `task_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '任务名称',
@@ -98,6 +99,7 @@ CREATE TABLE `thread_pool_data`  (
                                      `message_ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '标记消息的ip地址',
                                      `collect_time` bigint(32) NOT NULL COMMENT '采集的时间戳',
                                      `thread_pool_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '线程池的名称',
+                                     `thread_pool_group_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '拼接规则为 message_ip:thread_pool_name',
                                      `active_count` int(12) NOT NULL COMMENT '活跃数',
                                      `core_count` int(12) NOT NULL COMMENT '核心数',
                                      `max_count` int(12) NOT NULL COMMENT '最大线程数',
@@ -105,8 +107,30 @@ CREATE TABLE `thread_pool_data`  (
                                      `queue_total_size` int(32) NOT NULL COMMENT '队列的总长度',
                                      `busy_weight` int(6) NOT NULL COMMENT '线程池忙碌的数值，计算方式为 ((活跃数/核心数) + (活跃数/最大线程数) + (队列堆积数/队列总长度))*1000',
                                      PRIMARY KEY (`id`) USING BTREE,
-                                     UNIQUE INDEX `message_unique`(`unique`) USING BTREE
+                                     UNIQUE INDEX `message_unique`(`unique`) USING BTREE,
+                                     INDEX `group_index`(`thread_pool_group_name`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '线程池的状态采集信息' ROW_FORMAT = DYNAMIC;
 
-SET FOREIGN_KEY_CHECKS = 1;
+-- ----------------------------
+-- Table structure for thread_pool_detailed
+-- ----------------------------
+DROP TABLE IF EXISTS `thread_pool_detailed`;
+CREATE TABLE `thread_pool_detailed`  (
+                                         `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键 自动递增',
+                                         `unique` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '消息的唯一标识，当消息群发后，标记为一批数据，唯一不为空',
+                                         `message_tag` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '消息标签，标记消息的来源',
+                                         `message_ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '标记消息的ip地址',
+                                         `collect_time` bigint(32) NOT NULL COMMENT '采集的时间戳',
+                                         `thread_pool_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '线程池的名称',
+                                         `thread_pool_group_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '拼接规则为 message_ip:thread_pool_name',
+                                         `core_count` int(12) NOT NULL COMMENT '核心数',
+                                         `max_count` int(255) NOT NULL COMMENT '最大线程数',
+                                         `queue_total_size` int(12) NOT NULL COMMENT '队列总长度',
+                                         `reject_handler_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '拒绝策略名称',
+                                         `queue_type_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '队列名称',
+                                         PRIMARY KEY (`id`) USING BTREE,
+                                         UNIQUE INDEX `message_unique`(`unique`) USING BTREE,
+                                         INDEX `group_index`(`thread_pool_group_name`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '线程池详细信息' ROW_FORMAT = DYNAMIC;
 
+SET FOREIGN_KEY_CHECKS = 1;
