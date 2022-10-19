@@ -12,7 +12,7 @@ public class ThreadPoolInfo implements Serializable {
     private static final long serialVersionUID = -6099899546413460243L;
 
     /**
-     * 线程池数量
+     * 线程池名称
      */
     private String poolName;
 

@@ -6,6 +6,7 @@ import com.dting.message.client.config.MessageClientConfig;
 import com.dting.message.common.agreement.packet.DtingMessage;
 import com.dting.sdk.collects.DtingThreadPoolCollectedHandler;
 import com.dting.sdk.collects.SystemMetricsCollectedHandler;
+import com.dting.sdk.collects.ThreadPoolDetailedCollectedHandler;
 import com.dting.sdk.observers.TaskInfoObserver;
 import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.EventFactory;
@@ -93,6 +94,7 @@ public class MessageReactor {
         //开始接收来自各方的消息
         SEND_QUEUE.start();
         //开启系统采集
+        ThreadPoolDetailedCollectedHandler.run();
         SystemMetricsCollectedHandler.run();
         DtingThreadPoolCollectedHandler.run();
 
@@ -102,6 +104,7 @@ public class MessageReactor {
      * 关闭处理器
      */
     public static void stop() {
+        ThreadPoolDetailedCollectedHandler.stop();
         SystemMetricsCollectedHandler.stop();
         DtingThreadPoolCollectedHandler.stop();
         SEND_QUEUE.shutdown();

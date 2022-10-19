@@ -2,6 +2,7 @@ package com.dting.show.server.factorys;
 
 import com.dting.show.server.processing.SystemInfoBusinessProcessing;
 import com.dting.show.server.processing.TaskInfoServerBusinessProcessing;
+import com.dting.show.server.processing.ThreadPoolDetailedBusinessProcessing;
 import com.dting.show.server.processing.ThreadPoolInfoServerBusinessProcessing;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,5 +44,15 @@ public class BusinessProcessingFactory {
     @Bean
     public ThreadPoolInfoServerBusinessProcessing threadPoolInfoServerBusinessProcessing() {
         return new ThreadPoolInfoServerBusinessProcessing();
+    }
+
+    /**
+     * 线上线程池的状态上报处理器
+     *
+     * @return 线上线程池的状态上报处理器
+     */
+    @Bean
+    public ThreadPoolDetailedBusinessProcessing threadPoolDetailedBusinessProcessing() {
+        return new ThreadPoolDetailedBusinessProcessing();
     }
 }
