@@ -35,20 +35,20 @@ CREATE TABLE `message_cpu_data`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `message_memory_data`;
 CREATE TABLE `message_memory_data`  (
-                                        `id` int(11) NOT NULL COMMENT '主键 自动递增',
+                                        `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键 自动递增',
                                         `unique` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '消息的唯一标识，当消息群发后，标记为一批数据，唯一不为空',
                                         `message_tag` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '消息标签，标记消息的来源',
                                         `message_ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '标记消息的ip地址',
                                         `collect_time` bigint(32) NOT NULL COMMENT '采集时间',
-                                        `jvm_total_memory` bigint(64) NOT NULL COMMENT 'jvm总内存大小',
-                                        `total_memory` bigint(64) NOT NULL COMMENT '物理总内存大小',
-                                        `jvm_use_memory` bigint(64) NOT NULL COMMENT 'jvm已经使用的大小',
-                                        `use_memory` bigint(64) NOT NULL COMMENT '操作系统的已使用内存',
-                                        `total_swap` bigint(64) NOT NULL COMMENT '操作系统交换内存总容量',
-                                        `use_swap` bigint(64) NOT NULL COMMENT '操作系统已经使用的交换内存总量',
+                                        `total_memory` bigint(32) NOT NULL COMMENT '物理总内存大小',
+                                        `use_memory` bigint(32) NOT NULL COMMENT '操作系统的已使用内存',
+                                        `jvm_total_memory` bigint(32) NOT NULL COMMENT 'jvm总内存大小',
+                                        `jvm_use_memory` bigint(32) NOT NULL COMMENT 'jvm已经使用的大小',
+                                        `total_swap` bigint(32) NOT NULL COMMENT '操作系统交换内存总容量',
+                                        `use_swap` bigint(32) NOT NULL COMMENT '操作系统已经使用的交换内存总量',
                                         PRIMARY KEY (`id`) USING BTREE,
                                         UNIQUE INDEX `message_unique`(`unique`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统内存以及JVM内存的统计信息数据' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统内存以及JVM内存的统计信息数据' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for message_network_data
