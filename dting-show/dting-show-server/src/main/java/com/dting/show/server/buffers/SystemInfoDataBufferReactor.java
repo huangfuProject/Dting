@@ -2,6 +2,7 @@ package com.dting.show.server.buffers;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.fastjson.JSON;
+import com.dting.common.datas.NetInfo;
 import com.dting.common.datas.SystemCpuGroup;
 import com.dting.common.datas.SystemMemory;
 import com.dting.common.datas.SystemPropertiesAbstract;
@@ -10,8 +11,10 @@ import com.dting.show.datas.SystemInfoMessage;
 import com.dting.show.server.entity.DtingMessageBaseEntity;
 import com.dting.show.server.entity.MessageCpuData;
 import com.dting.show.server.entity.MessageMemoryData;
+import com.dting.show.server.entity.MessageNetworkData;
 import com.dting.show.server.service.MessageCpuDataService;
 import com.dting.show.server.service.MessageMemoryDataService;
+import com.dting.show.server.service.MessageNetworkDataService;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -36,10 +39,16 @@ public class SystemInfoDataBufferReactor extends MessageBufferReactor<SystemInfo
      */
     private final MessageMemoryDataService messageMemoryDataService;
 
+    /**
+     * 网卡服务
+     */
+    private final MessageNetworkDataService messageNetworkDataService;
 
-    public SystemInfoDataBufferReactor(MessageCpuDataService messageCpuDataService, MessageMemoryDataService messageMemoryDataService) {
+
+    public SystemInfoDataBufferReactor(MessageCpuDataService messageCpuDataService, MessageMemoryDataService messageMemoryDataService, MessageNetworkDataService messageNetworkDataService) {
         this.messageCpuDataService = messageCpuDataService;
         this.messageMemoryDataService = messageMemoryDataService;
+        this.messageNetworkDataService = messageNetworkDataService;
     }
 
 
@@ -53,6 +62,8 @@ public class SystemInfoDataBufferReactor extends MessageBufferReactor<SystemInfo
             messageCpuDataService.ignoreOnlyBatchSave(systemInfoGroup.getMessageCpuDataList());
             //保存内存数据
             messageMemoryDataService.ignoreOnlyBatchSave(systemInfoGroup.getMessageMemoryDataList());
+            //保存网卡数据
+            messageNetworkDataService.ignoreOnlyBatchSave(systemInfoGroup.getMessageNetworkDataList());
         }
     }
 
@@ -62,11 +73,16 @@ public class SystemInfoDataBufferReactor extends MessageBufferReactor<SystemInfo
         /**
          * cpu数据
          */
-        private List<MessageCpuData> messageCpuDataList = new ArrayList<>(32);
+        private final List<MessageCpuData> messageCpuDataList = new ArrayList<>(32);
         /**
          * 内存数据
          */
-        private List<MessageMemoryData> messageMemoryDataList = new ArrayList<>(32);
+        private final List<MessageMemoryData> messageMemoryDataList = new ArrayList<>(32);
+
+        /**
+         * 网卡数据
+         */
+        private final List<MessageNetworkData> messageNetworkDataList = new ArrayList<>(32);
 
         /**
          * 开始做消息的转换 并赋值给自身
@@ -76,6 +92,7 @@ public class SystemInfoDataBufferReactor extends MessageBufferReactor<SystemInfo
         public void conversion(List<SystemInfoMessage> source) {
             messageCpuDataList.clear();
             messageMemoryDataList.clear();
+            messageNetworkDataList.clear();
 
             source.forEach(data -> {
                 //CPU数据转换
@@ -84,7 +101,25 @@ public class SystemInfoDataBufferReactor extends MessageBufferReactor<SystemInfo
                 //内存数据转换
                 MessageMemoryData messageMemoryData = memoryDataConversion(data);
                 messageMemoryDataList.add(messageMemoryData);
+                //网卡数据转换
+                MessageNetworkData messageNetworkData = networkDataConversion(data);
+                messageNetworkDataList.add(messageNetworkData);
             });
+        }
+
+        /**
+         * 网卡数据转换
+         *
+         * @param data 网卡数据
+         * @return 网卡的数据
+         */
+        private MessageNetworkData networkDataConversion(SystemInfoMessage data) {
+            List<NetInfo> netInfos = data.getNetInfos();
+            MessageNetworkData messageNetworkData = new MessageNetworkData();
+            //公共信息设置
+            commonDataSetting(data, messageNetworkData);
+            messageNetworkData.setNetworkData(JSON.toJSONString(netInfos));
+            return messageNetworkData;
         }
 
         /**
