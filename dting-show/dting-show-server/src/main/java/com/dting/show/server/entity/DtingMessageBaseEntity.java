@@ -1,6 +1,7 @@
 package com.dting.show.server.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.dting.message.common.agreement.packet.DtingMessage;
 import lombok.Data;
 
 /**
@@ -37,4 +38,20 @@ public class DtingMessageBaseEntity {
      * 数据采集的时间
      */
     private Long collectTime;
+
+    /**
+     * 公共信息设置
+     *
+     * @param dtingMessage 来自客户端的消息
+     */
+    public void commonDataSetting(DtingMessage dtingMessage) {
+        //消息来源
+        this.setMessageIp(dtingMessage.getMessageSourceAddress());
+        //消息标签
+        this.setMessageTag(dtingMessage.getMessageTag());
+        //消息的唯一值
+        this.setUnique(dtingMessage.getUnique());
+        //消息采集时间
+        this.setCollectTime(System.nanoTime());
+    }
 }

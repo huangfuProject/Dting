@@ -1,6 +1,7 @@
 package com.dting.show.server.factorys;
 
 import com.dting.show.server.buffers.SystemInfoDataBufferReactor;
+import com.dting.show.server.buffers.TaskRunLogDataBufferReactor;
 import com.dting.show.server.processing.SystemInfoBusinessProcessing;
 import com.dting.show.server.processing.TaskInfoServerBusinessProcessing;
 import com.dting.show.server.processing.ThreadPoolDetailedBusinessProcessing;
@@ -33,8 +34,8 @@ public class BusinessProcessingFactory {
      * @return 任务的执行信息采集数据的处理器
      */
     @Bean
-    public TaskInfoServerBusinessProcessing taskInfoServerBusinessProcessing() {
-        return new TaskInfoServerBusinessProcessing();
+    public TaskInfoServerBusinessProcessing taskInfoServerBusinessProcessing(TaskRunLogDataBufferReactor taskRunLogDataBufferReactor) {
+        return new TaskInfoServerBusinessProcessing(taskRunLogDataBufferReactor);
     }
 
     /**

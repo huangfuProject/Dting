@@ -6,9 +6,7 @@ import com.dting.common.datas.NetInfo;
 import com.dting.common.datas.SystemCpuGroup;
 import com.dting.common.datas.SystemMemory;
 import com.dting.common.datas.SystemPropertiesAbstract;
-import com.dting.message.common.agreement.packet.DtingMessage;
 import com.dting.show.datas.SystemInfoMessage;
-import com.dting.show.server.entity.DtingMessageBaseEntity;
 import com.dting.show.server.entity.MessageCpuData;
 import com.dting.show.server.entity.MessageMemoryData;
 import com.dting.show.server.entity.MessageNetworkData;
@@ -117,7 +115,7 @@ public class SystemInfoDataBufferReactor extends MessageBufferReactor<SystemInfo
             List<NetInfo> netInfos = data.getNetInfos();
             MessageNetworkData messageNetworkData = new MessageNetworkData();
             //公共信息设置
-            commonDataSetting(data, messageNetworkData);
+            messageNetworkData.commonDataSetting(data);
             messageNetworkData.setNetworkData(JSON.toJSONString(netInfos));
             return messageNetworkData;
         }
@@ -135,7 +133,7 @@ public class SystemInfoDataBufferReactor extends MessageBufferReactor<SystemInfo
             SystemMemory systemMemory = data.getSystemMemory();
             MessageMemoryData messageMemoryData = new MessageMemoryData();
             //公共信息设置
-            commonDataSetting(data, messageMemoryData);
+            messageMemoryData.commonDataSetting(data);
             //系统内存的总内存
             messageMemoryData.setTotalMemory(systemMemory.getTotalMemory());
             //系统内存的使用内存
@@ -163,7 +161,7 @@ public class SystemInfoDataBufferReactor extends MessageBufferReactor<SystemInfo
             SystemCpuGroup systemCpuGroup = systemInfoMessage.getSystemCpuGroup();
             MessageCpuData messageCpuData = new MessageCpuData();
             //公共信息设置
-            commonDataSetting(systemInfoMessage, messageCpuData);
+            messageCpuData.commonDataSetting(systemInfoMessage);
             //每一个CPU的信息
             messageCpuData.setCpuInfo(JSON.toJSONString(systemCpuGroup.getSystemCpus()));
             //总使用比率
@@ -181,22 +179,7 @@ public class SystemInfoDataBufferReactor extends MessageBufferReactor<SystemInfo
             return messageCpuData;
         }
 
-        /**
-         * 公共信息设置
-         *
-         * @param dtingMessage           来自客户端的消息
-         * @param dtingMessageBaseEntity 实体对象
-         */
-        private void commonDataSetting(DtingMessage dtingMessage, DtingMessageBaseEntity dtingMessageBaseEntity) {
-            //消息来源
-            dtingMessageBaseEntity.setMessageIp(dtingMessage.getMessageSourceAddress());
-            //消息标签
-            dtingMessageBaseEntity.setMessageTag(dtingMessage.getMessageTag());
-            //消息的唯一值
-            dtingMessageBaseEntity.setUnique(dtingMessage.getUnique());
-            //消息采集时间
-            dtingMessageBaseEntity.setCollectTime(System.nanoTime());
-        }
+
     }
 
 

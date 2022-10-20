@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dting.show.server.mapper.MessageTaskRunLogDataMapper">
+
+    <insert id="ignoreOnlyBatchInsert">
+        insert ignore into message_task_run_log_data(
+            `unique`,`message_tag`,`message_ip`,`collect_time`,
+            `thread_pool_name`, `thread_pool_group_name`,`task_name`,`start_time`,`end_time`,`success`,
+            `rejected`,`error_msg`,`active_count`,`queue_remaining_capacity`,`queue_size`
+        )
+        values
+        <foreach collection="messageTaskRunLogDataList" item="messageTaskRunLogData" separator=",">
+            (
+                #{messageTaskRunLogData.unique}, #{messageTaskRunLogData.messageTag}, #{messageTaskRunLogData.messageIp}, #{messageTaskRunLogData.collectTime},
+                #{messageTaskRunLogData.threadPoolName}, #{messageTaskRunLogData.threadPoolGroupName}, #{messageTaskRunLogData.taskName}, #{messageTaskRunLogData.startTime}, #{messageTaskRunLogData.endTime}, #{messageTaskRunLogData.success}, #{messageTaskRunLogData.rejected},
+                #{messageTaskRunLogData.errorMsg}, #{messageTaskRunLogData.activeCount}, #{messageTaskRunLogData.queueRemainingCapacity}, #{messageTaskRunLogData.queueSize}
+            )
+        </foreach>
+    </insert>
+</mapper>
