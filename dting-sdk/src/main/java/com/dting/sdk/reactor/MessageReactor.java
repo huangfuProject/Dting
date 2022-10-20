@@ -122,7 +122,7 @@ public class MessageReactor {
         public void onEvent(MessageBuffer messageBuffer, long l, boolean b) throws Exception {
             DtingMessage dtingMessage = messageBuffer.getDtingMessage();
             //向服务器异步发送消息
-            ServerCommunicationConnectionPool.asyncAllSendMessage(dtingMessage);
+            ServerCommunicationConnectionPool.asyncSendMessage(dtingMessage);
         }
     }
 }

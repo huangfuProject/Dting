@@ -27,8 +27,6 @@ class DtingMessageClientTest {
                         throwable.printStackTrace();
                     }
                 }
-
-                ServerCommunicationConnectionPool.asyncAllSendMessage(new MessageTest("huangfikeixngashjhdsajksad"));
             }
         }).start();
 

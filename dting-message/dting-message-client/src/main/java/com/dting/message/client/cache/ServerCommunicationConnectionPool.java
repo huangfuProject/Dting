@@ -9,10 +9,7 @@ import com.dting.message.common.agreement.packet.DtingMessage;
 import com.dting.message.common.utils.ChannelUtil;
 import io.netty.channel.Channel;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -28,7 +25,8 @@ public class ServerCommunicationConnectionPool {
      */
     private final static Map<String, Communication> CONNECTION_POOL = new ConcurrentHashMap<>(8);
 
-    private final static List<DtingMessageClient> MESSAGE_CLIENTS = new ArrayList<>(8);
+    private static final Random RANDOM = new Random();
+
 
     /**
      * 追加一个通讯器
@@ -76,21 +74,33 @@ public class ServerCommunicationConnectionPool {
      * @param communication 要销毁的通讯器
      */
     public static void removeConnection(Communication communication) {
+        if(communication == null) {
+            return;
+        }
         CONNECTION_POOL.remove(communication.getAddress());
         communication.closeCommunication();
     }
 
     /**
-     * 异步群发消息
+     * 异步发送消息
      *
      * @param message 消息对象
      */
-    public static void asyncAllSendMessage(DtingMessage message) {
+    public static void asyncSendMessage(DtingMessage message) {
         //生成一个消息的唯一标识
         message.setUnique(IdUtil.simpleUUID());
         Collection<Communication> communicationCollection = CONNECTION_POOL.values();
         if (CollectionUtil.isNotEmpty(communicationCollection)) {
-            communicationCollection.forEach(communication -> communication.asyncSendMessage(message));
+            int size = communicationCollection.size();
+            List<Communication> communications = new ArrayList<>(communicationCollection);
+            int randomNum = RANDOM.nextInt(size);
+            Communication communication = communications.get(randomNum);
+            if(communication != null && communication.communicationStatus()) {
+                communication.asyncSendMessage(message);
+            }else {
+                removeConnection(communication);
+                asyncSendMessage(message);
+            }
         }
     }
 
@@ -116,7 +126,6 @@ public class ServerCommunicationConnectionPool {
         for (MessageClientConfig config : configList) {
             DtingMessageClient dtingMessageClient = new DtingMessageClient(config);
             dtingMessageClient.connect();
-            MESSAGE_CLIENTS.add(dtingMessageClient);
         }
     }
 
