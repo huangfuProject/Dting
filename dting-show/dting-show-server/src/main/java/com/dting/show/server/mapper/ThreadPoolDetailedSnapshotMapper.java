@@ -3,6 +3,7 @@ package com.dting.show.server.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.dting.show.server.entity.ThreadPoolDetailedSnapshot;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
  * @author huangfu
  * @date 2022年10月20日15:16:40
  */
+@Repository
 public interface ThreadPoolDetailedSnapshotMapper extends BaseMapper<ThreadPoolDetailedSnapshot> {
 
     /**

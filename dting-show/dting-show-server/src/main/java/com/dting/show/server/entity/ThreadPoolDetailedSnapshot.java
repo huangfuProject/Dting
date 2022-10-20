@@ -18,6 +18,11 @@ public class ThreadPoolDetailedSnapshot {
     private Integer id;
 
     /**
+     * 采集key
+     */
+    private String collectKey;
+
+    /**
      * 线程池的名称
      */
     private String threadPoolName;
@@ -47,7 +52,7 @@ public class ThreadPoolDetailedSnapshot {
     private Integer queueTotalSize;
 
     /**
-     * 繁忙指标
+     * 繁忙指标  线程池忙碌的数值，计算方式为 ((活跃数/核心数) + (活跃数/最大线程数) + (队列堆积数/队列总长度))*1000
      */
     private Double busyWeight;
 }

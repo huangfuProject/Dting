@@ -2,10 +2,11 @@ package com.dting.show.server.factorys;
 
 import com.dting.show.server.buffers.SystemInfoDataBufferReactor;
 import com.dting.show.server.buffers.TaskRunLogDataBufferReactor;
+import com.dting.show.server.buffers.ThreadPoolDataBufferReactor;
 import com.dting.show.server.processing.SystemInfoBusinessProcessing;
 import com.dting.show.server.processing.TaskInfoServerBusinessProcessing;
 import com.dting.show.server.processing.ThreadPoolDetailedBusinessProcessing;
-import com.dting.show.server.processing.ThreadPoolInfoServerBusinessProcessing;
+import com.dting.show.server.processing.ThreadPoolDataCollectServerBusinessProcessing;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -44,8 +45,8 @@ public class BusinessProcessingFactory {
      * @return 针对于线程池状态采集数据的处理器
      */
     @Bean
-    public ThreadPoolInfoServerBusinessProcessing threadPoolInfoServerBusinessProcessing() {
-        return new ThreadPoolInfoServerBusinessProcessing();
+    public ThreadPoolDataCollectServerBusinessProcessing threadPoolInfoServerBusinessProcessing(ThreadPoolDataBufferReactor threadPoolDataBufferReactor) {
+        return new ThreadPoolDataCollectServerBusinessProcessing(threadPoolDataBufferReactor);
     }
 
     /**

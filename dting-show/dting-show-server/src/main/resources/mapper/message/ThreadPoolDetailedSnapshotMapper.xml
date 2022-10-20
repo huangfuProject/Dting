@@ -6,9 +6,16 @@
         `max_count`,`queue_use_count`,`queue_total_size`, `busy_weight`)
         values
         <foreach collection="threadPoolDetailedSnapshots" item="threadPoolDetailedSnapshot" separator=",">
-            (#{threadPoolDetailedSnapshot.networkDataKey}, #{threadPoolDetailedSnapshot.networkName}, #{threadPoolDetailedSnapshot.ipAddress}, #{threadPoolDetailedSnapshot.subnetMask}, #{threadPoolDetailedSnapshot.receivingDataByte},
-            #{threadPoolDetailedSnapshot.sendDataByte}, #{threadPoolDetailedSnapshot.receivingDataPacketCount}, #{threadPoolDetailedSnapshot.sendDataPacketCount}, #{threadPoolDetailedSnapshot.receivingErrorDataPacketCount},
-            #{threadPoolDetailedSnapshot.sendErrorDataPacketCount}, #{threadPoolDetailedSnapshot.receivingDiscardedDataPacketCount}, #{threadPoolDetailedSnapshot.sendDiscardedDataPacketCount})
+            (
+            #{threadPoolDetailedSnapshot.collectKey},
+            #{threadPoolDetailedSnapshot.threadPoolName},
+            #{threadPoolDetailedSnapshot.activeCount},
+            #{threadPoolDetailedSnapshot.coreCount},
+            #{threadPoolDetailedSnapshot.maxCount},
+            #{threadPoolDetailedSnapshot.queueUseCount},
+            #{threadPoolDetailedSnapshot.queueTotalSize},
+            #{threadPoolDetailedSnapshot.busyWeight}
+            )
         </foreach>
     </insert>
 </mapper>

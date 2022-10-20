@@ -5,12 +5,12 @@ import com.dting.message.common.agreement.packet.DtingMessage;
 import java.io.Serializable;
 
 /**
- * 线程池详细信息
+ * 线程池配置详细信息
  *
  * @author huangfu
  * @date 2022年10月19日08:49:59
  */
-public class ThreadPoolDetailedMessage extends DtingMessage implements Serializable {
+public class ThreadPoolDetailedConfigMessage extends DtingMessage implements Serializable {
     private static final long serialVersionUID = -153906139415106891L;
     /**
      * 线程池名称

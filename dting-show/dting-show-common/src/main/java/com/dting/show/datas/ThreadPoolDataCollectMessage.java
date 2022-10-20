@@ -14,20 +14,20 @@ import java.util.List;
  * @author huangfu
  * @date 2022/10/18 21:10
  */
-public class ThreadPoolInfoMessage  extends DtingMessage implements Serializable {
+public class ThreadPoolDataCollectMessage extends DtingMessage implements Serializable {
     private static final long serialVersionUID = -239721540257804735L;
 
     private List<ThreadPoolDataCollect> threadPoolDatumCollects;
 
-    public ThreadPoolInfoMessage(List<ThreadPoolDataCollect> threadPoolDatumCollects) {
+    public ThreadPoolDataCollectMessage(List<ThreadPoolDataCollect> threadPoolDatumCollects) {
         this.threadPoolDatumCollects = threadPoolDatumCollects;
     }
 
-    public List<ThreadPoolDataCollect> getThreadPoolInfos() {
+    public List<ThreadPoolDataCollect> getThreadPoolDataCollect() {
         return threadPoolDatumCollects;
     }
 
-    public void setThreadPoolInfos(List<ThreadPoolDataCollect> threadPoolDatumCollects) {
+    public void setThreadPoolDataCollect(List<ThreadPoolDataCollect> threadPoolDatumCollects) {
         this.threadPoolDatumCollects = threadPoolDatumCollects;
     }
 }

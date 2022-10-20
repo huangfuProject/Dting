@@ -2,7 +2,7 @@ package com.dting.show.server.processing;
 
 import com.alibaba.fastjson.JSON;
 import com.dting.message.common.handlers.DtingSimpleChannelInboundHandler;
-import com.dting.show.datas.ThreadPoolDetailedMessage;
+import com.dting.show.datas.ThreadPoolDetailedConfigMessage;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
@@ -11,9 +11,9 @@ import io.netty.channel.ChannelHandlerContext;
  * @author huangfu
  * @date 2022年10月19日09:01:46
  */
-public class ThreadPoolDetailedBusinessProcessing extends DtingSimpleChannelInboundHandler<ThreadPoolDetailedMessage> {
+public class ThreadPoolDetailedBusinessProcessing extends DtingSimpleChannelInboundHandler<ThreadPoolDetailedConfigMessage> {
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, ThreadPoolDetailedMessage threadPoolDetailedMessage) throws Exception {
-        System.out.println(JSON.toJSONString(threadPoolDetailedMessage));
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, ThreadPoolDetailedConfigMessage threadPoolDetailedConfigMessage) throws Exception {
+        System.out.println(JSON.toJSONString(threadPoolDetailedConfigMessage));
     }
 }

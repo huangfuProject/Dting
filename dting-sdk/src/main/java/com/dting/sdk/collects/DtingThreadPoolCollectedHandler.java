@@ -4,7 +4,7 @@ import com.dting.cache.DtingThreadPoolCache;
 import com.dting.common.datas.ThreadPoolDataCollect;
 import com.dting.sdk.reactor.MessageBuffer;
 import com.dting.sdk.reactor.MessageReactor;
-import com.dting.show.datas.ThreadPoolInfoMessage;
+import com.dting.show.datas.ThreadPoolDataCollectMessage;
 
 import java.util.List;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -30,8 +30,8 @@ public class DtingThreadPoolCollectedHandler {
     public static void run(){
         COLLECTED.scheduleWithFixedDelay(() -> {
             List<ThreadPoolDataCollect> threadPoolDatumCollects = DtingThreadPoolCache.threadPoolInfos();
-            ThreadPoolInfoMessage threadPoolInfoMessage = new ThreadPoolInfoMessage(threadPoolDatumCollects);
-            MessageBuffer messageBuffer = new MessageBuffer(threadPoolInfoMessage);
+            ThreadPoolDataCollectMessage threadPoolDataCollectMessage = new ThreadPoolDataCollectMessage(threadPoolDatumCollects);
+            MessageBuffer messageBuffer = new MessageBuffer(threadPoolDataCollectMessage);
             MessageReactor.sendMessage(messageBuffer);
         }, 10L, 25, TimeUnit.SECONDS);
 

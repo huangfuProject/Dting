@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2022年10月17日15:13:27
  */
 public class SdkTestExecutor {
-    private static final int MILLIS = 200;
+    private static final int MILLIS = 200000;
 
     @Test
     public void threadPoolExecThread() throws InterruptedException {
@@ -32,7 +32,7 @@ public class SdkTestExecutor {
         threadPoolExecutor.execute(new DtingRunnable("test-task", () -> {
             try {
 
-                Thread.sleep(MILLIS);
+                Thread.sleep(1000);
             } catch (InterruptedException interruptedException) {
                 interruptedException.printStackTrace();
             }
@@ -40,7 +40,7 @@ public class SdkTestExecutor {
 
         threadPoolExecutor.execute(new DtingRunnable("test-task", () -> {
             try {
-                Thread.sleep(MILLIS);
+                Thread.sleep(2000);
             } catch (InterruptedException interruptedException) {
                 interruptedException.printStackTrace();
             }
@@ -48,16 +48,7 @@ public class SdkTestExecutor {
 
         threadPoolExecutor.execute(new DtingRunnable("test-task", () -> {
             try {
-                Thread.sleep(MILLIS);
-            } catch (InterruptedException interruptedException) {
-                interruptedException.printStackTrace();
-            }
-        }));
-
-
-        threadPoolExecutor.execute(new DtingRunnable("test-task", () -> {
-            try {
-                Thread.sleep(MILLIS);
+                Thread.sleep(3000);
             } catch (InterruptedException interruptedException) {
                 interruptedException.printStackTrace();
             }
@@ -71,7 +62,16 @@ public class SdkTestExecutor {
                 interruptedException.printStackTrace();
             }
         }));
-        Thread.sleep(MILLIS * 1000000);
+
+
+        threadPoolExecutor.execute(new DtingRunnable("test-task", () -> {
+            try {
+                Thread.sleep(MILLIS);
+            } catch (InterruptedException interruptedException) {
+                interruptedException.printStackTrace();
+            }
+        }));
+        Thread.sleep(MILLIS * 1000);
         threadPoolExecutor.shutdown();
     }
 }

@@ -5,7 +5,7 @@ import com.dting.cache.DtingThreadPoolCache;
 import com.dting.common.datas.ThreadPoolDataCollect;
 import com.dting.sdk.reactor.MessageBuffer;
 import com.dting.sdk.reactor.MessageReactor;
-import com.dting.show.datas.ThreadPoolDetailedMessage;
+import com.dting.show.datas.ThreadPoolDetailedConfigMessage;
 
 import java.util.List;
 import java.util.Set;
@@ -39,10 +39,10 @@ public class ThreadPoolDetailedCollectedHandler {
 
             threadPoolDatumCollects.forEach(info -> {
                 if(REGISTER_THREAD_POOL_NAME.add(info.getPoolName())) {
-                    ThreadPoolDetailedMessage threadPoolDetailedMessage = new ThreadPoolDetailedMessage();
-                    BeanUtil.copyProperties(info, threadPoolDetailedMessage);
-                    threadPoolDetailedMessage.setQueueTotalSize(info.getQueueUseSize() + info.getQueueRemainingCapacity());
-                    MessageReactor.sendMessage(new MessageBuffer(threadPoolDetailedMessage));
+                    ThreadPoolDetailedConfigMessage threadPoolDetailedConfigMessage = new ThreadPoolDetailedConfigMessage();
+                    BeanUtil.copyProperties(info, threadPoolDetailedConfigMessage);
+                    threadPoolDetailedConfigMessage.setQueueTotalSize(info.getQueueUseSize() + info.getQueueRemainingCapacity());
+                    MessageReactor.sendMessage(new MessageBuffer(threadPoolDetailedConfigMessage));
                 }
             });
         }, 20L, 120, TimeUnit.SECONDS);
