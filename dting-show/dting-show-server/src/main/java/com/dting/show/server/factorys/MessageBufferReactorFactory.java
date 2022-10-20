@@ -2,10 +2,7 @@ package com.dting.show.server.factorys;
 
 import com.dting.show.server.buffers.SystemInfoDataBufferReactor;
 import com.dting.show.server.buffers.TaskRunLogDataBufferReactor;
-import com.dting.show.server.service.MessageCpuDataService;
-import com.dting.show.server.service.MessageMemoryDataService;
-import com.dting.show.server.service.MessageNetworkDataService;
-import com.dting.show.server.service.MessageTaskRunLogDataService;
+import com.dting.show.server.service.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,9 +19,10 @@ public class MessageBufferReactorFactory {
     public SystemInfoDataBufferReactor systemInfoDataBufferReactor(
             MessageCpuDataService messageCpuDataService,
             MessageMemoryDataService messageMemoryDataService,
-            MessageNetworkDataService messageNetworkDataService
+            MessageNetworkDataService messageNetworkDataService,
+            MessageNetworkChildDataService messageNetworkChildDataService
     ) {
-        return new SystemInfoDataBufferReactor(messageCpuDataService, messageMemoryDataService, messageNetworkDataService);
+        return new SystemInfoDataBufferReactor(messageCpuDataService, messageMemoryDataService, messageNetworkDataService, messageNetworkChildDataService);
     }
 
     @Bean

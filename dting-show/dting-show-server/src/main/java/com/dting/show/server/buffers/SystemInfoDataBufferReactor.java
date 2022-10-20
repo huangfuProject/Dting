@@ -1,6 +1,8 @@
 package com.dting.show.server.buffers;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.IdUtil;
 import com.alibaba.fastjson.JSON;
 import com.dting.common.datas.NetInfo;
 import com.dting.common.datas.SystemCpuGroup;
@@ -9,15 +11,18 @@ import com.dting.common.datas.SystemPropertiesAbstract;
 import com.dting.show.datas.SystemInfoMessage;
 import com.dting.show.server.entity.MessageCpuData;
 import com.dting.show.server.entity.MessageMemoryData;
+import com.dting.show.server.entity.MessageNetworkChildData;
 import com.dting.show.server.entity.MessageNetworkData;
 import com.dting.show.server.service.MessageCpuDataService;
 import com.dting.show.server.service.MessageMemoryDataService;
+import com.dting.show.server.service.MessageNetworkChildDataService;
 import com.dting.show.server.service.MessageNetworkDataService;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * CPU缓冲反应堆
@@ -42,11 +47,17 @@ public class SystemInfoDataBufferReactor extends MessageBufferReactor<SystemInfo
      */
     private final MessageNetworkDataService messageNetworkDataService;
 
+    /**
+     * 网卡的详细数据服务
+     */
+    private final MessageNetworkChildDataService messageNetworkChildDataService;
 
-    public SystemInfoDataBufferReactor(MessageCpuDataService messageCpuDataService, MessageMemoryDataService messageMemoryDataService, MessageNetworkDataService messageNetworkDataService) {
+
+    public SystemInfoDataBufferReactor(MessageCpuDataService messageCpuDataService, MessageMemoryDataService messageMemoryDataService, MessageNetworkDataService messageNetworkDataService, MessageNetworkChildDataService messageNetworkChildDataService) {
         this.messageCpuDataService = messageCpuDataService;
         this.messageMemoryDataService = messageMemoryDataService;
         this.messageNetworkDataService = messageNetworkDataService;
+        this.messageNetworkChildDataService = messageNetworkChildDataService;
     }
 
 
@@ -62,6 +73,8 @@ public class SystemInfoDataBufferReactor extends MessageBufferReactor<SystemInfo
             messageMemoryDataService.ignoreOnlyBatchSave(systemInfoGroup.getMessageMemoryDataList());
             //保存网卡数据
             messageNetworkDataService.ignoreOnlyBatchSave(systemInfoGroup.getMessageNetworkDataList());
+            //保存网卡的详细数据
+            messageNetworkChildDataService.batchSave(systemInfoGroup.getMessageNetworkChildDataList());
         }
     }
 
@@ -83,6 +96,11 @@ public class SystemInfoDataBufferReactor extends MessageBufferReactor<SystemInfo
         private final List<MessageNetworkData> messageNetworkDataList = new ArrayList<>(32);
 
         /**
+         * 每一块网卡的具体读写数据
+         */
+        private final List<MessageNetworkChildData> messageNetworkChildDataList = new ArrayList<>(32);
+
+        /**
          * 开始做消息的转换 并赋值给自身
          *
          * @param source 来自客户端的消息
@@ -102,6 +120,16 @@ public class SystemInfoDataBufferReactor extends MessageBufferReactor<SystemInfo
                 //网卡数据转换
                 MessageNetworkData messageNetworkData = networkDataConversion(data);
                 messageNetworkDataList.add(messageNetworkData);
+                //网卡子表数据转换
+                List<NetInfo> netInfos = data.getNetInfos();
+                List<MessageNetworkChildData> messageNetworkChildDataListTmp = netInfos.stream().map(info -> {
+                    MessageNetworkChildData messageNetworkChildData = new MessageNetworkChildData();
+                    BeanUtil.copyProperties(info, messageNetworkChildData);
+                    messageNetworkChildData.setNetworkDataKey(messageNetworkData.getNetworkDataKey());
+                    return messageNetworkChildData;
+                }).collect(Collectors.toList());
+                //追加网卡子表转换
+                messageNetworkChildDataList.addAll(messageNetworkChildDataListTmp);
             });
         }
 
@@ -112,11 +140,12 @@ public class SystemInfoDataBufferReactor extends MessageBufferReactor<SystemInfo
          * @return 网卡的数据
          */
         private MessageNetworkData networkDataConversion(SystemInfoMessage data) {
-            List<NetInfo> netInfos = data.getNetInfos();
             MessageNetworkData messageNetworkData = new MessageNetworkData();
             //公共信息设置
             messageNetworkData.commonDataSetting(data);
-            messageNetworkData.setNetworkData(JSON.toJSONString(netInfos));
+            //生成网卡组
+            String groupKey = IdUtil.simpleUUID();
+            messageNetworkData.setNetworkDataKey(groupKey);
             return messageNetworkData;
         }
 

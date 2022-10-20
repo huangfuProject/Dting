@@ -4,11 +4,11 @@
 
     <insert id="ignoreOnlyBatchInsert">
         insert ignore into
-        message_network_data(`unique`,`message_tag`,`message_ip`,`collect_time`,`network_data`)
+        message_network_data(`unique`,`message_tag`,`message_ip`,`collect_time`,`network_data_key`)
         values
         <foreach collection="messageNetworkDataList" item="messageNetworkData" separator=",">
             (#{messageNetworkData.unique}, #{messageNetworkData.messageTag}, #{messageNetworkData.messageIp},
-            #{messageNetworkData.collectTime}, #{messageNetworkData.networkData})
+            #{messageNetworkData.collectTime}, #{messageNetworkData.networkDataKey})
         </foreach>
     </insert>
 </mapper>

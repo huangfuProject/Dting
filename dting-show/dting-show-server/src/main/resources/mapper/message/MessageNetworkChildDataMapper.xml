@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dting.show.server.mapper.MessageNetworkChildDataMapper">
+
+    <insert id="batchInsert">
+        insert into message_network_child_data(`network_data_key`,`network_name`,`ip_address`,`subnet_mask`,
+        `receiving_data_byte`,`send_data_byte`,`receiving_data_packet_count`,
+        `send_data_packet_count`,`receiving_error_data_packet_count`,`send_error_data_packet_count`,
+        `receiving_discarded_data_dacket_count`,`send_discarded_data_packet_count`)
+        values
+        <foreach collection="messageNetworkChildDataList" item="messageNetworkChildData" separator=",">
+            (#{messageNetworkChildData.networkDataKey}, #{messageNetworkChildData.networkName}, #{messageNetworkChildData.ipAddress}, #{messageNetworkChildData.subnetMask}, #{messageNetworkChildData.receivingDataByte},
+            #{messageNetworkChildData.sendDataByte}, #{messageNetworkChildData.receivingDataPacketCount}, #{messageNetworkChildData.sendDataPacketCount}, #{messageNetworkChildData.receivingErrorDataPacketCount},
+            #{messageNetworkChildData.sendErrorDataPacketCount}, #{messageNetworkChildData.receivingDiscardedDataPacketCount}, #{messageNetworkChildData.sendDiscardedDataPacketCount})
+        </foreach>
+    </insert>
+</mapper>

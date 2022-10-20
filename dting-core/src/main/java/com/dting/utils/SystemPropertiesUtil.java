@@ -212,7 +212,13 @@ public class SystemPropertiesUtil {
             // 网络设备名
             netInfo.setNetworkName(interfaceName);
             // IP地址
-            netInfo.setIpAddress(interfaceConfig.getAddress());
+            String address = interfaceConfig.getAddress();
+            //过滤掉本机
+            if("0.0.0.0".equals(address) || "127.0.0.1".equals(address)) {
+                continue;
+            }
+
+            netInfo.setIpAddress(address);
             // 子网掩码
             netInfo.setSubnetMask(interfaceConfig.getNetmask());
             if ((interfaceConfig.getFlags() & 1L) <= 0L) {

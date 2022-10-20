@@ -21,5 +21,5 @@ public class MessageNetworkData extends DtingMessageBaseEntity implements Serial
     /**
      * 网卡数据
      */
-    private String networkData;
+    private String networkDataKey;
 }
