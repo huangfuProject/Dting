@@ -2,7 +2,7 @@ package com.dting.show.server.processing;
 
 import com.dting.message.common.handlers.DtingSimpleChannelInboundHandler;
 import com.dting.show.datas.SystemInfoMessage;
-import com.dting.show.server.buffers.MessageCpuDataBufferReactor;
+import com.dting.show.server.buffers.SystemInfoDataBufferReactor;
 import com.dting.show.server.utils.DtingMessageSupplement;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -12,16 +12,16 @@ import io.netty.channel.ChannelHandlerContext;
  */
 public class SystemInfoBusinessProcessing extends DtingSimpleChannelInboundHandler<SystemInfoMessage> {
 
-    private final MessageCpuDataBufferReactor messageCpuDataBufferReactor;
+    private final SystemInfoDataBufferReactor systemInfoDataBufferReactor;
 
-    public SystemInfoBusinessProcessing(MessageCpuDataBufferReactor messageCpuDataBufferReactor) {
-        this.messageCpuDataBufferReactor = messageCpuDataBufferReactor;
+    public SystemInfoBusinessProcessing(SystemInfoDataBufferReactor systemInfoDataBufferReactor) {
+        this.systemInfoDataBufferReactor = systemInfoDataBufferReactor;
     }
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, SystemInfoMessage systemInfoMessage) throws Exception {
         DtingMessageSupplement.supplement(channelHandlerContext, systemInfoMessage);
-        messageCpuDataBufferReactor.addMaterial(systemInfoMessage);
+        systemInfoDataBufferReactor.addMaterial(systemInfoMessage);
     }
 
 }

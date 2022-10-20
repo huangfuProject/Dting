@@ -30,12 +30,16 @@ public abstract class MessageBufferReactor<T> implements InitializingBean, Dispo
 
     public void start() {
         REACTOR_EXECUTOR.scheduleWithFixedDelay(() -> {
-            //获取线程内堆积的数据量
-            int size = REACTION_VESSEL.size();
-            if (size > 0) {
-                List<T> cache = new ArrayList<>();
-                REACTION_VESSEL.drain(cache::add);
-                start0(cache);
+            try {
+                //获取线程内堆积的数据量
+                int size = REACTION_VESSEL.size();
+                if (size > 0) {
+                    List<T> cache = new ArrayList<>();
+                    REACTION_VESSEL.drain(cache::add);
+                    start0(cache);
+                }
+            }catch (Throwable e) {
+                e.printStackTrace();
             }
 
         }, 5L, 5L, TimeUnit.SECONDS);

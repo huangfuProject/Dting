@@ -1,7 +1,8 @@
 package com.dting.show.server.factorys;
 
-import com.dting.show.server.buffers.MessageCpuDataBufferReactor;
+import com.dting.show.server.buffers.SystemInfoDataBufferReactor;
 import com.dting.show.server.service.MessageCpuDataService;
+import com.dting.show.server.service.MessageMemoryDataService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,7 +16,10 @@ import org.springframework.context.annotation.Configuration;
 public class MessageBufferReactorFactory {
 
     @Bean
-    public MessageCpuDataBufferReactor messageBufferReactor(MessageCpuDataService messageCpuDataService){
-        return new MessageCpuDataBufferReactor(messageCpuDataService);
+    public SystemInfoDataBufferReactor messageBufferReactor(
+            MessageCpuDataService messageCpuDataService,
+            MessageMemoryDataService messageMemoryDataService
+    ){
+        return new SystemInfoDataBufferReactor(messageCpuDataService, messageMemoryDataService);
     }
 }

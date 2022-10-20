@@ -1,6 +1,6 @@
 package com.dting.show.server.factorys;
 
-import com.dting.show.server.buffers.MessageCpuDataBufferReactor;
+import com.dting.show.server.buffers.SystemInfoDataBufferReactor;
 import com.dting.show.server.processing.SystemInfoBusinessProcessing;
 import com.dting.show.server.processing.TaskInfoServerBusinessProcessing;
 import com.dting.show.server.processing.ThreadPoolDetailedBusinessProcessing;
@@ -23,8 +23,8 @@ public class BusinessProcessingFactory {
      * @return 系统当前的运行状态
      */
     @Bean
-    public SystemInfoBusinessProcessing systemInfoBusinessProcessing(MessageCpuDataBufferReactor messageCpuDataBufferReactor) {
-        return new SystemInfoBusinessProcessing(messageCpuDataBufferReactor);
+    public SystemInfoBusinessProcessing systemInfoBusinessProcessing(SystemInfoDataBufferReactor systemInfoDataBufferReactor) {
+        return new SystemInfoBusinessProcessing(systemInfoDataBufferReactor);
     }
 
     /**

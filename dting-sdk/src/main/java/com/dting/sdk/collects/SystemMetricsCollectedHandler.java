@@ -52,7 +52,7 @@ public class SystemMetricsCollectedHandler {
             } catch (Throwable e) {
                 e.printStackTrace();
             }
-        }, 10L, 30, TimeUnit.SECONDS);
+        }, 10L, 10L, TimeUnit.SECONDS);
     }
 
     public static void stop() {

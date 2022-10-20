@@ -216,7 +216,6 @@ public class SystemPropertiesUtil {
             // 子网掩码
             netInfo.setSubnetMask(interfaceConfig.getNetmask());
             if ((interfaceConfig.getFlags() & 1L) <= 0L) {
-                System.out.println("!IFF_UP...skipping getNetInterfaceStat");
                 continue;
             }
             NetInterfaceStat ifstat = sigar.getNetInterfaceStat(interfaceName);
