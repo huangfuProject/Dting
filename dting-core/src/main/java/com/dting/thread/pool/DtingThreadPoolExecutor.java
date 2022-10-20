@@ -1,7 +1,7 @@
 package com.dting.thread.pool;
 
 import com.dting.cache.DtingThreadPoolCache;
-import com.dting.common.datas.TaskInfo;
+import com.dting.common.datas.TaskLogCollect;
 import com.dting.model.TaskInfoSubject;
 import com.dting.utils.DtingLogUtil;
 
@@ -19,7 +19,7 @@ public class DtingThreadPoolExecutor extends ThreadPoolExecutor {
     /**
      * 记录每一个任务运行时的状态
      */
-    protected final static ThreadLocal<TaskInfo> TASK_INFO_THREAD_LOCAL = new ThreadLocal<>();
+    protected final static ThreadLocal<TaskLogCollect> TASK_INFO_THREAD_LOCAL = new ThreadLocal<>();
 
     /**
      * 线程池的名称
@@ -100,35 +100,35 @@ public class DtingThreadPoolExecutor extends ThreadPoolExecutor {
      * @param dtingRunnable 任务
      */
     private void cacheTaskInfo(DtingRunnable dtingRunnable) {
-        TaskInfo taskInfo = new TaskInfo();
+        TaskLogCollect taskLogCollect = new TaskLogCollect();
         //设置开始时间
-        taskInfo.setStartTime(System.nanoTime());
+        taskLogCollect.setStartTime(System.nanoTime());
         //设置当前线程的活跃数量
-        taskInfo.setActiveCount(this.getActiveCount());
+        taskLogCollect.setActiveCount(this.getActiveCount());
         //任务名称
-        taskInfo.setTaskName(dtingRunnable.getTaskName());
+        taskLogCollect.setTaskName(dtingRunnable.getTaskName());
         //线程池名称
-        taskInfo.setThreadPoolName(threadPoolName);
+        taskLogCollect.setThreadPoolName(threadPoolName);
         BlockingQueue<Runnable> queue = this.getQueue();
         //队列剩余
-        taskInfo.setQueueRemainingCapacity(queue.remainingCapacity());
+        taskLogCollect.setQueueRemainingCapacity(queue.remainingCapacity());
         //队列长度
-        taskInfo.setQueueSize(queue.size());
-        TASK_INFO_THREAD_LOCAL.set(taskInfo);
+        taskLogCollect.setQueueSize(queue.size());
+        TASK_INFO_THREAD_LOCAL.set(taskLogCollect);
     }
 
     @Override
     protected void afterExecute(Runnable r, Throwable t) {
-        TaskInfo taskInfo = TASK_INFO_THREAD_LOCAL.get();
+        TaskLogCollect taskLogCollect = TASK_INFO_THREAD_LOCAL.get();
         try {
             if (t != null) {
-                taskInfo.setSuccess(false);
-                taskInfo.setErrorMsg(DtingLogUtil.messageRead(t, false));
+                taskLogCollect.setSuccess(false);
+                taskLogCollect.setErrorMsg(DtingLogUtil.messageRead(t, false));
             }
             super.afterExecute(r, t);
         } finally {
-            taskInfo.setEndTime(System.nanoTime());
-            TaskInfoSubject taskInfoSubject = new TaskInfoSubject(taskInfo);
+            taskLogCollect.setEndTime(System.nanoTime());
+            TaskInfoSubject taskInfoSubject = new TaskInfoSubject(taskLogCollect);
             //通知观察者
             taskInfoSubject.noticeAllDtingObserver();
             //删除运行任务的缓存数据

@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author huangfu
  * @date 2022年10月17日11:04:06
  */
-public class NetInfo implements Serializable {
+public class NetDataCollect implements Serializable {
     private static final long serialVersionUID = 873566552935777151L;
 
     /**

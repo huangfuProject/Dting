@@ -1,7 +1,7 @@
 package com.dting.model;
 
 import com.dting.Subject;
-import com.dting.common.datas.TaskInfo;
+import com.dting.common.datas.TaskLogCollect;
 
 import java.io.Serializable;
 
@@ -14,18 +14,18 @@ import java.io.Serializable;
 public class TaskInfoSubject extends Subject implements Serializable {
     private static final long serialVersionUID = 629962118724876789L;
 
-    private final TaskInfo taskInfo;
+    private final TaskLogCollect taskLogCollect;
 
-    public TaskInfoSubject(TaskInfo taskInfo) {
-        this.taskInfo = taskInfo;
+    public TaskInfoSubject(TaskLogCollect taskLogCollect) {
+        this.taskLogCollect = taskLogCollect;
     }
 
-    public TaskInfo getTaskInfo() {
-        return taskInfo;
+    public TaskLogCollect getTaskInfo() {
+        return taskLogCollect;
     }
 
     @Override
     public String toString() {
-        return "TaskInfoSubject{" + "taskInfo=" + taskInfo + '}';
+        return "TaskInfoSubject{" + "taskInfo=" + taskLogCollect + '}';
     }
 }

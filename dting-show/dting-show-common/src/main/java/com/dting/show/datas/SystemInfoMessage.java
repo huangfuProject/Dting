@@ -1,9 +1,9 @@
 package com.dting.show.datas;
 
-import com.dting.common.datas.NetInfo;
-import com.dting.common.datas.SystemCpuGroup;
-import com.dting.common.datas.SystemMemory;
-import com.dting.common.datas.SystemPropertiesAbstract;
+import com.dting.common.datas.NetDataCollect;
+import com.dting.common.datas.SystemCpuGroupCollectCollect;
+import com.dting.common.datas.SystemMemoryCollect;
+import com.dting.common.datas.SystemPropertiesAbstractCollect;
 import com.dting.message.common.agreement.packet.DtingMessage;
 
 import java.io.Serializable;
@@ -20,62 +20,62 @@ public class SystemInfoMessage extends DtingMessage implements Serializable {
     /**
      * jvm及操作系统摘要信息
      */
-    private SystemPropertiesAbstract systemPropertiesAbstract;
+    private SystemPropertiesAbstractCollect systemPropertiesAbstractCollect;
 
     /**
      * 系统内存信息
      */
-    private SystemMemory systemMemory;
+    private SystemMemoryCollect systemMemoryCollect;
 
     /**
      * cpu信息
      */
-    private SystemCpuGroup systemCpuGroup;
+    private SystemCpuGroupCollectCollect systemCpuGroupCollect;
 
     /**
      * 网卡信息
      */
-    private List<NetInfo> netInfos;
+    private List<NetDataCollect> netDatumCollects;
 
-    public SystemPropertiesAbstract getSystemPropertiesAbstract() {
-        return systemPropertiesAbstract;
+    public SystemPropertiesAbstractCollect getSystemPropertiesAbstract() {
+        return systemPropertiesAbstractCollect;
     }
 
-    public void setSystemPropertiesAbstract(SystemPropertiesAbstract systemPropertiesAbstract) {
-        this.systemPropertiesAbstract = systemPropertiesAbstract;
+    public void setSystemPropertiesAbstract(SystemPropertiesAbstractCollect systemPropertiesAbstractCollect) {
+        this.systemPropertiesAbstractCollect = systemPropertiesAbstractCollect;
     }
 
-    public SystemMemory getSystemMemory() {
-        return systemMemory;
+    public SystemMemoryCollect getSystemMemory() {
+        return systemMemoryCollect;
     }
 
-    public void setSystemMemory(SystemMemory systemMemory) {
-        this.systemMemory = systemMemory;
+    public void setSystemMemory(SystemMemoryCollect systemMemoryCollect) {
+        this.systemMemoryCollect = systemMemoryCollect;
     }
 
-    public SystemCpuGroup getSystemCpuGroup() {
-        return systemCpuGroup;
+    public SystemCpuGroupCollectCollect getSystemCpuGroup() {
+        return systemCpuGroupCollect;
     }
 
-    public void setSystemCpuGroup(SystemCpuGroup systemCpuGroup) {
-        this.systemCpuGroup = systemCpuGroup;
+    public void setSystemCpuGroup(SystemCpuGroupCollectCollect systemCpuGroupCollect) {
+        this.systemCpuGroupCollect = systemCpuGroupCollect;
     }
 
-    public List<NetInfo> getNetInfos() {
-        return netInfos;
+    public List<NetDataCollect> getNetInfos() {
+        return netDatumCollects;
     }
 
-    public void setNetInfos(List<NetInfo> netInfos) {
-        this.netInfos = netInfos;
+    public void setNetInfos(List<NetDataCollect> netDatumCollects) {
+        this.netDatumCollects = netDatumCollects;
     }
 
     @Override
     public String toString() {
         return "SystemInfoMessage{" +
-                "systemPropertiesAbstract=" + systemPropertiesAbstract +
-                ", systemMemory=" + systemMemory +
-                ", systemCpuGroup=" + systemCpuGroup +
-                ", netInfos=" + netInfos +
+                "systemPropertiesAbstract=" + systemPropertiesAbstractCollect +
+                ", systemMemory=" + systemMemoryCollect +
+                ", systemCpuGroup=" + systemCpuGroupCollect +
+                ", netInfos=" + netDatumCollects +
                 '}';
     }
 }

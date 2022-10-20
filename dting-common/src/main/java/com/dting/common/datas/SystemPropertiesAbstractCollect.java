@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @author huangfu
  * @date 2022/10/16 9:56
  */
-public class SystemPropertiesAbstract implements Serializable {
+public class SystemPropertiesAbstractCollect implements Serializable {
     private static final long serialVersionUID = 7514460393275434863L;
     /**
      * 用户名

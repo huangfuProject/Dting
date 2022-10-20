@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author huangfu
  * @date 2022年10月17日09:05:01
  */
-public class SystemMemory implements Serializable {
+public class SystemMemoryCollect implements Serializable {
     private static final long serialVersionUID = 7514715709174386666L;
 
     /**

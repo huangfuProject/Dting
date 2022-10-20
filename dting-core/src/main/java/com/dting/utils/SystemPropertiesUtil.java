@@ -1,7 +1,7 @@
 package com.dting.utils;
 
 import com.dting.common.datas.*;
-import com.dting.common.datas.NetInfo;
+import com.dting.common.datas.NetDataCollect;
 import org.hyperic.sigar.*;
 
 import java.net.InetAddress;
@@ -26,8 +26,8 @@ public class SystemPropertiesUtil {
      *
      * @throws UnknownHostException 没有主机名的异常
      */
-    public static SystemPropertiesAbstract getEnvAbstract() throws UnknownHostException {
-        SystemPropertiesAbstract systemPropertiesAbstract = new SystemPropertiesAbstract();
+    public static SystemPropertiesAbstractCollect getEnvAbstract() throws UnknownHostException {
+        SystemPropertiesAbstractCollect systemPropertiesAbstractCollect = new SystemPropertiesAbstractCollect();
         Runtime r = Runtime.getRuntime();
         Properties props = System.getProperties();
         InetAddress addr = InetAddress.getLocalHost();
@@ -41,44 +41,44 @@ public class SystemPropertiesUtil {
         String userDomain = map.get("USERDOMAIN");
 
         //用户名
-        systemPropertiesAbstract.setUserName(userName);
+        systemPropertiesAbstractCollect.setUserName(userName);
         //用户的主目录
-        systemPropertiesAbstract.setUserHomePath(props.getProperty("user.home"));
+        systemPropertiesAbstractCollect.setUserHomePath(props.getProperty("user.home"));
         //用户的当前工作目录
-        systemPropertiesAbstract.setUserWorkPath(props.getProperty("user.dir"));
+        systemPropertiesAbstractCollect.setUserWorkPath(props.getProperty("user.dir"));
         //计算机名
-        systemPropertiesAbstract.setComputerName(computerName);
+        systemPropertiesAbstractCollect.setComputerName(computerName);
         //计算机域名
-        systemPropertiesAbstract.setComputerDomainName(userDomain);
+        systemPropertiesAbstractCollect.setComputerDomainName(userDomain);
         //本地ip地址
-        systemPropertiesAbstract.setLocalIpAddress(ip);
+        systemPropertiesAbstractCollect.setLocalIpAddress(ip);
         //本地主机名
-        systemPropertiesAbstract.setLocalHostName(addr.getHostName());
+        systemPropertiesAbstractCollect.setLocalHostName(addr.getHostName());
         //JVM可以使用的总内存
-        systemPropertiesAbstract.setJvmTotalMemory(r.totalMemory());
+        systemPropertiesAbstractCollect.setJvmTotalMemory(r.totalMemory());
         //JVM可以使用的剩余内存
-        systemPropertiesAbstract.setJvmRemainingMemory(r.freeMemory());
+        systemPropertiesAbstractCollect.setJvmRemainingMemory(r.freeMemory());
         //JVM可以使用的处理器个数
-        systemPropertiesAbstract.setJvmCoreCount(r.availableProcessors());
+        systemPropertiesAbstractCollect.setJvmCoreCount(r.availableProcessors());
         //Java的运行环境版本
-        systemPropertiesAbstract.setJvmVersion(props.getProperty("java.version"));
+        systemPropertiesAbstractCollect.setJvmVersion(props.getProperty("java.version"));
         //Java的运行环境供应商
-        systemPropertiesAbstract.setJavaEnvSupplier(props.getProperty("java.vendor"));
+        systemPropertiesAbstractCollect.setJavaEnvSupplier(props.getProperty("java.vendor"));
         //Java供应商的URL
-        systemPropertiesAbstract.setJavaSupplierUrl(props.getProperty("java.vendor.url"));
+        systemPropertiesAbstractCollect.setJavaSupplierUrl(props.getProperty("java.vendor.url"));
         //Java的安装路径
-        systemPropertiesAbstract.setJavaInstallPath(props.getProperty("java.home"));
+        systemPropertiesAbstractCollect.setJavaInstallPath(props.getProperty("java.home"));
         //Java的类格式版本号
-        systemPropertiesAbstract.setJavaClassFormatVersionNumber(props.getProperty("java.class.version"));
+        systemPropertiesAbstractCollect.setJavaClassFormatVersionNumber(props.getProperty("java.class.version"));
         //默认的临时文件路径
-        systemPropertiesAbstract.setDefaultTmpFilePath(props.getProperty("java.io.tmpdir"));
+        systemPropertiesAbstractCollect.setDefaultTmpFilePath(props.getProperty("java.io.tmpdir"));
         //操作系统的名称
-        systemPropertiesAbstract.setSystemName(props.getProperty("os.name"));
+        systemPropertiesAbstractCollect.setSystemName(props.getProperty("os.name"));
         //操作系统的构架
-        systemPropertiesAbstract.setSystemFramework(props.getProperty("os.arch"));
+        systemPropertiesAbstractCollect.setSystemFramework(props.getProperty("os.arch"));
         //操作系统的版本
-        systemPropertiesAbstract.setSystemVersion(props.getProperty("os.version"));
-        return systemPropertiesAbstract;
+        systemPropertiesAbstractCollect.setSystemVersion(props.getProperty("os.version"));
+        return systemPropertiesAbstractCollect;
     }
 
     /**
@@ -86,27 +86,27 @@ public class SystemPropertiesUtil {
      *
      * @throws SigarException 异常信息
      */
-    public static SystemMemory getSystemMemory() throws SigarException {
-        SystemMemory systemMemory = new SystemMemory();
+    public static SystemMemoryCollect getSystemMemory() throws SigarException {
+        SystemMemoryCollect systemMemoryCollect = new SystemMemoryCollect();
         Sigar sigar = new Sigar();
         //内存获取
         Mem mem = sigar.getMem();
         //交换区获取
         Swap swap = sigar.getSwap();
         // 内存总量
-        systemMemory.setTotalMemory(mem.getTotal());
+        systemMemoryCollect.setTotalMemory(mem.getTotal());
         // 当前内存使用量
-        systemMemory.setUseMemory(mem.getUsed());
+        systemMemoryCollect.setUseMemory(mem.getUsed());
         // 当前内存剩余量
-        systemMemory.setRemainingMemory(mem.getFree());
+        systemMemoryCollect.setRemainingMemory(mem.getFree());
 
         // 交换区总量
-        systemMemory.setTotalSwap(swap.getTotal());
+        systemMemoryCollect.setTotalSwap(swap.getTotal());
         // 当前交换区使用量
-        systemMemory.setUseSwap(swap.getUsed());
+        systemMemoryCollect.setUseSwap(swap.getUsed());
         // 当前交换区剩余量
-        systemMemory.setRemainingSwap(swap.getFree());
-        return systemMemory;
+        systemMemoryCollect.setRemainingSwap(swap.getFree());
+        return systemMemoryCollect;
     }
 
     /**
@@ -115,7 +115,7 @@ public class SystemPropertiesUtil {
      * @return 操作系统的cpu状态信息
      * @throws SigarException 异常信息
      */
-    public static SystemCpuGroup systemCpu() throws SigarException {
+    public static SystemCpuGroupCollectCollect systemCpu() throws SigarException {
 
         Sigar sigar = new Sigar();
         CpuInfo[] infos = sigar.getCpuInfoList();
@@ -125,32 +125,32 @@ public class SystemPropertiesUtil {
         //cpu 总百分比情况
         CpuPerc cpuPerc = sigar.getCpuPerc();
         //获取CPU的总消耗
-        SystemCpuGroup cpuGroup = new SystemCpuGroup();
+        SystemCpuGroupCollectCollect cpuGroup = new SystemCpuGroupCollectCollect();
         //设置CPU组的基本状态
         setCpuInfo(cpuPerc, cpuGroup);
         //多核CPU下获取每一个核的使用状态
         cpuList = sigar.getCpuPercList();
-        List<SystemCpu> systemCpus = new ArrayList<>();
+        List<SystemCpuCollectCollect> systemCpusCollects = new ArrayList<>();
 
         // 不管是单块CPU还是多CPU都适用
         for (int i = 0; i < infos.length; i++) {
-            SystemCpu systemCpu = new SystemCpu();
+            SystemCpuCollectCollect systemCpuCollect = new SystemCpuCollectCollect();
 
             CpuInfo info = infos[i];
-            systemCpu.setCpuSort(i);
+            systemCpuCollect.setCpuSort(i);
             // CPU的总量MHz
-            systemCpu.setCpuMhz(info.getMhz());
+            systemCpuCollect.setCpuMhz(info.getMhz());
             // 获得CPU的卖主，如：Intel
-            systemCpu.setCpuSuper(info.getVendor());
+            systemCpuCollect.setCpuSuper(info.getVendor());
             // 获得CPU的类别，如：Celeron
-            systemCpu.setCpuType(info.getModel());
+            systemCpuCollect.setCpuType(info.getModel());
             // 缓冲存储器数量
-            systemCpu.setCpuCacheCount(info.getCacheSize());
-            setCpuInfo(cpuList[i], systemCpu);
-            systemCpus.add(systemCpu);
+            systemCpuCollect.setCpuCacheCount(info.getCacheSize());
+            setCpuInfo(cpuList[i], systemCpuCollect);
+            systemCpusCollects.add(systemCpuCollect);
         }
         //将每一个核的使用情况放到组里面
-        cpuGroup.setSystemCpus(systemCpus);
+        cpuGroup.setSystemCpus(systemCpusCollects);
         return cpuGroup;
     }
 
@@ -158,27 +158,27 @@ public class SystemPropertiesUtil {
      * 总百分比情况
      *
      * @param cpuPerc       全核CPU的状态信息
-     * @param systemCpuInfo 系统CPU配置信息
+     * @param systemCpuInfoCollect 系统CPU配置信息
      */
-    private static void setCpuInfo(CpuPerc cpuPerc, SystemCpuInfo systemCpuInfo) {
+    private static void setCpuInfo(CpuPerc cpuPerc, SystemCpuInfoCollect systemCpuInfoCollect) {
         //总使用率
         double combined = cpuNumberFormat(cpuPerc.getCombined());
-        systemCpuInfo.setCpuTotal(combined);
+        systemCpuInfoCollect.setCpuTotal(combined);
         //用户使用率
         double user = cpuNumberFormat(cpuPerc.getUser());
-        systemCpuInfo.setCpuUserUse(user);
+        systemCpuInfoCollect.setCpuUserUse(user);
         //系统使用率
         double system = cpuNumberFormat(cpuPerc.getSys());
-        systemCpuInfo.setCpuSystemUse(system);
+        systemCpuInfoCollect.setCpuSystemUse(system);
         //错误率
         double error = cpuNumberFormat(cpuPerc.getNice());
-        systemCpuInfo.setCpuError(error);
+        systemCpuInfoCollect.setCpuError(error);
         //等待率
         double wait = cpuNumberFormat(cpuPerc.getWait());
-        systemCpuInfo.setCpuWait(wait);
+        systemCpuInfoCollect.setCpuWait(wait);
         //空闲率
         double idle = cpuNumberFormat(cpuPerc.getIdle());
-        systemCpuInfo.setCpuIdle(idle);
+        systemCpuInfoCollect.setCpuIdle(idle);
 
     }
 
@@ -202,15 +202,15 @@ public class SystemPropertiesUtil {
      * @return 网络数据读写信息
      * @throws Exception 异常
      */
-    public static List<NetInfo> systemNetwork() throws Exception {
-        List<NetInfo> netInfos = new ArrayList<>(8);
+    public static List<NetDataCollect> systemNetwork() throws Exception {
+        List<NetDataCollect> netDatumCollects = new ArrayList<>(8);
         Sigar sigar = new Sigar();
         String[] interfaceNames = sigar.getNetInterfaceList();
         for (String interfaceName : interfaceNames) {
-            NetInfo netInfo = new NetInfo();
+            NetDataCollect netDataCollect = new NetDataCollect();
             NetInterfaceConfig interfaceConfig = sigar.getNetInterfaceConfig(interfaceName);
             // 网络设备名
-            netInfo.setNetworkName(interfaceName);
+            netDataCollect.setNetworkName(interfaceName);
             // IP地址
             String address = interfaceConfig.getAddress();
             //过滤掉本机
@@ -218,31 +218,31 @@ public class SystemPropertiesUtil {
                 continue;
             }
 
-            netInfo.setIpAddress(address);
+            netDataCollect.setIpAddress(address);
             // 子网掩码
-            netInfo.setSubnetMask(interfaceConfig.getNetmask());
+            netDataCollect.setSubnetMask(interfaceConfig.getNetmask());
             if ((interfaceConfig.getFlags() & 1L) <= 0L) {
                 continue;
             }
             NetInterfaceStat ifstat = sigar.getNetInterfaceStat(interfaceName);
             // 接收的总包裹数
-            netInfo.setReceivingDataPacketCount(ifstat.getRxPackets());
+            netDataCollect.setReceivingDataPacketCount(ifstat.getRxPackets());
             // 发送的总包裹数
-            netInfo.setSendDataPacketCount(ifstat.getTxPackets());
+            netDataCollect.setSendDataPacketCount(ifstat.getTxPackets());
             // 接收到的总字节数
-            netInfo.setReceivingDataByte(ifstat.getRxBytes());
+            netDataCollect.setReceivingDataByte(ifstat.getRxBytes());
             // 发送的总字节数
-            netInfo.setSendDataByte(ifstat.getTxBytes());
+            netDataCollect.setSendDataByte(ifstat.getTxBytes());
             // 接收到的错误包数
-            netInfo.setReceivingErrorDataPacketCount(ifstat.getRxErrors());
+            netDataCollect.setReceivingErrorDataPacketCount(ifstat.getRxErrors());
             // 发送数据包时的错误数
-            netInfo.setSendErrorDataPacketCount(ifstat.getTxErrors());
+            netDataCollect.setSendErrorDataPacketCount(ifstat.getTxErrors());
             // 接收时丢弃的包数
-            netInfo.setReceivingDiscardedDataPacketCount(ifstat.getRxDropped());
+            netDataCollect.setReceivingDiscardedDataPacketCount(ifstat.getRxDropped());
             // 发送时丢弃的包数
-            netInfo.setSendDiscardedDataPacketCount(ifstat.getTxDropped());
-            netInfos.add(netInfo);
+            netDataCollect.setSendDiscardedDataPacketCount(ifstat.getTxDropped());
+            netDataCollect.add(netDataCollect);
         }
-        return netInfos;
+        return netDatumCollects;
     }
 }

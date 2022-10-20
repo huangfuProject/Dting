@@ -1,6 +1,6 @@
 package com.dting.cache;
 
-import com.dting.common.datas.ThreadPoolInfo;
+import com.dting.common.datas.ThreadPoolDataCollect;
 import com.dting.thread.pool.DtingThreadPoolExecutor;
 
 import java.util.ArrayList;
@@ -56,24 +56,24 @@ public class DtingThreadPoolCache {
      *
      * @return 线程池信息
      */
-    public static List<ThreadPoolInfo> threadPoolInfos() {
-        List<ThreadPoolInfo> threadPoolInfos = new ArrayList<>(32);
+    public static List<ThreadPoolDataCollect> threadPoolInfos() {
+        List<ThreadPoolDataCollect> threadPoolDatumCollects = new ArrayList<>(32);
 
         THREAD_POOL_EXECUTOR_MAP.forEach((threadPoolName, threadPool) -> {
-            ThreadPoolInfo threadPoolInfo = new ThreadPoolInfo();
-            threadPoolInfo.setPoolName(threadPool.getThreadPoolName());
-            threadPoolInfo.setActiveSize(threadPool.getActiveCount());
-            threadPoolInfo.setCoreSize(threadPool.getCorePoolSize());
-            threadPoolInfo.setMaxSize(threadPool.getMaximumPoolSize());
+            ThreadPoolDataCollect threadPoolDataCollect = new ThreadPoolDataCollect();
+            threadPoolDataCollect.setPoolName(threadPool.getThreadPoolName());
+            threadPoolDataCollect.setActiveSize(threadPool.getActiveCount());
+            threadPoolDataCollect.setCoreSize(threadPool.getCorePoolSize());
+            threadPoolDataCollect.setMaxSize(threadPool.getMaximumPoolSize());
             BlockingQueue<Runnable> queue = threadPool.getQueue();
-            threadPoolInfo.setQueueTypeName(queue.getClass().getName());
-            threadPoolInfo.setQueueUseSize(queue.size());
-            threadPoolInfo.setQueueRemainingCapacity(queue.remainingCapacity());
-            threadPoolInfo.setCurrentRunningCompletedTaskCount(threadPool.getCompletedTaskCount());
-            threadPoolInfo.setCurrentRunningRejectCount(threadPool.getRejectedTaskCount());
-            threadPoolInfo.setRejectHandlerName(threadPool.getRejectedExecutionHandler().getClass().getName());
-            threadPoolInfos.add(threadPoolInfo);
+            threadPoolDataCollect.setQueueTypeName(queue.getClass().getName());
+            threadPoolDataCollect.setQueueUseSize(queue.size());
+            threadPoolDataCollect.setQueueRemainingCapacity(queue.remainingCapacity());
+            threadPoolDataCollect.setCurrentRunningCompletedTaskCount(threadPool.getCompletedTaskCount());
+            threadPoolDataCollect.setCurrentRunningRejectCount(threadPool.getRejectedTaskCount());
+            threadPoolDataCollect.setRejectHandlerName(threadPool.getRejectedExecutionHandler().getClass().getName());
+            threadPoolDataCollect.add(threadPoolDataCollect);
         });
-        return threadPoolInfos;
+        return threadPoolDatumCollects;
     }
 }

@@ -1,6 +1,6 @@
 package com.dting.show.datas;
 
-import com.dting.common.datas.TaskInfo;
+import com.dting.common.datas.TaskLogCollect;
 import com.dting.message.common.agreement.packet.DtingMessage;
 
 import java.io.Serializable;
@@ -15,13 +15,13 @@ public class TaskInfoMessage extends DtingMessage implements Serializable {
 
     private static final long serialVersionUID = 4429958958843848431L;
 
-    private final TaskInfo taskInfo;
+    private final TaskLogCollect taskLogCollect;
 
-    public TaskInfoMessage(TaskInfo taskInfo) {
-        this.taskInfo = taskInfo;
+    public TaskInfoMessage(TaskLogCollect taskLogCollect) {
+        this.taskLogCollect = taskLogCollect;
     }
 
-    public TaskInfo getTaskInfo() {
-        return taskInfo;
+    public TaskLogCollect getTaskInfo() {
+        return taskLogCollect;
     }
 }

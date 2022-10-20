@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author huangfu
  * @date 2022年10月17日10:05:19
  */
-public class SystemCpuInfo implements Serializable {
+public class SystemCpuInfoCollect implements Serializable {
     private static final long serialVersionUID = -659570788791137679L;
 
     /**

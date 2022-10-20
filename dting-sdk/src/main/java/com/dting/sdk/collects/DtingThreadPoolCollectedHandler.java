@@ -1,7 +1,7 @@
 package com.dting.sdk.collects;
 
 import com.dting.cache.DtingThreadPoolCache;
-import com.dting.common.datas.ThreadPoolInfo;
+import com.dting.common.datas.ThreadPoolDataCollect;
 import com.dting.sdk.reactor.MessageBuffer;
 import com.dting.sdk.reactor.MessageReactor;
 import com.dting.show.datas.ThreadPoolInfoMessage;
@@ -29,8 +29,8 @@ public class DtingThreadPoolCollectedHandler {
      */
     public static void run(){
         COLLECTED.scheduleWithFixedDelay(() -> {
-            List<ThreadPoolInfo> threadPoolInfos = DtingThreadPoolCache.threadPoolInfos();
-            ThreadPoolInfoMessage threadPoolInfoMessage = new ThreadPoolInfoMessage(threadPoolInfos);
+            List<ThreadPoolDataCollect> threadPoolDatumCollects = DtingThreadPoolCache.threadPoolInfos();
+            ThreadPoolInfoMessage threadPoolInfoMessage = new ThreadPoolInfoMessage(threadPoolDatumCollects);
             MessageBuffer messageBuffer = new MessageBuffer(threadPoolInfoMessage);
             MessageReactor.sendMessage(messageBuffer);
         }, 10L, 25, TimeUnit.SECONDS);

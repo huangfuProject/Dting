@@ -2,7 +2,7 @@ package com.dting.sdk.collects;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.dting.cache.DtingThreadPoolCache;
-import com.dting.common.datas.ThreadPoolInfo;
+import com.dting.common.datas.ThreadPoolDataCollect;
 import com.dting.sdk.reactor.MessageBuffer;
 import com.dting.sdk.reactor.MessageReactor;
 import com.dting.show.datas.ThreadPoolDetailedMessage;
@@ -12,7 +12,6 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 /**
  * 线程池详细的注册采集器
@@ -36,9 +35,9 @@ public class ThreadPoolDetailedCollectedHandler {
     public static void run() {
 
         COLLECTED.scheduleWithFixedDelay(() -> {
-            List<ThreadPoolInfo> threadPoolInfos = DtingThreadPoolCache.threadPoolInfos();
+            List<ThreadPoolDataCollect> threadPoolDatumCollects = DtingThreadPoolCache.threadPoolInfos();
 
-            threadPoolInfos.forEach(info -> {
+            threadPoolDatumCollects.forEach(info -> {
                 if(REGISTER_THREAD_POOL_NAME.add(info.getPoolName())) {
                     ThreadPoolDetailedMessage threadPoolDetailedMessage = new ThreadPoolDetailedMessage();
                     BeanUtil.copyProperties(info, threadPoolDetailedMessage);

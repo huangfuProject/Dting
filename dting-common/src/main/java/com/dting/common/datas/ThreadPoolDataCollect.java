@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author huangfu
  * @date 2022年10月18日17:53:18
  */
-public class ThreadPoolInfo implements Serializable {
+public class ThreadPoolDataCollect implements Serializable {
     private static final long serialVersionUID = -6099899546413460243L;
 
     /**

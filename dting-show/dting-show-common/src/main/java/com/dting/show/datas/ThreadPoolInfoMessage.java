@@ -1,6 +1,6 @@
 package com.dting.show.datas;
 
-import com.dting.common.datas.ThreadPoolInfo;
+import com.dting.common.datas.ThreadPoolDataCollect;
 import com.dting.message.common.agreement.packet.DtingMessage;
 
 import java.io.Serializable;
@@ -17,17 +17,17 @@ import java.util.List;
 public class ThreadPoolInfoMessage  extends DtingMessage implements Serializable {
     private static final long serialVersionUID = -239721540257804735L;
 
-    private List<ThreadPoolInfo> threadPoolInfos;
+    private List<ThreadPoolDataCollect> threadPoolDatumCollects;
 
-    public ThreadPoolInfoMessage(List<ThreadPoolInfo> threadPoolInfos) {
-        this.threadPoolInfos = threadPoolInfos;
+    public ThreadPoolInfoMessage(List<ThreadPoolDataCollect> threadPoolDatumCollects) {
+        this.threadPoolDatumCollects = threadPoolDatumCollects;
     }
 
-    public List<ThreadPoolInfo> getThreadPoolInfos() {
-        return threadPoolInfos;
+    public List<ThreadPoolDataCollect> getThreadPoolInfos() {
+        return threadPoolDatumCollects;
     }
 
-    public void setThreadPoolInfos(List<ThreadPoolInfo> threadPoolInfos) {
-        this.threadPoolInfos = threadPoolInfos;
+    public void setThreadPoolInfos(List<ThreadPoolDataCollect> threadPoolDatumCollects) {
+        this.threadPoolDatumCollects = threadPoolDatumCollects;
     }
 }

@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @author huangfu
  * @date 2022年10月14日15:51:54
  */
-public class TaskInfo implements Serializable {
+public class TaskLogCollect implements Serializable {
     private static final long serialVersionUID = 217021693585491436L;
 
     /**

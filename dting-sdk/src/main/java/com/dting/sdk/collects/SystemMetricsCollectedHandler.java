@@ -1,9 +1,9 @@
 package com.dting.sdk.collects;
 
-import com.dting.common.datas.NetInfo;
-import com.dting.common.datas.SystemCpuGroup;
-import com.dting.common.datas.SystemMemory;
-import com.dting.common.datas.SystemPropertiesAbstract;
+import com.dting.common.datas.NetDataCollect;
+import com.dting.common.datas.SystemCpuGroupCollectCollect;
+import com.dting.common.datas.SystemMemoryCollect;
+import com.dting.common.datas.SystemPropertiesAbstractCollect;
 import com.dting.sdk.reactor.MessageBuffer;
 import com.dting.sdk.reactor.MessageReactor;
 import com.dting.show.datas.SystemInfoMessage;
@@ -33,17 +33,17 @@ public class SystemMetricsCollectedHandler {
         COLLECTED.scheduleWithFixedDelay(() -> {
             try {
                 //获取操作系统摘要
-                SystemPropertiesAbstract envAbstract = SystemPropertiesUtil.getEnvAbstract();
+                SystemPropertiesAbstractCollect envAbstract = SystemPropertiesUtil.getEnvAbstract();
                 //操作系统CPU指标
-                SystemCpuGroup systemCpuGroup = SystemPropertiesUtil.systemCpu();
+                SystemCpuGroupCollectCollect systemCpuGroupCollect = SystemPropertiesUtil.systemCpu();
                 //系统内存用度
-                SystemMemory systemMemory = SystemPropertiesUtil.getSystemMemory();
+                SystemMemoryCollect systemMemoryCollect = SystemPropertiesUtil.getSystemMemory();
                 //网络用度
-                List<NetInfo> netInfos = SystemPropertiesUtil.systemNetwork();
+                List<NetDataCollect> netDatumCollects = SystemPropertiesUtil.systemNetwork();
                 SystemInfoMessage systemInfoMessage = new SystemInfoMessage();
-                systemInfoMessage.setSystemMemory(systemMemory);
-                systemInfoMessage.setNetInfos(netInfos);
-                systemInfoMessage.setSystemCpuGroup(systemCpuGroup);
+                systemInfoMessage.setSystemMemory(systemMemoryCollect);
+                systemInfoMessage.setNetInfos(netDatumCollects);
+                systemInfoMessage.setSystemCpuGroup(systemCpuGroupCollect);
                 systemInfoMessage.setSystemPropertiesAbstract(envAbstract);
 
                 MessageBuffer messageBuffer = new MessageBuffer();
