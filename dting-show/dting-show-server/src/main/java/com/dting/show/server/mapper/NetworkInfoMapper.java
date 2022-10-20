@@ -1,7 +1,7 @@
 package com.dting.show.server.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.dting.show.server.entity.MessageNetworkChildData;
+import com.dting.show.server.entity.NetworkInfo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -14,11 +14,11 @@ import java.util.List;
  * @date 2022年10月20日13:50:48
  */
 @Repository
-public interface MessageNetworkChildDataMapper extends BaseMapper<MessageNetworkChildData> {
+public interface NetworkInfoMapper extends BaseMapper<NetworkInfo> {
 
     /**
      * 批量插入
-     * @param messageNetworkChildDataList 网卡子表数据
+     * @param networkInfoList 网卡子表数据
      */
-    void batchInsert(@Param("messageNetworkChildDataList") List<MessageNetworkChildData> messageNetworkChildDataList);
+    void batchInsert(@Param("networkInfoList") List<NetworkInfo> networkInfoList);
 }

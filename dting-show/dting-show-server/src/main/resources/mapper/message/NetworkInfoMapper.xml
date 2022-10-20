@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dting.show.server.mapper.NetworkInfoMapper">
+
+    <insert id="batchInsert">
+        insert into network_info(`network_data_key`,`network_name`,`ip_address`,`subnet_mask`,
+        `receiving_data_byte`,`send_data_byte`,`receiving_data_packet_count`,
+        `send_data_packet_count`,`receiving_error_data_packet_count`,`send_error_data_packet_count`,
+        `receiving_discarded_data_dacket_count`,`send_discarded_data_packet_count`)
+        values
+        <foreach collection="networkInfoList" item="networkInfo" separator=",">
+            (#{networkInfo.networkDataKey}, #{networkInfo.networkName}, #{networkInfo.ipAddress}, #{networkInfo.subnetMask}, #{networkInfo.receivingDataByte},
+            #{networkInfo.sendDataByte}, #{networkInfo.receivingDataPacketCount}, #{networkInfo.sendDataPacketCount}, #{networkInfo.receivingErrorDataPacketCount},
+            #{networkInfo.sendErrorDataPacketCount}, #{networkInfo.receivingDiscardedDataPacketCount}, #{networkInfo.sendDiscardedDataPacketCount})
+        </foreach>
+    </insert>
+</mapper>

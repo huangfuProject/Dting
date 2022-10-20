@@ -12,7 +12,7 @@ import lombok.Data;
  */
 @Data
 @TableName("message_network_child_data")
-public class MessageNetworkChildData {
+public class NetworkInfo {
 
     /**
      * 主键

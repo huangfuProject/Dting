@@ -20,9 +20,9 @@ public class MessageBufferReactorFactory {
             MessageCpuDataService messageCpuDataService,
             MessageMemoryDataService messageMemoryDataService,
             MessageNetworkDataService messageNetworkDataService,
-            MessageNetworkChildDataService messageNetworkChildDataService
+            NetworkInfoService networkInfoService
     ) {
-        return new SystemInfoDataBufferReactor(messageCpuDataService, messageMemoryDataService, messageNetworkDataService, messageNetworkChildDataService);
+        return new SystemInfoDataBufferReactor(messageCpuDataService, messageMemoryDataService, messageNetworkDataService, networkInfoService);
     }
 
     @Bean

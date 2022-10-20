@@ -11,11 +11,11 @@ import com.dting.common.datas.SystemPropertiesAbstract;
 import com.dting.show.datas.SystemInfoMessage;
 import com.dting.show.server.entity.MessageCpuData;
 import com.dting.show.server.entity.MessageMemoryData;
-import com.dting.show.server.entity.MessageNetworkChildData;
+import com.dting.show.server.entity.NetworkInfo;
 import com.dting.show.server.entity.MessageNetworkData;
 import com.dting.show.server.service.MessageCpuDataService;
 import com.dting.show.server.service.MessageMemoryDataService;
-import com.dting.show.server.service.MessageNetworkChildDataService;
+import com.dting.show.server.service.NetworkInfoService;
 import com.dting.show.server.service.MessageNetworkDataService;
 import lombok.Data;
 
@@ -50,14 +50,14 @@ public class SystemInfoDataBufferReactor extends MessageBufferReactor<SystemInfo
     /**
      * 网卡的详细数据服务
      */
-    private final MessageNetworkChildDataService messageNetworkChildDataService;
+    private final NetworkInfoService networkInfoService;
 
 
-    public SystemInfoDataBufferReactor(MessageCpuDataService messageCpuDataService, MessageMemoryDataService messageMemoryDataService, MessageNetworkDataService messageNetworkDataService, MessageNetworkChildDataService messageNetworkChildDataService) {
+    public SystemInfoDataBufferReactor(MessageCpuDataService messageCpuDataService, MessageMemoryDataService messageMemoryDataService, MessageNetworkDataService messageNetworkDataService, NetworkInfoService networkInfoService) {
         this.messageCpuDataService = messageCpuDataService;
         this.messageMemoryDataService = messageMemoryDataService;
         this.messageNetworkDataService = messageNetworkDataService;
-        this.messageNetworkChildDataService = messageNetworkChildDataService;
+        this.networkInfoService = networkInfoService;
     }
 
 
@@ -74,7 +74,7 @@ public class SystemInfoDataBufferReactor extends MessageBufferReactor<SystemInfo
             //保存网卡数据
             messageNetworkDataService.ignoreOnlyBatchSave(systemInfoGroup.getMessageNetworkDataList());
             //保存网卡的详细数据
-            messageNetworkChildDataService.batchSave(systemInfoGroup.getMessageNetworkChildDataList());
+            networkInfoService.batchSave(systemInfoGroup.getNetworkInfoList());
         }
     }
 
@@ -98,7 +98,7 @@ public class SystemInfoDataBufferReactor extends MessageBufferReactor<SystemInfo
         /**
          * 每一块网卡的具体读写数据
          */
-        private final List<MessageNetworkChildData> messageNetworkChildDataList = new ArrayList<>(32);
+        private final List<NetworkInfo> networkInfoList = new ArrayList<>(32);
 
         /**
          * 开始做消息的转换 并赋值给自身
@@ -122,14 +122,14 @@ public class SystemInfoDataBufferReactor extends MessageBufferReactor<SystemInfo
                 messageNetworkDataList.add(messageNetworkData);
                 //网卡子表数据转换
                 List<NetInfo> netInfos = data.getNetInfos();
-                List<MessageNetworkChildData> messageNetworkChildDataListTmp = netInfos.stream().map(info -> {
-                    MessageNetworkChildData messageNetworkChildData = new MessageNetworkChildData();
-                    BeanUtil.copyProperties(info, messageNetworkChildData);
-                    messageNetworkChildData.setNetworkDataKey(messageNetworkData.getNetworkDataKey());
-                    return messageNetworkChildData;
+                List<NetworkInfo> networkInfoListTmp = netInfos.stream().map(info -> {
+                    NetworkInfo networkInfo = new NetworkInfo();
+                    BeanUtil.copyProperties(info, networkInfo);
+                    networkInfo.setNetworkDataKey(messageNetworkData.getNetworkDataKey());
+                    return networkInfo;
                 }).collect(Collectors.toList());
                 //追加网卡子表转换
-                messageNetworkChildDataList.addAll(messageNetworkChildDataListTmp);
+                networkInfoList.addAll(networkInfoListTmp);
             });
         }
 
