@@ -12,9 +12,9 @@ import lombok.EqualsAndHashCode;
  */
 
 @Data
-@TableName("message_cpu_data")
+@TableName("message_cpu_snapshot")
 @EqualsAndHashCode(callSuper = true)
-public class MessageCpuData extends DtingMessageBaseEntity{
+public class MessageCpuSnapshot extends DtingMessageBaseEntity{
     /**
      * 总使用比率
      */

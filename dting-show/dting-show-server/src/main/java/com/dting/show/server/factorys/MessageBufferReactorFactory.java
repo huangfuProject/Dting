@@ -17,17 +17,17 @@ public class MessageBufferReactorFactory {
 
     @Bean
     public SystemInfoDataBufferReactor systemInfoDataBufferReactor(
-            MessageCpuDataService messageCpuDataService,
-            MessageMemoryDataService messageMemoryDataService,
+            MessageCpuSnapshotService messageCpuSnapshotService,
+            MessageMemorySnapshotService messageMemorySnapshotService,
             MessageNetworkDataService messageNetworkDataService,
-            NetworkInfoService networkInfoService
+            NetworkDetailedSnapshotService networkDetailedSnapshotService
     ) {
-        return new SystemInfoDataBufferReactor(messageCpuDataService, messageMemoryDataService, messageNetworkDataService, networkInfoService);
+        return new SystemInfoDataBufferReactor(messageCpuSnapshotService, messageMemorySnapshotService, messageNetworkDataService, networkDetailedSnapshotService);
     }
 
     @Bean
-    public TaskRunLogDataBufferReactor taskRunLogDataBufferReactor(MessageTaskRunLogDataService messageTaskRunLogDataService) {
-        return new TaskRunLogDataBufferReactor(messageTaskRunLogDataService);
+    public TaskRunLogDataBufferReactor taskRunLogDataBufferReactor(MessageTaskRunSnapshotService messageTaskRunSnapshotService) {
+        return new TaskRunLogDataBufferReactor(messageTaskRunSnapshotService);
 
     }
 }

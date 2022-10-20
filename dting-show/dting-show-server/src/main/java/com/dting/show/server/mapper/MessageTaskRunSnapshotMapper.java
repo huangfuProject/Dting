@@ -1,7 +1,7 @@
 package com.dting.show.server.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.dting.show.server.entity.MessageTaskRunLogData;
+import com.dting.show.server.entity.MessageTaskRunSnapshot;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -14,13 +14,13 @@ import java.util.List;
  * @date 2022年10月20日11:33:16
  */
 @Repository
-public interface MessageTaskRunLogDataMapper extends BaseMapper<MessageTaskRunLogData> {
+public interface MessageTaskRunSnapshotMapper extends BaseMapper<MessageTaskRunSnapshot> {
     /**
      * 忽略唯一性检查的 批量插入
      *
-     * @param messageTaskRunLogDataList 要插入的数据
+     * @param messageTaskRunSnapshotList 要插入的数据
      */
-    void ignoreOnlyBatchInsert(@Param("messageTaskRunLogDataList") List<MessageTaskRunLogData> messageTaskRunLogDataList);
+    void ignoreOnlyBatchInsert(@Param("messageTaskRunLogDataList") List<MessageTaskRunSnapshot> messageTaskRunSnapshotList);
 
 
 }

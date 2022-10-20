@@ -11,8 +11,8 @@ import lombok.Data;
  * @date 2022年10月20日13:42:11
  */
 @Data
-@TableName("message_network_child_data")
-public class NetworkInfo {
+@TableName("network_detailed_snapshot")
+public class NetworkDetailedSnapshot {
 
     /**
      * 主键

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dting.show.server.mapper.ThreadPoolDetailedSnapshotMapper">
+    <insert id="batchInsert">
+        insert into thread_pool_info(`collect_key`,`thread_pool_name`,`active_count`,`core_count`,
+        `max_count`,`queue_use_count`,`queue_total_size`, `busy_weight`)
+        values
+        <foreach collection="threadPoolDetailedSnapshots" item="threadPoolDetailedSnapshot" separator=",">
+            (#{threadPoolDetailedSnapshot.networkDataKey}, #{threadPoolDetailedSnapshot.networkName}, #{threadPoolDetailedSnapshot.ipAddress}, #{threadPoolDetailedSnapshot.subnetMask}, #{threadPoolDetailedSnapshot.receivingDataByte},
+            #{threadPoolDetailedSnapshot.sendDataByte}, #{threadPoolDetailedSnapshot.receivingDataPacketCount}, #{threadPoolDetailedSnapshot.sendDataPacketCount}, #{threadPoolDetailedSnapshot.receivingErrorDataPacketCount},
+            #{threadPoolDetailedSnapshot.sendErrorDataPacketCount}, #{threadPoolDetailedSnapshot.receivingDiscardedDataPacketCount}, #{threadPoolDetailedSnapshot.sendDiscardedDataPacketCount})
+        </foreach>
+    </insert>
+</mapper>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.dting.show.server.mapper.MessageMemoryDataMapper">
+<mapper namespace="com.dting.show.server.mapper.MessageMemorySnapshotMapper">
 
     <insert id="ignoreOnlyBatchInsert">
         insert ignore into
             message_memory_data(`unique`,`message_tag`,`message_ip`,`collect_time`,`jvm_total_memory`,`total_memory`,`jvm_use_memory`,`use_memory`,`total_swap`,`use_swap`)
         values
-        <foreach collection="messageMemoryDataList" item="messageMemory" separator=",">
+        <foreach collection="messageMemorySnapshotList" item="messageMemory" separator=",">
             (#{messageMemory.unique}, #{messageMemory.messageTag}, #{messageMemory.messageIp},
             #{messageMemory.collectTime}, #{messageMemory.jvmTotalMemory}, #{messageMemory.totalMemory},
             #{messageMemory.jvmUseMemory}, #{messageMemory.useMemory}, #{messageMemory.totalSwap},

@@ -1,6 +1,6 @@
 package com.dting.show.server.service;
 
-import com.dting.show.server.entity.MessageNetworkData;
+import com.dting.show.server.entity.MessageNetworkSnapshot;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ public interface MessageNetworkDataService {
     /**
      * 忽略唯一性检查的保存，当出现唯一索引冲突的时候，不保存
      *
-     * @param messageNetworkDataList 网卡数据
+     * @param messageNetworkSnapshotList 网卡数据
      */
-    void ignoreOnlyBatchSave(List<MessageNetworkData> messageNetworkDataList);
+    void ignoreOnlyBatchSave(List<MessageNetworkSnapshot> messageNetworkSnapshotList);
 }

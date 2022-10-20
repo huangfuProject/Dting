@@ -1,8 +1,8 @@
 package com.dting.show.server.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
-import com.dting.show.server.entity.MessageNetworkData;
-import com.dting.show.server.mapper.MessageNetworkDataMapper;
+import com.dting.show.server.entity.MessageNetworkSnapshot;
+import com.dting.show.server.mapper.MessageNetworkSnapshotMapper;
 import com.dting.show.server.service.MessageNetworkDataService;
 import org.springframework.stereotype.Service;
 
@@ -17,16 +17,16 @@ import java.util.List;
 @Service
 public class MessageNetworkDataServiceImpl implements MessageNetworkDataService {
 
-    private final MessageNetworkDataMapper messageNetworkDataMapper;
+    private final MessageNetworkSnapshotMapper messageNetworkSnapshotMapper;
 
-    public MessageNetworkDataServiceImpl(MessageNetworkDataMapper messageNetworkDataMapper) {
-        this.messageNetworkDataMapper = messageNetworkDataMapper;
+    public MessageNetworkDataServiceImpl(MessageNetworkSnapshotMapper messageNetworkSnapshotMapper) {
+        this.messageNetworkSnapshotMapper = messageNetworkSnapshotMapper;
     }
 
     @Override
-    public void ignoreOnlyBatchSave(List<MessageNetworkData> messageNetworkDataList) {
-        if(CollectionUtil.isNotEmpty(messageNetworkDataList)) {
-            messageNetworkDataMapper.ignoreOnlyBatchInsert(messageNetworkDataList);
+    public void ignoreOnlyBatchSave(List<MessageNetworkSnapshot> messageNetworkSnapshotList) {
+        if(CollectionUtil.isNotEmpty(messageNetworkSnapshotList)) {
+            messageNetworkSnapshotMapper.ignoreOnlyBatchInsert(messageNetworkSnapshotList);
         }
 
     }

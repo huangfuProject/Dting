@@ -11,9 +11,9 @@ import lombok.EqualsAndHashCode;
  * @date 2022年10月20日11:24:15
  */
 @Data
-@TableName("message_task_run_log_data")
+@TableName("message_task_run_snapshot")
 @EqualsAndHashCode(callSuper = true)
-public class MessageTaskRunLogData extends DtingMessageBaseEntity {
+public class MessageTaskRunSnapshot extends DtingMessageBaseEntity {
     /**
      * 线程池名称
      */

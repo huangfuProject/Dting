@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dting.show.server.mapper.NetworkDetailedSnapshotMapper">
+
+    <insert id="batchInsert">
+        insert into network_snapshot(`network_data_key`,`network_name`,`ip_address`,`subnet_mask`,
+        `receiving_data_byte`,`send_data_byte`,`receiving_data_packet_count`,
+        `send_data_packet_count`,`receiving_error_data_packet_count`,`send_error_data_packet_count`,
+        `receiving_discarded_data_dacket_count`,`send_discarded_data_packet_count`)
+        values
+        <foreach collection="networkDetailedSnapshotList" item="networkDetailedSnapshot" separator=",">
+            (#{networkDetailedSnapshot.networkDataKey}, #{networkDetailedSnapshot.networkName}, #{networkDetailedSnapshot.ipAddress}, #{networkDetailedSnapshot.subnetMask}, #{networkDetailedSnapshot.receivingDataByte},
+            #{networkDetailedSnapshot.sendDataByte}, #{networkDetailedSnapshot.receivingDataPacketCount}, #{networkDetailedSnapshot.sendDataPacketCount}, #{networkDetailedSnapshot.receivingErrorDataPacketCount},
+            #{networkDetailedSnapshot.sendErrorDataPacketCount}, #{networkDetailedSnapshot.receivingDiscardedDataPacketCount}, #{networkDetailedSnapshot.sendDiscardedDataPacketCount})
+        </foreach>
+    </insert>
+</mapper>

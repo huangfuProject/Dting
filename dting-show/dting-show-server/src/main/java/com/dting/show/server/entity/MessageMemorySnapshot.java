@@ -13,9 +13,9 @@ import java.io.Serializable;
  * @date 2022年10月20日08:10:06
  */
 @Data
-@TableName("message_memory_data")
+@TableName("message_memory_snapshot")
 @EqualsAndHashCode(callSuper = true)
-public class MessageMemoryData extends DtingMessageBaseEntity implements Serializable {
+public class MessageMemorySnapshot extends DtingMessageBaseEntity implements Serializable {
     private static final long serialVersionUID = 6406529724803293622L;
 
     /**

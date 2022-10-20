@@ -1,6 +1,6 @@
 package com.dting.show.server.service;
 
-import com.dting.show.server.entity.MessageTaskRunLogData;
+import com.dting.show.server.entity.MessageTaskRunSnapshot;
 
 import java.util.List;
 
@@ -10,11 +10,11 @@ import java.util.List;
  * @author huangfu
  * @date 2022年10月20日11:45:51
  */
-public interface MessageTaskRunLogDataService {
+public interface MessageTaskRunSnapshotService {
     /**
      * 忽略唯一性检查的保存，当出现唯一索引冲突的时候，不保存
      *
-     * @param messageTaskRunLogDataList 任务数据
+     * @param messageTaskRunSnapshotList 任务数据
      */
-    void ignoreOnlyBatchSave(List<MessageTaskRunLogData> messageTaskRunLogDataList);
+    void ignoreOnlyBatchSave(List<MessageTaskRunSnapshot> messageTaskRunSnapshotList);
 }

@@ -10,8 +10,8 @@ import lombok.Data;
  * @date 2022年10月20日15:09:06
  */
 @Data
-@TableName("thread_pool_info")
-public class ThreadPoolInfo {
+@TableName("thread_pool_detailed_snapshot")
+public class ThreadPoolDetailedSnapshot {
     /**
      * 主键
      */

@@ -9,13 +9,13 @@ import com.dting.common.datas.SystemCpuGroupCollectCollect;
 import com.dting.common.datas.SystemMemoryCollect;
 import com.dting.common.datas.SystemPropertiesAbstractCollect;
 import com.dting.show.datas.SystemInfoMessage;
-import com.dting.show.server.entity.MessageCpuData;
-import com.dting.show.server.entity.MessageMemoryData;
-import com.dting.show.server.entity.NetworkInfo;
-import com.dting.show.server.entity.MessageNetworkData;
-import com.dting.show.server.service.MessageCpuDataService;
-import com.dting.show.server.service.MessageMemoryDataService;
-import com.dting.show.server.service.NetworkInfoService;
+import com.dting.show.server.entity.MessageCpuSnapshot;
+import com.dting.show.server.entity.MessageMemorySnapshot;
+import com.dting.show.server.entity.MessageNetworkSnapshot;
+import com.dting.show.server.entity.NetworkDetailedSnapshot;
+import com.dting.show.server.service.MessageCpuSnapshotService;
+import com.dting.show.server.service.MessageMemorySnapshotService;
+import com.dting.show.server.service.NetworkDetailedSnapshotService;
 import com.dting.show.server.service.MessageNetworkDataService;
 import lombok.Data;
 
@@ -35,12 +35,12 @@ public class SystemInfoDataBufferReactor extends MessageBufferReactor<SystemInfo
     /**
      * cpu服务
      */
-    private final MessageCpuDataService messageCpuDataService;
+    private final MessageCpuSnapshotService messageCpuSnapshotService;
 
     /**
      * 内存服务
      */
-    private final MessageMemoryDataService messageMemoryDataService;
+    private final MessageMemorySnapshotService messageMemorySnapshotService;
 
     /**
      * 网卡服务
@@ -50,14 +50,14 @@ public class SystemInfoDataBufferReactor extends MessageBufferReactor<SystemInfo
     /**
      * 网卡的详细数据服务
      */
-    private final NetworkInfoService networkInfoService;
+    private final NetworkDetailedSnapshotService networkDetailedSnapshotService;
 
 
-    public SystemInfoDataBufferReactor(MessageCpuDataService messageCpuDataService, MessageMemoryDataService messageMemoryDataService, MessageNetworkDataService messageNetworkDataService, NetworkInfoService networkInfoService) {
-        this.messageCpuDataService = messageCpuDataService;
-        this.messageMemoryDataService = messageMemoryDataService;
+    public SystemInfoDataBufferReactor(MessageCpuSnapshotService messageCpuSnapshotService, MessageMemorySnapshotService messageMemorySnapshotService, MessageNetworkDataService messageNetworkDataService, NetworkDetailedSnapshotService networkDetailedSnapshotService) {
+        this.messageCpuSnapshotService = messageCpuSnapshotService;
+        this.messageMemorySnapshotService = messageMemorySnapshotService;
         this.messageNetworkDataService = messageNetworkDataService;
-        this.networkInfoService = networkInfoService;
+        this.networkDetailedSnapshotService = networkDetailedSnapshotService;
     }
 
 
@@ -68,13 +68,13 @@ public class SystemInfoDataBufferReactor extends MessageBufferReactor<SystemInfo
             SystemInfoGroup systemInfoGroup = new SystemInfoGroup();
             systemInfoGroup.conversion(source);
             //保存CPU数据
-            messageCpuDataService.ignoreOnlyBatchSave(systemInfoGroup.getMessageCpuDataList());
+            messageCpuSnapshotService.ignoreOnlyBatchSave(systemInfoGroup.getMessageCpuSnapshotList());
             //保存内存数据
-            messageMemoryDataService.ignoreOnlyBatchSave(systemInfoGroup.getMessageMemoryDataList());
+            messageMemorySnapshotService.ignoreOnlyBatchSave(systemInfoGroup.getMessageMemorySnapshotList());
             //保存网卡数据
-            messageNetworkDataService.ignoreOnlyBatchSave(systemInfoGroup.getMessageNetworkDataList());
+            messageNetworkDataService.ignoreOnlyBatchSave(systemInfoGroup.getMessageNetworkSnapshotList());
             //保存网卡的详细数据
-            networkInfoService.batchSave(systemInfoGroup.getNetworkInfoList());
+            networkDetailedSnapshotService.batchSave(systemInfoGroup.getNetworkDetailedSnapshotList());
         }
     }
 
@@ -84,21 +84,21 @@ public class SystemInfoDataBufferReactor extends MessageBufferReactor<SystemInfo
         /**
          * cpu数据
          */
-        private final List<MessageCpuData> messageCpuDataList = new ArrayList<>(32);
+        private final List<MessageCpuSnapshot> messageCpuSnapshotList = new ArrayList<>(32);
         /**
          * 内存数据
          */
-        private final List<MessageMemoryData> messageMemoryDataList = new ArrayList<>(32);
+        private final List<MessageMemorySnapshot> messageMemorySnapshotList = new ArrayList<>(32);
 
         /**
          * 网卡数据
          */
-        private final List<MessageNetworkData> messageNetworkDataList = new ArrayList<>(32);
+        private final List<MessageNetworkSnapshot> messageNetworkSnapshotList = new ArrayList<>(32);
 
         /**
          * 每一块网卡的具体读写数据
          */
-        private final List<NetworkInfo> networkInfoList = new ArrayList<>(32);
+        private final List<NetworkDetailedSnapshot> networkDetailedSnapshotList = new ArrayList<>(32);
 
         /**
          * 开始做消息的转换 并赋值给自身
@@ -106,30 +106,30 @@ public class SystemInfoDataBufferReactor extends MessageBufferReactor<SystemInfo
          * @param source 来自客户端的消息
          */
         public void conversion(List<SystemInfoMessage> source) {
-            messageCpuDataList.clear();
-            messageMemoryDataList.clear();
-            messageNetworkDataList.clear();
+            messageCpuSnapshotList.clear();
+            messageMemorySnapshotList.clear();
+            messageNetworkSnapshotList.clear();
 
             source.forEach(data -> {
                 //CPU数据转换
-                MessageCpuData messageCpuData = cpuDataConversion(data);
-                messageCpuDataList.add(messageCpuData);
+                MessageCpuSnapshot messageCpuSnapshot = cpuDataConversion(data);
+                messageCpuSnapshotList.add(messageCpuSnapshot);
                 //内存数据转换
-                MessageMemoryData messageMemoryData = memoryDataConversion(data);
-                messageMemoryDataList.add(messageMemoryData);
+                MessageMemorySnapshot messageMemorySnapshot = memoryDataConversion(data);
+                messageMemorySnapshotList.add(messageMemorySnapshot);
                 //网卡数据转换
-                MessageNetworkData messageNetworkData = networkDataConversion(data);
-                messageNetworkDataList.add(messageNetworkData);
+                MessageNetworkSnapshot messageNetworkSnapshot = networkDataConversion(data);
+                messageNetworkSnapshotList.add(messageNetworkSnapshot);
                 //网卡子表数据转换
                 List<NetDataCollect> netDatumCollects = data.getNetInfos();
-                List<NetworkInfo> networkInfoListTmp = netDatumCollects.stream().map(info -> {
-                    NetworkInfo networkInfo = new NetworkInfo();
-                    BeanUtil.copyProperties(info, networkInfo);
-                    networkInfo.setNetworkDataKey(messageNetworkData.getNetworkDataKey());
-                    return networkInfo;
+                List<NetworkDetailedSnapshot> networkDetailedSnapshotListTmp = netDatumCollects.stream().map(info -> {
+                    NetworkDetailedSnapshot networkDetailedSnapshot = new NetworkDetailedSnapshot();
+                    BeanUtil.copyProperties(info, networkDetailedSnapshot);
+                    networkDetailedSnapshot.setNetworkDataKey(messageNetworkSnapshot.getNetworkDataKey());
+                    return networkDetailedSnapshot;
                 }).collect(Collectors.toList());
                 //追加网卡子表转换
-                networkInfoList.addAll(networkInfoListTmp);
+                networkDetailedSnapshotList.addAll(networkDetailedSnapshotListTmp);
             });
         }
 
@@ -139,14 +139,14 @@ public class SystemInfoDataBufferReactor extends MessageBufferReactor<SystemInfo
          * @param data 网卡数据
          * @return 网卡的数据
          */
-        private MessageNetworkData networkDataConversion(SystemInfoMessage data) {
-            MessageNetworkData messageNetworkData = new MessageNetworkData();
+        private MessageNetworkSnapshot networkDataConversion(SystemInfoMessage data) {
+            MessageNetworkSnapshot messageNetworkSnapshot = new MessageNetworkSnapshot();
             //公共信息设置
-            messageNetworkData.commonDataSetting(data);
+            messageNetworkSnapshot.commonDataSetting(data);
             //生成网卡组
             String groupKey = IdUtil.simpleUUID();
-            messageNetworkData.setNetworkDataKey(groupKey);
-            return messageNetworkData;
+            messageNetworkSnapshot.setNetworkDataKey(groupKey);
+            return messageNetworkSnapshot;
         }
 
         /**
@@ -155,28 +155,28 @@ public class SystemInfoDataBufferReactor extends MessageBufferReactor<SystemInfo
          * @param data 数据
          * @return 消息内存数据
          */
-        private MessageMemoryData memoryDataConversion(SystemInfoMessage data) {
+        private MessageMemorySnapshot memoryDataConversion(SystemInfoMessage data) {
             //系统摘要
             SystemPropertiesAbstractCollect systemPropertiesAbstractCollect = data.getSystemPropertiesAbstract();
             //系统内存
             SystemMemoryCollect systemMemoryCollect = data.getSystemMemory();
-            MessageMemoryData messageMemoryData = new MessageMemoryData();
+            MessageMemorySnapshot messageMemorySnapshot = new MessageMemorySnapshot();
             //公共信息设置
-            messageMemoryData.commonDataSetting(data);
+            messageMemorySnapshot.commonDataSetting(data);
             //系统内存的总内存
-            messageMemoryData.setTotalMemory(systemMemoryCollect.getTotalMemory());
+            messageMemorySnapshot.setTotalMemory(systemMemoryCollect.getTotalMemory());
             //系统内存的使用内存
-            messageMemoryData.setUseMemory(systemMemoryCollect.getUseMemory());
+            messageMemorySnapshot.setUseMemory(systemMemoryCollect.getUseMemory());
             //jvm总内存
             Long jvmTotalMemory = systemPropertiesAbstractCollect.getJvmTotalMemory();
-            messageMemoryData.setJvmTotalMemory(jvmTotalMemory);
+            messageMemorySnapshot.setJvmTotalMemory(jvmTotalMemory);
             //jvm已经使用的内存
-            messageMemoryData.setJvmUseMemory(jvmTotalMemory - systemPropertiesAbstractCollect.getJvmRemainingMemory());
+            messageMemorySnapshot.setJvmUseMemory(jvmTotalMemory - systemPropertiesAbstractCollect.getJvmRemainingMemory());
             //交换区总内存
-            messageMemoryData.setTotalSwap(systemMemoryCollect.getTotalSwap());
+            messageMemorySnapshot.setTotalSwap(systemMemoryCollect.getTotalSwap());
             //交换区已经使用的大小
-            messageMemoryData.setUseSwap(systemMemoryCollect.getUseSwap());
-            return messageMemoryData;
+            messageMemorySnapshot.setUseSwap(systemMemoryCollect.getUseSwap());
+            return messageMemorySnapshot;
         }
 
 
@@ -186,26 +186,26 @@ public class SystemInfoDataBufferReactor extends MessageBufferReactor<SystemInfo
          * @param systemInfoMessage cpu的原始数据
          * @return cpu的格式化数据
          */
-        public MessageCpuData cpuDataConversion(SystemInfoMessage systemInfoMessage) {
+        public MessageCpuSnapshot cpuDataConversion(SystemInfoMessage systemInfoMessage) {
             SystemCpuGroupCollectCollect systemCpuGroupCollect = systemInfoMessage.getSystemCpuGroup();
-            MessageCpuData messageCpuData = new MessageCpuData();
+            MessageCpuSnapshot messageCpuSnapshot = new MessageCpuSnapshot();
             //公共信息设置
-            messageCpuData.commonDataSetting(systemInfoMessage);
+            messageCpuSnapshot.commonDataSetting(systemInfoMessage);
             //每一个CPU的信息
-            messageCpuData.setCpuInfo(JSON.toJSONString(systemCpuGroupCollect.getSystemCpus()));
+            messageCpuSnapshot.setCpuInfo(JSON.toJSONString(systemCpuGroupCollect.getSystemCpus()));
             //总使用比率
-            messageCpuData.setTotalUse(systemCpuGroupCollect.getCpuTotal());
+            messageCpuSnapshot.setTotalUse(systemCpuGroupCollect.getCpuTotal());
             //用户使用比率
-            messageCpuData.setUserUes(systemCpuGroupCollect.getCpuUserUse());
+            messageCpuSnapshot.setUserUes(systemCpuGroupCollect.getCpuUserUse());
             //系统使用比率
-            messageCpuData.setSystemUes(systemCpuGroupCollect.getCpuSystemUse());
+            messageCpuSnapshot.setSystemUes(systemCpuGroupCollect.getCpuSystemUse());
             //等待率
-            messageCpuData.setWait(systemCpuGroupCollect.getCpuWait());
+            messageCpuSnapshot.setWait(systemCpuGroupCollect.getCpuWait());
             //错误率
-            messageCpuData.setError(systemCpuGroupCollect.getCpuError());
+            messageCpuSnapshot.setError(systemCpuGroupCollect.getCpuError());
             //空闲率
-            messageCpuData.setIdle(systemCpuGroupCollect.getCpuIdle());
-            return messageCpuData;
+            messageCpuSnapshot.setIdle(systemCpuGroupCollect.getCpuIdle());
+            return messageCpuSnapshot;
         }
 
 

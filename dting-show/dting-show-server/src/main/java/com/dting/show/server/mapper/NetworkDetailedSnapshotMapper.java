@@ -1,7 +1,7 @@
 package com.dting.show.server.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.dting.show.server.entity.NetworkInfo;
+import com.dting.show.server.entity.NetworkDetailedSnapshot;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -14,11 +14,11 @@ import java.util.List;
  * @date 2022年10月20日13:50:48
  */
 @Repository
-public interface NetworkInfoMapper extends BaseMapper<NetworkInfo> {
+public interface NetworkDetailedSnapshotMapper extends BaseMapper<NetworkDetailedSnapshot> {
 
     /**
      * 批量插入
-     * @param networkInfoList 网卡子表数据
+     * @param networkDetailedSnapshotList 网卡子表数据
      */
-    void batchInsert(@Param("networkInfoList") List<NetworkInfo> networkInfoList);
+    void batchInsert(@Param("networkDetailedSnapshotList") List<NetworkDetailedSnapshot> networkDetailedSnapshotList);
 }
