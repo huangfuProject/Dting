@@ -4,7 +4,7 @@
 
     <insert id="ignoreOnlyBatchInsert">
         insert ignore into
-        message_network_data(`unique`,`message_tag`,`message_ip`,`collect_time`,`network_data_key`)
+        message_network_snapshot(`unique`,`message_tag`,`message_ip`,`collect_time`,`network_data_key`)
         values
         <foreach collection="messageNetworkSnapshotList" item="messageNetworkSnapshot" separator=",">
             (#{messageNetworkSnapshot.unique}, #{messageNetworkSnapshot.messageTag}, #{messageNetworkSnapshot.messageIp},

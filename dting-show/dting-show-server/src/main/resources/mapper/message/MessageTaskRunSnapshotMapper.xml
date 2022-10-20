@@ -3,7 +3,7 @@
 <mapper namespace="com.dting.show.server.mapper.MessageTaskRunSnapshotMapper">
 
     <insert id="ignoreOnlyBatchInsert">
-        insert ignore into message_task_run_log_data(
+        insert ignore into message_task_run_snapshot(
             `unique`,`message_tag`,`message_ip`,`collect_time`,
             `thread_pool_name`, `thread_pool_group_name`,`task_name`,`start_time`,`end_time`,`success`,
             `rejected`,`error_msg`,`active_count`,`queue_remaining_capacity`,`queue_size`

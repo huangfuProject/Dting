@@ -4,7 +4,7 @@
 
     <insert id="ignoreOnlyBatchInsert">
         insert ignore into
-            message_memory_data(`unique`,`message_tag`,`message_ip`,`collect_time`,`jvm_total_memory`,`total_memory`,`jvm_use_memory`,`use_memory`,`total_swap`,`use_swap`)
+        message_memory_snapshot(`unique`,`message_tag`,`message_ip`,`collect_time`,`jvm_total_memory`,`total_memory`,`jvm_use_memory`,`use_memory`,`total_swap`,`use_swap`)
         values
         <foreach collection="messageMemorySnapshotList" item="messageMemory" separator=",">
             (#{messageMemory.unique}, #{messageMemory.messageTag}, #{messageMemory.messageIp},

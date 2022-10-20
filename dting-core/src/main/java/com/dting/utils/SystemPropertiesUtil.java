@@ -241,7 +241,7 @@ public class SystemPropertiesUtil {
             netDataCollect.setReceivingDiscardedDataPacketCount(ifstat.getRxDropped());
             // 发送时丢弃的包数
             netDataCollect.setSendDiscardedDataPacketCount(ifstat.getTxDropped());
-            netDataCollect.add(netDataCollect);
+            netDatumCollects.add(netDataCollect);
         }
         return netDatumCollects;
     }

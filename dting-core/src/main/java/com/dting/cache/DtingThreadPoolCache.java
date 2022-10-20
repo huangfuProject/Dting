@@ -72,7 +72,7 @@ public class DtingThreadPoolCache {
             threadPoolDataCollect.setCurrentRunningCompletedTaskCount(threadPool.getCompletedTaskCount());
             threadPoolDataCollect.setCurrentRunningRejectCount(threadPool.getRejectedTaskCount());
             threadPoolDataCollect.setRejectHandlerName(threadPool.getRejectedExecutionHandler().getClass().getName());
-            threadPoolDataCollect.add(threadPoolDataCollect);
+            threadPoolDatumCollects.add(threadPoolDataCollect);
         });
         return threadPoolDatumCollects;
     }

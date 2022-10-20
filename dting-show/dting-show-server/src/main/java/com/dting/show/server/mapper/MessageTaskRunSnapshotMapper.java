@@ -20,7 +20,7 @@ public interface MessageTaskRunSnapshotMapper extends BaseMapper<MessageTaskRunS
      *
      * @param messageTaskRunSnapshotList 要插入的数据
      */
-    void ignoreOnlyBatchInsert(@Param("messageTaskRunLogDataList") List<MessageTaskRunSnapshot> messageTaskRunSnapshotList);
+    void ignoreOnlyBatchInsert(@Param("messageTaskRunSnapshotList") List<MessageTaskRunSnapshot> messageTaskRunSnapshotList);
 
 
 }

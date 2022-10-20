@@ -20,5 +20,5 @@ public interface MessageCpuSnapshotMapper extends BaseMapper<MessageCpuSnapshot>
      *
      * @param messageCpuSnapshotList 要插入的数据
      */
-    void ignoreOnlyBatchInsert(@Param("messageCpuDataList") List<MessageCpuSnapshot> messageCpuSnapshotList);
+    void ignoreOnlyBatchInsert(@Param("messageCpuSnapshotList") List<MessageCpuSnapshot> messageCpuSnapshotList);
 }
