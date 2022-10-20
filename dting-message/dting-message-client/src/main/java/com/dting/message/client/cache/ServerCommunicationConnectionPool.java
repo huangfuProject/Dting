@@ -40,7 +40,7 @@ public class ServerCommunicationConnectionPool {
     /**
      * 追加一个通讯器
      *
-     * @param channel 通道
+     * @param channel    通道
      * @param messageTag 消息标签
      */
     public static void addConnection(Channel channel, String messageTag) {
@@ -74,7 +74,7 @@ public class ServerCommunicationConnectionPool {
      * @param communication 要销毁的通讯器
      */
     public static void removeConnection(Communication communication) {
-        if(communication == null) {
+        if (communication == null) {
             return;
         }
         CONNECTION_POOL.remove(communication.getAddress());
@@ -95,9 +95,9 @@ public class ServerCommunicationConnectionPool {
             List<Communication> communications = new ArrayList<>(communicationCollection);
             int randomNum = RANDOM.nextInt(size);
             Communication communication = communications.get(randomNum);
-            if(communication != null && communication.communicationStatus()) {
+            if (communication != null && communication.communicationStatus()) {
                 communication.asyncSendMessage(message);
-            }else {
+            } else {
                 removeConnection(communication);
                 asyncSendMessage(message);
             }
