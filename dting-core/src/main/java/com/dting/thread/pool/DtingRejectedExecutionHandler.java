@@ -31,7 +31,7 @@ class DtingRejectedExecutionHandler implements RejectedExecutionHandler {
     @Override
     public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
         TaskLogCollect taskLogCollect = new TaskLogCollect();
-        taskLogCollect.setStartTime(System.nanoTime());
+        taskLogCollect.setStartTime(System.currentTimeMillis());
         taskLogCollect.setThreadPoolName(dtingThreadPoolExecutor.threadPoolName);
 
         //设置当前线程的活跃数量
@@ -62,7 +62,7 @@ class DtingRejectedExecutionHandler implements RejectedExecutionHandler {
 
             taskLogCollect.setRejected(true);
             taskLogCollect.setSuccess(false);
-            taskLogCollect.setEndTime(System.nanoTime());
+            taskLogCollect.setEndTime(System.currentTimeMillis());
             TaskInfoSubject taskInfoSubject = new TaskInfoSubject(taskLogCollect);
             //通知观察者
             taskInfoSubject.noticeAllDtingObserver();

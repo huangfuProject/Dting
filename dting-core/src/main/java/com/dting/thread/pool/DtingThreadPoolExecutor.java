@@ -102,7 +102,7 @@ public class DtingThreadPoolExecutor extends ThreadPoolExecutor {
     private void cacheTaskInfo(DtingRunnable dtingRunnable) {
         TaskLogCollect taskLogCollect = new TaskLogCollect();
         //设置开始时间
-        taskLogCollect.setStartTime(System.nanoTime());
+        taskLogCollect.setStartTime(System.currentTimeMillis());
         //设置当前线程的活跃数量
         taskLogCollect.setActiveCount(this.getActiveCount());
         //任务名称
@@ -127,7 +127,7 @@ public class DtingThreadPoolExecutor extends ThreadPoolExecutor {
             }
             super.afterExecute(r, t);
         } finally {
-            taskLogCollect.setEndTime(System.nanoTime());
+            taskLogCollect.setEndTime(System.currentTimeMillis());
             TaskInfoSubject taskInfoSubject = new TaskInfoSubject(taskLogCollect);
             //通知观察者
             taskInfoSubject.noticeAllDtingObserver();

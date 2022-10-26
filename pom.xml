@@ -26,6 +26,7 @@
         <netty.version>4.1.82.Final</netty.version>
         <sigar.version>1.6.4</sigar.version>
         <disruptor.version>3.4.4</disruptor.version>
+        <netty-websocket-spring-boot-starter.version>0.12.0</netty-websocket-spring-boot-starter.version>
 
         <fastjson.version>1.2.62</fastjson.version>
     </properties>
@@ -125,6 +126,12 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.yeauty</groupId>
+                <artifactId>netty-websocket-spring-boot-starter</artifactId>
+                <version>${netty-websocket-spring-boot-starter.version}</version>
             </dependency>
 
             <dependency>

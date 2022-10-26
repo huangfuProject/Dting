@@ -52,6 +52,6 @@ public class DtingMessageBaseEntity {
         //消息的唯一值
         this.setUnique(dtingMessage.getUnique());
         //消息采集时间
-        this.setCollectTime(System.nanoTime());
+        this.setCollectTime(System.currentTimeMillis());
     }
 }
