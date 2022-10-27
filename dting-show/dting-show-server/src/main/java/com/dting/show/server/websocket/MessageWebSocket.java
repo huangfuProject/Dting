@@ -1,9 +1,12 @@
 package com.dting.show.server.websocket;
 
+import com.alibaba.fastjson.JSON;
 import org.yeauty.annotation.*;
 import org.yeauty.pojo.Session;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 消息交互使用的websocket
@@ -11,23 +14,26 @@ import java.io.IOException;
  * @author huangfu
  * @date 2022年10月26日09:41:12
  */
-@ServerEndpoint(path = "/ws/{arg}", port = "${ws.port}")
+@ServerEndpoint(path = "/ws/{sessionId}", port = "${ws.port}")
 public class MessageWebSocket {
 
     private Session session;
+    private WebsocketSendData websocketSendData;
+
+    private final static Map<String, MessageWebSocket> SOCKET_POOL = new ConcurrentHashMap<>(32);
+
 
     @OnOpen
-    public void onOpen(Session session, @PathVariable String arg) {
+    public void onOpen(Session session, @PathVariable String sessionId) {
         this.session = session;
-        System.out.println("new connection");
-        System.out.println(arg);
+
     }
 
     @OnClose
     public void onClose(Session session) throws IOException {
-        session.close();
-        System.out.println("one connection closed");
-
+        if(WebsocketSendData.LISTENING.equals(websocketSendData.getPurpose())) {
+            DynamicIterativeTaskPoolService.removeMessageWebSocket(this);
+        }
     }
 
     @OnError
@@ -37,8 +43,13 @@ public class MessageWebSocket {
 
     @OnMessage
     public void onMessage(Session session, String message) {
-        System.out.println(message);
-        session.sendText("Hello websocket");
+        WebsocketSendData websocketSendData = JSON.parseObject(message, WebsocketSendData.class);
+        SOCKET_POOL.put(websocketSendData.getSessionId(), this);
+        this.websocketSendData = websocketSendData;
+        //如果是监听类型的
+        if(WebsocketSendData.LISTENING.equals(websocketSendData.getPurpose())) {
+            DynamicIterativeTaskPoolService.addMessageWebSocket(this);
+        }
     }
 
     /**
@@ -48,5 +59,27 @@ public class MessageWebSocket {
      */
     public void sendMessage(String message) {
         session.sendText(message);
+    }
+
+    /**
+     * 获取sessionId
+     *
+     * @param sessionId 获取sessionId
+     * @return 返回websocket的操作对象
+     */
+    public static MessageWebSocket getMessageWebSocket(String sessionId) {
+        return SOCKET_POOL.get(sessionId);
+    }
+
+    public Session getSession() {
+        return session;
+    }
+
+    public WebsocketSendData getWebsocketSendData() {
+        return websocketSendData;
+    }
+
+    public void setWebsocketSendData(WebsocketSendData websocketSendData) {
+        this.websocketSendData = websocketSendData;
     }
 }

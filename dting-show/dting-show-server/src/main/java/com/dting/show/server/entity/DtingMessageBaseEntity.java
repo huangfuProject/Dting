@@ -22,7 +22,7 @@ public class DtingMessageBaseEntity {
     /**
      * 消息唯一key
      */
-    private String unique;
+    private String uniqueKey;
 
     /**
      * 消息的标签
@@ -50,7 +50,7 @@ public class DtingMessageBaseEntity {
         //消息标签
         this.setMessageTag(dtingMessage.getMessageTag());
         //消息的唯一值
-        this.setUnique(dtingMessage.getUnique());
+        this.setUniqueKey(dtingMessage.getUnique());
         //消息采集时间
         this.setCollectTime(System.currentTimeMillis());
     }

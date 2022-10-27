@@ -4,11 +4,11 @@
 
     <insert id="ignoreOnlyBatchInsert">
         insert ignore into
-        message_thread_pool_snapshot(`unique`,`message_tag`,`message_ip`,`collect_time`,`collect_key`)
+        message_thread_pool_snapshot(`unique_key`,`message_tag`,`message_ip`,`collect_time`,`collect_key`)
         values
         <foreach collection="messageThreadPoolSnapshotList" item="messageThreadPoolSnapshot" separator=",">
             (
-                #{messageThreadPoolSnapshot.unique}, #{messageThreadPoolSnapshot.messageTag}, #{messageThreadPoolSnapshot.messageIp},
+                #{messageThreadPoolSnapshot.uniqueKey}, #{messageThreadPoolSnapshot.messageTag}, #{messageThreadPoolSnapshot.messageIp},
                 #{messageThreadPoolSnapshot.collectTime}, #{messageThreadPoolSnapshot.collectKey}
             )
         </foreach>

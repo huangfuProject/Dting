@@ -4,10 +4,10 @@
 
     <insert id="ignoreOnlyBatchInsert">
         insert ignore into
-        message_cpu_snapshot(`unique`,`message_tag`,`message_ip`,`collect_time`,`total_use`,`user_use`,`system_use`,`wait`,`error`,`idle`,`cpu_info`)
+        message_cpu_snapshot(`unique_key`,`message_tag`,`message_ip`,`collect_time`,`total_use`,`user_use`,`system_use`,`wait`,`error`,`idle`,`cpu_info`)
         values
         <foreach collection="messageCpuSnapshotList" item="messageCpuSnapshot" separator=",">
-            (#{messageCpuSnapshot.unique}, #{messageCpuSnapshot.messageTag}, #{messageCpuSnapshot.messageIp},
+            (#{messageCpuSnapshot.uniqueKey}, #{messageCpuSnapshot.messageTag}, #{messageCpuSnapshot.messageIp},
             #{messageCpuSnapshot.collectTime}, #{messageCpuSnapshot.totalUse}, #{messageCpuSnapshot.userUes},
             #{messageCpuSnapshot.systemUes}, #{messageCpuSnapshot.wait}, #{messageCpuSnapshot.error}, #{messageCpuSnapshot.idle},
             #{messageCpuSnapshot.cpuInfo})

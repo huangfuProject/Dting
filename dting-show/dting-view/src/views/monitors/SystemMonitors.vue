@@ -13,22 +13,33 @@ export default {
     data(){
         return {
             //------------------------------------系统内存监控数据---------------------------------------------------------------
-            systemXAxisArray:["2022/10/26 8:45","2022/10/26 8:46","2022/10/26 8:47","2022/10/26 8:48","2022/10/26 8:49","2022/10/26 8:50","2022/10/26 8:51"],
-            systemUseMemory:[15000, 10000, 8000, 2000, 6000, 4000, 10000],
-            systemMaxMemory:[20000, 20000, 20000, 20000, 20000, 20000, 20000]
+            systemXAxisArray:[],
+            systemUseMemory:[],
+            systemMaxMemory:[]
             //------------------------------------jvm内存监控数据---------------------------------------------------------------
             //------------------------------------swap监控数据---------------------------------------------------------------
         }
     },
     methods:{
-        test(e) {
-            console.log(e.data)
+        //websocket返回的消息的处理器
+        monitorsDataHandler(e) {
+            var data = e.data
+            //格式化为对象
+            var obj = JSON.parse(data); 
+            // x轴坐标展示
+            this.systemXAxisArray.push(obj.dateValue)
+            // 内存的使用数据
+            this.systemUseMemory.push(obj.systemUseMemory)
+            //内存的最大值
+            this.systemMaxMemory.push(obj.systemMaxMemory)
         },
-        connectWebsocket(){
-            initWebSocket()
+        //开始连接对象
+        connectWebsocket(obj){
+            initWebSocket(obj)
         },
+        //发送消息后设置回调
         sendDataMessage(data){
-            sendData(data, this.test)
+            sendData(data, this.monitorsDataHandler)
         }
     },
     computed: {
@@ -72,9 +83,16 @@ export default {
         }
     },
     created: function(){
-        this.connectWebsocket()
+        //连接
+        this.connectWebsocket(),
+        //发送一个初始的查询条件
         this.sendDataMessage({
-            name:"zhsngan"
+            sessionId:"1234567890",
+            purpose:"0",
+            messageTag:"huangfu",
+            address:"/127.0.0.1:12771",
+            startTime:1666829350124,
+            endTime:-1
         })
     },
     components:{

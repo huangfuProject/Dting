@@ -1,4 +1,4 @@
-let wsurl = 'ws://127.0.0.1:8787/ws/ajaxchattest'
+let wsurl = 'ws://127.0.0.1:8787/ws/'
 let ws = null
 let weboscket_callback = null
 
@@ -18,7 +18,7 @@ let websocketonopen = () => {
 
 // 连接失败时重新连接
 let websocketonerror = () => {
- initWebSocket()
+//  initWebSocket(url)
 }
 
 
@@ -37,12 +37,18 @@ let closewebsocket = () => {
 
 
 
-let initWebSocket = () => {
+let initWebSocket = (connectionObj) => {
+  if (!(typeof connectionObj == 'string')) {
+    connectionObj = JSON.stringify(connectionObj)
+  }
+
+ var url = wsurl + connectionObj
+ console.log(url)
  //初始化 websocket
- ws = new WebSocket(wsurl)
+ ws = new WebSocket(url)
  ws.onmessage = websocketonmessage
  ws.onopen = websocketonopen
- ws.onerror = websocketonerror
+ ws.onerror = websocketonerror()
  ws.onclose = websocketclose
 }
 
