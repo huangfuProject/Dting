@@ -59,8 +59,31 @@ export default {
                 },
                 xAxis: {
                     type: 'category',
+                    show: true,
                     boundaryGap: false,
-                    data: this.systemXAxisArray
+                    data: this.systemXAxisArray,
+                    axisLabel: {
+                        interval: 2,
+                        //rotate: -60,//60 标签倾斜的角度
+                        // formatter: function (params) {
+                        //     let newParamsName = '';
+                        //     const paramsNameNumber = params.length; // 文字总长度
+                        //     const provideNumber = 4; //一行显示几个字
+                        //     const rowNumber = Math.ceil(paramsNameNumber / provideNumber);
+                        //     if (paramsNameNumber > provideNumber) {
+                        //     for (let p = 0; p < rowNumber; p++) {
+                        //         const start = p * provideNumber;
+                        //         const end = start + provideNumber;
+                        //         const tempStr = p === rowNumber - 1 ? params.substring(start, paramsNameNumber) : params.substring(start, end) + '\n';
+                        //         newParamsName += tempStr;
+                        //     }
+                        //     } else {
+                        //         newParamsName = params;
+                        //     }
+                        //     return newParamsName;
+                        // }
+
+                    }
                 },
                 yAxis: {
                     type: 'value'
@@ -70,13 +93,15 @@ export default {
                         name: '系统总内存',
                         type: 'line',
                         step:true,
-                        data: this.systemMaxMemory
+                        data: this.systemMaxMemory,
+                        showSymbol: false
                     },
                     {
                         name: '系统已经使用的内存',
                         type: 'line',
                         step:false,
-                        data: this.systemUseMemory
+                        data: this.systemUseMemory,
+                        showSymbol: false
                     }
                 ]
             }
@@ -89,14 +114,21 @@ export default {
         this.sendDataMessage({
             sessionId:"1234567890",
             purpose:"0",
-            messageTag:"huangfu",
-            address:"/127.0.0.1:12771",
+            serverEnv:"dev",
+            serverKey:"test-Server",
+            instanceKey:"test-server-001",
             startTime:1666829350124,
             endTime:-1
         })
     },
     components:{
         EchartsPackage
+    },
+    watch: {
+        systemXAxisArray(){
+            //动态变更首尾数据
+            this.systemMemoryOption.xAxis.axisLabel.interval=this.systemXAxisArray.length-2
+        }
     }
 }
 </script>
