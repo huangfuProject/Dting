@@ -2,6 +2,7 @@ package com.dting.show.server.service;
 
 import com.dting.show.server.conditions.MemoryBatchCondition;
 import com.dting.show.server.entity.MessageMemorySnapshot;
+import com.dting.show.server.vos.monitoring.MemoryDataVo;
 
 import java.util.List;
 
@@ -12,6 +13,15 @@ import java.util.List;
  * @date 2022年10月20日08:19:19
  */
 public interface MessageMemorySnapshotService {
+
+
+    /**
+     * 内存批量查询 转换为vo格式
+     *
+     * @param memoryBatchCondition 内存数据查询条件
+     * @return vo格式的数据
+     */
+    MemoryDataVo memoryQueryByCondition(MemoryBatchCondition memoryBatchCondition);
 
     /**
      * 内存信息批量查询 基于条件

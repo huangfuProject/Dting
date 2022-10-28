@@ -3,6 +3,7 @@ package com.dting.show.server;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 /**
  * 消息展示服务启动器
@@ -12,6 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 @MapperScan("com.dting.show.server.mapper")
+@EnableAspectJAutoProxy(exposeProxy = true, proxyTargetClass = true)
 public class DtingShowServerApplication {
 
     public static void main(String[] args) {

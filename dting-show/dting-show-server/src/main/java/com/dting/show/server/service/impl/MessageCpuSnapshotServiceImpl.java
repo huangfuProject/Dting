@@ -5,6 +5,7 @@ import com.dting.show.server.entity.MessageCpuSnapshot;
 import com.dting.show.server.mapper.MessageCpuSnapshotMapper;
 import com.dting.show.server.service.MessageCpuSnapshotService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
  * @date 2022年10月19日14:42:55
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class MessageCpuSnapshotServiceImpl implements MessageCpuSnapshotService {
 
     private final MessageCpuSnapshotMapper messageCpuSnapshotMapper;

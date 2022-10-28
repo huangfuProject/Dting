@@ -5,6 +5,7 @@ import com.dting.show.server.entity.ThreadPoolDetailedSnapshot;
 import com.dting.show.server.mapper.ThreadPoolDetailedSnapshotMapper;
 import com.dting.show.server.service.ThreadPoolDetailedSnapshotService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
  * @date 2022年10月20日16:05:16
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class ThreadPoolDetailedSnapshotServiceImpl implements ThreadPoolDetailedSnapshotService {
 
     private final ThreadPoolDetailedSnapshotMapper threadPoolDetailedSnapshotMapper;

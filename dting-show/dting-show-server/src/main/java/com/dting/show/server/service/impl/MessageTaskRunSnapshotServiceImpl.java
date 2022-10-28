@@ -4,6 +4,7 @@ import com.dting.show.server.entity.MessageTaskRunSnapshot;
 import com.dting.show.server.mapper.MessageTaskRunSnapshotMapper;
 import com.dting.show.server.service.MessageTaskRunSnapshotService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
  * @date 2022年10月20日11:46:59
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class MessageTaskRunSnapshotServiceImpl implements MessageTaskRunSnapshotService {
 
     private final MessageTaskRunSnapshotMapper messageTaskRunSnapshotMapper;

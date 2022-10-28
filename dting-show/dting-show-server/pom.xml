@@ -47,6 +47,13 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!-- aop查詢 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
+
         <!-- mybatis快速开发工具 -->
         <dependency>
             <groupId>com.baomidou</groupId>

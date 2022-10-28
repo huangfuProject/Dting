@@ -5,6 +5,7 @@ import com.dting.show.server.entity.NetworkDetailedSnapshot;
 import com.dting.show.server.mapper.NetworkDetailedSnapshotMapper;
 import com.dting.show.server.service.NetworkDetailedSnapshotService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
  * @date 2022年10月20日13:59:25
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class NetworkDetailedSnapshotServiceImpl implements NetworkDetailedSnapshotService {
 
     private final NetworkDetailedSnapshotMapper networkDetailedSnapshotMapper;

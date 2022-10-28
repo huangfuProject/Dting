@@ -5,6 +5,7 @@ import com.dting.show.server.entity.MessageNetworkSnapshot;
 import com.dting.show.server.mapper.MessageNetworkSnapshotMapper;
 import com.dting.show.server.service.MessageNetworkDataService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
  * @date 2022年10月20日11:15:26
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class MessageNetworkDataServiceImpl implements MessageNetworkDataService {
 
     private final MessageNetworkSnapshotMapper messageNetworkSnapshotMapper;
