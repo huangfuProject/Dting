@@ -12,13 +12,6 @@ import com.dting.message.server.cache.ClientCommunicationConnectionPool;
  * @date 2022年10月12日09:22:17
  */
 public class ConnectionMonitoringHandler extends SimpleChannelInboundHandler<ConnectionMessage> {
-
-    private final String messageTag;
-
-    public ConnectionMonitoringHandler(String messageTag) {
-        this.messageTag = messageTag;
-    }
-
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, ConnectionMessage connectionMessage) throws Exception {
         //获取连接消息的状态
@@ -26,7 +19,7 @@ public class ConnectionMonitoringHandler extends SimpleChannelInboundHandler<Con
 
         if (ConnectionMessage.ConnectionStatus.OPEN.equals(connectionStatus)) {
             System.out.println(">>>>>>>>>>>新服务连接接入<<<<<<<<<<<<<");
-            ClientCommunicationConnectionPool.addConnection(channelHandlerContext.channel(), messageTag);
+            ClientCommunicationConnectionPool.addConnection(channelHandlerContext.channel(), connectionMessage.getInstanceKey(), connectionMessage.getServerEnv(), connectionMessage.getServerKey());
         } else {
             System.out.println(">>>>>>>>>>>服务连接关闭<<<<<<<<<<<<<");
             ClientCommunicationConnectionPool.removeConnection(channelHandlerContext.channel());

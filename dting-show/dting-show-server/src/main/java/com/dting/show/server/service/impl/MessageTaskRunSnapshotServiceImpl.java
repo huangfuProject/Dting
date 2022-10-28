@@ -23,7 +23,7 @@ public class MessageTaskRunSnapshotServiceImpl implements MessageTaskRunSnapshot
     }
 
     @Override
-    public void ignoreOnlyBatchSave(List<MessageTaskRunSnapshot> messageTaskRunSnapshotList) {
-        messageTaskRunSnapshotMapper.ignoreOnlyBatchInsert(messageTaskRunSnapshotList);
+    public void batchSave(List<MessageTaskRunSnapshot> messageTaskRunSnapshotList) {
+        messageTaskRunSnapshotMapper.batchInsert(messageTaskRunSnapshotList);
     }
 }

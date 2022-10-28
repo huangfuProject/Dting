@@ -24,7 +24,11 @@ public class SdkTestExecutor {
     @Test
     public void threadPoolExecThread() throws InterruptedException {
         MessageClientConfig config = new MessageClientConfig("127.0.0.1", 8888);
-        config.setMessageTag("huangfu");
+
+        config.setServerEnv("dev");
+        config.setServerKey("test-Server");
+        config.setInstanceKey("test-server-001");
+
         MessageReactor.start(Collections.singletonList(config));
 
         DtingThreadPoolExecutor threadPoolExecutor = new DtingThreadPoolExecutor(1,1,60L, TimeUnit.SECONDS,new LinkedBlockingQueue<>(10),"tese-pool");

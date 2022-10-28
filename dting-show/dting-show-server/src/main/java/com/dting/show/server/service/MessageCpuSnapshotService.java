@@ -13,9 +13,9 @@ import java.util.List;
 public interface MessageCpuSnapshotService {
 
     /**
-     * 忽略唯一性检查的保存，当出现唯一索引冲突的时候，不保存
+     * 批量插入数据
      *
      * @param messageCpuSnapshotList Cpu数据列表
      */
-    void ignoreOnlyBatchSave(List<MessageCpuSnapshot> messageCpuSnapshotList);
+    void batchSave(List<MessageCpuSnapshot> messageCpuSnapshotList);
 }

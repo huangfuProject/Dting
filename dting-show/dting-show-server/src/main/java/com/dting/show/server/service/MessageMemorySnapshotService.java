@@ -22,9 +22,9 @@ public interface MessageMemorySnapshotService {
     List<MessageMemorySnapshot> memoryBatchFindByCondition(MemoryBatchCondition memoryBatchCondition);
 
     /**
-     * 忽略唯一性检查的保存，当出现唯一索引冲突的时候，不保存
+     * 批量插入
      *
      * @param messageMemorySnapshotList 内存数据
      */
-    void ignoreOnlyBatchSave(List<MessageMemorySnapshot> messageMemorySnapshotList);
+    void batchSave(List<MessageMemorySnapshot> messageMemorySnapshotList);
 }

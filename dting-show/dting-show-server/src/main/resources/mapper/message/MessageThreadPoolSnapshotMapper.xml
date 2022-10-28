@@ -2,14 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dting.show.server.mapper.MessageThreadPoolSnapshotMapper">
 
-    <insert id="ignoreOnlyBatchInsert">
-        insert ignore into
-        message_thread_pool_snapshot(`unique_key`,`message_tag`,`message_ip`,`collect_time`,`collect_key`)
+    <insert id="batchInsert">
+        insert into
+        message_thread_pool_snapshot(`server_env`, `server_key`, `instance_key`,`message_ip`,`collect_time`,`collect_key`)
         values
         <foreach collection="messageThreadPoolSnapshotList" item="messageThreadPoolSnapshot" separator=",">
             (
-                #{messageThreadPoolSnapshot.uniqueKey}, #{messageThreadPoolSnapshot.messageTag}, #{messageThreadPoolSnapshot.messageIp},
-                #{messageThreadPoolSnapshot.collectTime}, #{messageThreadPoolSnapshot.collectKey}
+                #{messageThreadPoolSnapshot.instanceKey}, #{messageThreadPoolSnapshot.serverEnv}, #{messageThreadPoolSnapshot.serverKey},
+                #{messageThreadPoolSnapshot.messageIp}, #{messageThreadPoolSnapshot.collectTime}, #{messageThreadPoolSnapshot.collectKey}
             )
         </foreach>
     </insert>

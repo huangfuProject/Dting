@@ -24,9 +24,19 @@ public class WebsocketSendData {
     private String purpose = LISTENING;
 
     /**
-     * 消息标签
+     * 实例名称
      */
-    private String messageTag;
+    private String instanceKey;
+
+    /**
+     * 服务的环境
+     */
+    private String serverEnv;
+
+    /**
+     * 服务的名称
+     */
+    private String serverKey;
 
     /**
      * 查看的地址

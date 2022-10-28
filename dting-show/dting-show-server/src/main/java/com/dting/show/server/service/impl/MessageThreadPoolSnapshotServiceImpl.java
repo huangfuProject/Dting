@@ -24,9 +24,9 @@ public class MessageThreadPoolSnapshotServiceImpl implements MessageThreadPoolSn
     }
 
     @Override
-    public void ignoreOnlyBatchSave(List<MessageThreadPoolSnapshot> messageThreadPoolSnapshotList) {
+    public void batchSave(List<MessageThreadPoolSnapshot> messageThreadPoolSnapshotList) {
         if (CollectionUtil.isNotEmpty(messageThreadPoolSnapshotList)) {
-            messageThreadPoolSnapshotMapper.ignoreOnlyBatchInsert(messageThreadPoolSnapshotList);
+            messageThreadPoolSnapshotMapper.batchInsert(messageThreadPoolSnapshotList);
         }
 
     }

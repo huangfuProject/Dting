@@ -24,9 +24,9 @@ public class MessageCpuSnapshotServiceImpl implements MessageCpuSnapshotService 
     }
 
     @Override
-    public void ignoreOnlyBatchSave(List<MessageCpuSnapshot> messageCpuSnapshotList) {
+    public void batchSave(List<MessageCpuSnapshot> messageCpuSnapshotList) {
         if(CollectionUtil.isNotEmpty(messageCpuSnapshotList)) {
-            this.messageCpuSnapshotMapper.ignoreOnlyBatchInsert(messageCpuSnapshotList);
+            this.messageCpuSnapshotMapper.batchInsert(messageCpuSnapshotList);
         }
 
     }

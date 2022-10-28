@@ -68,11 +68,11 @@ public class SystemInfoDataBufferReactor extends MessageBufferReactor<SystemInfo
             SystemInfoGroup systemInfoGroup = new SystemInfoGroup();
             systemInfoGroup.conversion(source);
             //保存CPU数据
-            messageCpuSnapshotService.ignoreOnlyBatchSave(systemInfoGroup.getMessageCpuSnapshotList());
+            messageCpuSnapshotService.batchSave(systemInfoGroup.getMessageCpuSnapshotList());
             //保存内存数据
-            messageMemorySnapshotService.ignoreOnlyBatchSave(systemInfoGroup.getMessageMemorySnapshotList());
+            messageMemorySnapshotService.batchSave(systemInfoGroup.getMessageMemorySnapshotList());
             //保存网卡数据
-            messageNetworkDataService.ignoreOnlyBatchSave(systemInfoGroup.getMessageNetworkSnapshotList());
+            messageNetworkDataService.batchSave(systemInfoGroup.getMessageNetworkSnapshotList());
             //保存网卡的详细数据
             networkDetailedSnapshotService.batchSave(systemInfoGroup.getNetworkDetailedSnapshotList());
         }

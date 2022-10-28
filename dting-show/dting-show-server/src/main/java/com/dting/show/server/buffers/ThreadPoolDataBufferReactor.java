@@ -66,7 +66,7 @@ public class ThreadPoolDataBufferReactor extends MessageBufferReactor<ThreadPool
             });
 
             //保存快照
-            messageThreadPoolSnapshotService.ignoreOnlyBatchSave(messageThreadPoolSnapshotList);
+            messageThreadPoolSnapshotService.batchSave(messageThreadPoolSnapshotList);
             //保存快照的详细信息
             threadPoolDetailedSnapshotService.batchSave(threadPoolDetailedSnapshots);
         }

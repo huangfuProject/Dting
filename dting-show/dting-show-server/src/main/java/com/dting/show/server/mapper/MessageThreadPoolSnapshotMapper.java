@@ -16,10 +16,10 @@ import java.util.List;
 @Repository
 public interface MessageThreadPoolSnapshotMapper extends BaseMapper<MessageThreadPoolSnapshot> {
     /**
-     * 忽略唯一性检查的 批量插入
+     * 批量插入
      *
      * @param messageThreadPoolSnapshotList 要插入的数据
      */
-    void ignoreOnlyBatchInsert(@Param("messageThreadPoolSnapshotList") List<MessageThreadPoolSnapshot> messageThreadPoolSnapshotList);
+    void batchInsert(@Param("messageThreadPoolSnapshotList") List<MessageThreadPoolSnapshot> messageThreadPoolSnapshotList);
 
 }

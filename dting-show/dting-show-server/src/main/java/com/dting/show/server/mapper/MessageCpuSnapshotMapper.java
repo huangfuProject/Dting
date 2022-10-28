@@ -16,9 +16,9 @@ import java.util.List;
 @Repository
 public interface MessageCpuSnapshotMapper extends BaseMapper<MessageCpuSnapshot> {
     /**
-     * 忽略唯一性检查的 批量插入
+     * 批量插入
      *
      * @param messageCpuSnapshotList 要插入的数据
      */
-    void ignoreOnlyBatchInsert(@Param("messageCpuSnapshotList") List<MessageCpuSnapshot> messageCpuSnapshotList);
+    void batchInsert(@Param("messageCpuSnapshotList") List<MessageCpuSnapshot> messageCpuSnapshotList);
 }

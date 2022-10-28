@@ -13,16 +13,31 @@ import io.netty.channel.SimpleChannelInboundHandler;
  */
 public class ConnectionMonitoringHandler extends SimpleChannelInboundHandler<ConnectionMessage> {
 
-    private final String messageTag;
+    /**
+     * 实例名称
+     */
+    private final String instanceKey;
 
-    public ConnectionMonitoringHandler(String messageTag) {
-        this.messageTag = messageTag;
+    /**
+     * 服务的环境
+     */
+    private final String serverEnv;
+
+    /**
+     * 服务的名称
+     */
+    private final String serverKey;
+
+    public ConnectionMonitoringHandler(String instanceKey, String serverEnv, String serverKey) {
+        this.instanceKey = instanceKey;
+        this.serverEnv = serverEnv;
+        this.serverKey = serverKey;
     }
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println(">>>>>>>>>>>连接服务端成功<<<<<<<<<<<<<");
-        ServerCommunicationConnectionPool.addConnection(ctx.channel(), messageTag);
+        ServerCommunicationConnectionPool.addConnection(ctx.channel(), instanceKey, serverEnv, serverKey);
     }
 
     @Override

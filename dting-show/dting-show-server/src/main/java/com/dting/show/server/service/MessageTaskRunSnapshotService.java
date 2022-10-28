@@ -12,9 +12,9 @@ import java.util.List;
  */
 public interface MessageTaskRunSnapshotService {
     /**
-     * 忽略唯一性检查的保存，当出现唯一索引冲突的时候，不保存
+     * 批量保存
      *
      * @param messageTaskRunSnapshotList 任务数据
      */
-    void ignoreOnlyBatchSave(List<MessageTaskRunSnapshot> messageTaskRunSnapshotList);
+    void batchSave(List<MessageTaskRunSnapshot> messageTaskRunSnapshotList);
 }

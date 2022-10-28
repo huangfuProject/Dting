@@ -55,7 +55,7 @@ public class TaskRunLogDataBufferReactor extends MessageBufferReactor<TaskInfoMe
                 return messageTaskRunSnapshot;
             }).collect(Collectors.toList());
             //保存数据
-            messageTaskRunSnapshotService.ignoreOnlyBatchSave(taskRunLogData);
+            messageTaskRunSnapshotService.batchSave(taskRunLogData);
         }
 
     }

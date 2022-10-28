@@ -34,9 +34,19 @@ public class MessageClientConfig implements Serializable {
     private final Integer port;
 
     /**
-     * 消息的标签
+     * 实例名称
      */
-    private String messageTag;
+    private String instanceKey;
+
+    /**
+     * 服务的环境
+     */
+    private String serverEnv;
+
+    /**
+     * 服务的名称
+     */
+    private String serverKey;
 
     /**
      * 构建一个业务处理器 客户端
@@ -96,11 +106,27 @@ public class MessageClientConfig implements Serializable {
         return businessProcessingUnitCopy;
     }
 
-    public String getMessageTag() {
-        return messageTag;
+    public String getInstanceKey() {
+        return instanceKey;
     }
 
-    public void setMessageTag(String messageTag) {
-        this.messageTag = messageTag;
+    public void setInstanceKey(String instanceKey) {
+        this.instanceKey = instanceKey;
+    }
+
+    public String getServerEnv() {
+        return serverEnv;
+    }
+
+    public void setServerEnv(String serverEnv) {
+        this.serverEnv = serverEnv;
+    }
+
+    public String getServerKey() {
+        return serverKey;
+    }
+
+    public void setServerKey(String serverKey) {
+        this.serverKey = serverKey;
     }
 }

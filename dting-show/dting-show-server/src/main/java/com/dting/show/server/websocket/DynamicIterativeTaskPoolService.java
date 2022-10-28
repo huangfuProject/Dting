@@ -116,7 +116,7 @@ public class DynamicIterativeTaskPoolService implements InitializingBean, Dispos
         MessageVariable messageVariable = MESSAGE_VARIABLE_SELECT_POOL.getOrDefault(sessionId, new MessageVariable());
         //内存数据查询
         List<MessageMemorySnapshot> messageMemorySnapshots = memoryDataFind(websocketSendData, messageVariable);
-        if(CollectionUtil.isEmpty(messageMemorySnapshots)) {
+        if (CollectionUtil.isEmpty(messageMemorySnapshots)) {
             return;
         }
         memoryDataHandler(webSocket, messageMemorySnapshots);
@@ -134,7 +134,7 @@ public class DynamicIterativeTaskPoolService implements InitializingBean, Dispos
      * @param messageMemorySnapshots 内存数据
      */
     private void memoryDataHandler(MessageWebSocket webSocket, List<MessageMemorySnapshot> messageMemorySnapshots) {
-        if(CollectionUtil.isNotEmpty(messageMemorySnapshots)) {
+        if (CollectionUtil.isNotEmpty(messageMemorySnapshots)) {
             messageMemorySnapshots.forEach(messageMemorySnapshot -> {
                 SystemMemoryData systemMemoryData = new SystemMemoryData();
                 systemMemoryData.setDateValue(messageMemorySnapshot.getCollectTime());
@@ -155,10 +155,12 @@ public class DynamicIterativeTaskPoolService implements InitializingBean, Dispos
     private List<MessageMemorySnapshot> memoryDataFind(WebsocketSendData websocketSendData, MessageVariable messageVariable) {
         //构建查询条件
         MemoryBatchCondition memoryBatchCondition = new MemoryBatchCondition();
-        //查询的消息标签
-        memoryBatchCondition.setMessageTag(websocketSendData.getMessageTag());
-        //查询的地址
-        memoryBatchCondition.setAddress(websocketSendData.getAddress());
+        //查询服务环境
+        memoryBatchCondition.setServerEnv(websocketSendData.getServerEnv());
+        //查询服务主键
+        memoryBatchCondition.setServerKey(websocketSendData.getServerKey());
+        //查询实例主键
+        memoryBatchCondition.setInstanceKey(websocketSendData.getInstanceKey());
         //设置结束时间
         long endTime = websocketSendData.getEndTime();
         //终止条件  当前 结束时间大于0 且存在迭代条件开始时间不为空的情况下，这里终止查询 返回一个空数组
@@ -172,10 +174,10 @@ public class DynamicIterativeTaskPoolService implements InitializingBean, Dispos
             memoryBatchCondition.setEndTime(endTime);
         }
         //设置开始时间
-        if(messageVariable.getThisMemoryStartTime() != null) {
+        if (messageVariable.getThisMemoryStartTime() != null) {
             //取迭代条件中的开始时间
             memoryBatchCondition.setStartTime(messageVariable.getThisMemoryStartTime());
-        }else {
+        } else {
             //取设置的开始时间
             memoryBatchCondition.setStartTime(websocketSendData.getStartTime());
         }

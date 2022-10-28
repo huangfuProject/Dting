@@ -40,11 +40,13 @@ public class ServerCommunicationConnectionPool {
     /**
      * 追加一个通讯器
      *
-     * @param channel    通道
-     * @param messageTag 消息标签
+     * @param channel     通道
+     * @param instanceKey 实例主键
+     * @param serverEnv   服务环境
+     * @param serverKey   服务主键
      */
-    public static void addConnection(Channel channel, String messageTag) {
-        Communication communication = new Communication(channel, messageTag);
+    public static void addConnection(Channel channel, String instanceKey, String serverEnv, String serverKey) {
+        Communication communication = new Communication(channel, instanceKey, serverEnv, serverKey);
         CONNECTION_POOL.put(communication.getAddress(), communication);
     }
 
@@ -82,13 +84,11 @@ public class ServerCommunicationConnectionPool {
     }
 
     /**
-     * 异步发送消息
+     * 异步发送消息  随机负载
      *
      * @param message 消息对象
      */
     public static void asyncSendMessage(DtingMessage message) {
-        //生成一个消息的唯一标识
-        message.setUnique(IdUtil.simpleUUID());
         Collection<Communication> communicationCollection = CONNECTION_POOL.values();
         if (CollectionUtil.isNotEmpty(communicationCollection)) {
             int size = communicationCollection.size();
@@ -101,6 +101,8 @@ public class ServerCommunicationConnectionPool {
                 removeConnection(communication);
                 asyncSendMessage(message);
             }
+        }else {
+            throw new IllegalArgumentException("没有可用的连接....");
         }
     }
 

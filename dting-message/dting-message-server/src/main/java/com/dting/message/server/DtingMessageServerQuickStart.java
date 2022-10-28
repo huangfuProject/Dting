@@ -90,7 +90,7 @@ public class DtingMessageServerQuickStart {
                         //写入数据编解码器
                         socketChannel.pipeline().addLast("PacketCodecHandler", new PacketCodecHandler(communicationConfig));
                         //写入连接监控
-                        socketChannel.pipeline().addLast("ConnectionMonitoringHandler", new ConnectionMonitoringHandler(config.getMessageTag()));
+                        socketChannel.pipeline().addLast("ConnectionMonitoringHandler", new ConnectionMonitoringHandler());
                         //开始写入业务处理器
                         businessProcessingUnit.forEach((handlerName, handler) -> socketChannel.pipeline().addLast(handlerName, handler));
                     }

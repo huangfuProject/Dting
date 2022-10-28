@@ -16,11 +16,11 @@ import java.util.List;
 @Repository
 public interface MessageTaskRunSnapshotMapper extends BaseMapper<MessageTaskRunSnapshot> {
     /**
-     * 忽略唯一性检查的 批量插入
+     * 批量插入
      *
      * @param messageTaskRunSnapshotList 要插入的数据
      */
-    void ignoreOnlyBatchInsert(@Param("messageTaskRunSnapshotList") List<MessageTaskRunSnapshot> messageTaskRunSnapshotList);
+    void batchInsert(@Param("messageTaskRunSnapshotList") List<MessageTaskRunSnapshot> messageTaskRunSnapshotList);
 
 
 }

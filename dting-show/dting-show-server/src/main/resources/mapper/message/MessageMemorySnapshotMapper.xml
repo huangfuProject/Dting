@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dting.show.server.mapper.MessageMemorySnapshotMapper">
 
-    <insert id="ignoreOnlyBatchInsert">
-        insert ignore into
-        message_memory_snapshot(`unique_key`,`message_tag`,`message_ip`,`collect_time`,`jvm_total_memory`,`total_memory`,`jvm_use_memory`,`use_memory`,`total_swap`,`use_swap`)
+    <insert id="batchInsert">
+        insert into
+        message_memory_snapshot(`server_env`,`server_key`,`instance_key`,`message_ip`,`collect_time`,`jvm_total_memory`,`total_memory`,`jvm_use_memory`,`use_memory`,`total_swap`,`use_swap`)
         values
         <foreach collection="messageMemorySnapshotList" item="messageMemory" separator=",">
-            (#{messageMemory.uniqueKey}, #{messageMemory.messageTag}, #{messageMemory.messageIp},
+            (#{messageMemory.serverEnv}, #{messageMemory.serverKey}, #{messageMemory.instanceKey}, #{messageMemory.messageIp},
             #{messageMemory.collectTime}, #{messageMemory.jvmTotalMemory}, #{messageMemory.totalMemory},
             #{messageMemory.jvmUseMemory}, #{messageMemory.useMemory}, #{messageMemory.totalSwap},
             #{messageMemory.useSwap})

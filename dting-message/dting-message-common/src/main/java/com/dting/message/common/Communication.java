@@ -26,15 +26,28 @@ public class Communication implements Serializable {
      */
     private final String address;
 
-    /**
-     * 消息标签
-     */
-    private final String messageTag;
 
-    public Communication(Channel channel, String messageTag) {
+    /**
+     * 实例名称
+     */
+    private final String instanceKey;
+
+    /**
+     * 服务的环境
+     */
+    private final String serverEnv;
+
+    /**
+     * 服务的名称
+     */
+    private final String serverKey;
+
+    public Communication(Channel channel, String instanceKey, String serverEnv, String serverKey) {
         this.channel = channel;
         this.address = ChannelUtil.getChannelRemoteAddress(channel);
-        this.messageTag = messageTag;
+        this.instanceKey = instanceKey;
+        this.serverEnv = serverEnv;
+        this.serverKey = serverKey;
     }
 
     /**
@@ -43,7 +56,9 @@ public class Communication implements Serializable {
      * @param dtingMessage 消息体
      */
     public void asyncSendMessage(DtingMessage dtingMessage) {
-        dtingMessage.setMessageTag(this.messageTag);
+        dtingMessage.setServerEnv(serverEnv);
+        dtingMessage.setInstanceKey(instanceKey);
+        dtingMessage.setServerKey(serverKey);
         channel.writeAndFlush(dtingMessage);
     }
 

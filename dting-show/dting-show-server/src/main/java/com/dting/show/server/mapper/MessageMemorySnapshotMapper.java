@@ -17,9 +17,9 @@ import java.util.List;
 public interface MessageMemorySnapshotMapper extends BaseMapper<MessageMemorySnapshot> {
 
     /**
-     * 忽略唯一性检查的 批量插入
+     * 批量插入
      *
      * @param messageMemorySnapshotList 要插入的数据
      */
-    void ignoreOnlyBatchInsert(@Param("messageMemorySnapshotList") List<MessageMemorySnapshot> messageMemorySnapshotList);
+    void batchInsert(@Param("messageMemorySnapshotList") List<MessageMemorySnapshot> messageMemorySnapshotList);
 }

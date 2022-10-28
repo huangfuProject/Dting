@@ -11,12 +11,20 @@ import java.io.Serializable;
 public class DtingMessage implements Serializable {
 
     private static final long serialVersionUID = -60259995547914226L;
-    private String messageTag;
+    /**
+     * 实例名称
+     */
+    private String instanceKey;
 
     /**
-     * 消息的唯一标识
+     * 服务的环境
      */
-    private String unique;
+    private String serverEnv;
+
+    /**
+     * 服务的名称
+     */
+    private String serverKey;
 
     /**
      * 消息来源ip
@@ -32,21 +40,6 @@ public class DtingMessage implements Serializable {
         return this.getClass().getName();
     }
 
-    public String getMessageTag() {
-        return messageTag;
-    }
-
-    public void setMessageTag(String messageTag) {
-        this.messageTag = messageTag;
-    }
-
-    public String getUnique() {
-        return unique;
-    }
-
-    public void setUnique(String unique) {
-        this.unique = unique;
-    }
 
     public String getMessageSourceAddress() {
         return messageSourceAddress;
@@ -54,5 +47,29 @@ public class DtingMessage implements Serializable {
 
     public void setMessageSourceAddress(String messageSourceAddress) {
         this.messageSourceAddress = messageSourceAddress;
+    }
+
+    public String getInstanceKey() {
+        return instanceKey;
+    }
+
+    public void setInstanceKey(String instanceKey) {
+        this.instanceKey = instanceKey;
+    }
+
+    public String getServerEnv() {
+        return serverEnv;
+    }
+
+    public void setServerEnv(String serverEnv) {
+        this.serverEnv = serverEnv;
+    }
+
+    public String getServerKey() {
+        return serverKey;
+    }
+
+    public void setServerKey(String serverKey) {
+        this.serverKey = serverKey;
     }
 }

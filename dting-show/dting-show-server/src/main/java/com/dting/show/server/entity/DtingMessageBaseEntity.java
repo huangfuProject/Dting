@@ -20,14 +20,19 @@ public class DtingMessageBaseEntity {
     private Integer id;
 
     /**
-     * 消息唯一key
+     * 实例名称
      */
-    private String uniqueKey;
+    private String instanceKey;
 
     /**
-     * 消息的标签
+     * 服务的环境
      */
-    private String messageTag;
+    private String serverEnv;
+
+    /**
+     * 服务的名称
+     */
+    private String serverKey;
 
     /**
      * 消息的来源地址
@@ -47,10 +52,12 @@ public class DtingMessageBaseEntity {
     public void commonDataSetting(DtingMessage dtingMessage) {
         //消息来源
         this.setMessageIp(dtingMessage.getMessageSourceAddress());
-        //消息标签
-        this.setMessageTag(dtingMessage.getMessageTag());
-        //消息的唯一值
-        this.setUniqueKey(dtingMessage.getUnique());
+        //服务环境
+        this.setServerEnv(dtingMessage.getServerEnv());
+        //服务名称
+        this.setServerKey(dtingMessage.getServerKey());
+        //实例名称
+        this.setInstanceKey(dtingMessage.getInstanceKey());
         //消息采集时间
         this.setCollectTime(System.currentTimeMillis());
     }

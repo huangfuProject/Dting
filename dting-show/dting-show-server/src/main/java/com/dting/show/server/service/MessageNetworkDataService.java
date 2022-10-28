@@ -17,5 +17,5 @@ public interface MessageNetworkDataService {
      *
      * @param messageNetworkSnapshotList 网卡数据
      */
-    void ignoreOnlyBatchSave(List<MessageNetworkSnapshot> messageNetworkSnapshotList);
+    void batchSave(List<MessageNetworkSnapshot> messageNetworkSnapshotList);
 }

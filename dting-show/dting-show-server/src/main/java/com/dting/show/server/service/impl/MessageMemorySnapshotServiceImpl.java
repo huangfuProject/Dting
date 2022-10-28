@@ -31,9 +31,13 @@ public class MessageMemorySnapshotServiceImpl extends ServiceImpl<MessageMemoryS
     @Override
     public List<MessageMemorySnapshot> memoryBatchFindByCondition(MemoryBatchCondition memoryBatchCondition) {
         QueryWrapper<MessageMemorySnapshot> queryWrapper = new QueryWrapper<>();
-        String messageTag = memoryBatchCondition.getMessageTag();
-        String address = memoryBatchCondition.getAddress();
-        if (StrUtil.isBlank(messageTag) || StrUtil.isBlank(address)) {
+
+        String serverEnv = memoryBatchCondition.getServerEnv();
+        String serverKey = memoryBatchCondition.getServerKey();
+        String instanceKey = memoryBatchCondition.getInstanceKey();
+
+
+        if (StrUtil.isBlank(serverEnv) || StrUtil.isBlank(serverKey) || StrUtil.isBlank(instanceKey)) {
             return new ArrayList<>();
         }
 
@@ -41,8 +45,9 @@ public class MessageMemorySnapshotServiceImpl extends ServiceImpl<MessageMemoryS
         Long endTime = memoryBatchCondition.getEndTime();
 
         // 消息标签
-        queryWrapper.eq("message_tag", messageTag);
-        queryWrapper.eq("message_ip", address);
+        queryWrapper.eq("server_env", serverEnv);
+        queryWrapper.eq("server_key", serverKey);
+        queryWrapper.eq("instance_key", instanceKey);
 
         if (startTime != null && startTime > 0) {
             queryWrapper.gt("collect_time", startTime);
@@ -57,9 +62,9 @@ public class MessageMemorySnapshotServiceImpl extends ServiceImpl<MessageMemoryS
     }
 
     @Override
-    public void ignoreOnlyBatchSave(List<MessageMemorySnapshot> messageMemorySnapshotList) {
+    public void batchSave(List<MessageMemorySnapshot> messageMemorySnapshotList) {
         if (CollectionUtil.isNotEmpty(messageMemorySnapshotList)) {
-            messageMemorySnapshotMapper.ignoreOnlyBatchInsert(messageMemorySnapshotList);
+            messageMemorySnapshotMapper.batchInsert(messageMemorySnapshotList);
         }
     }
 }

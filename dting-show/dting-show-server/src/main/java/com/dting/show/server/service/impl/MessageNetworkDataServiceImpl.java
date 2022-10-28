@@ -24,9 +24,9 @@ public class MessageNetworkDataServiceImpl implements MessageNetworkDataService 
     }
 
     @Override
-    public void ignoreOnlyBatchSave(List<MessageNetworkSnapshot> messageNetworkSnapshotList) {
+    public void batchSave(List<MessageNetworkSnapshot> messageNetworkSnapshotList) {
         if(CollectionUtil.isNotEmpty(messageNetworkSnapshotList)) {
-            messageNetworkSnapshotMapper.ignoreOnlyBatchInsert(messageNetworkSnapshotList);
+            messageNetworkSnapshotMapper.batchInsert(messageNetworkSnapshotList);
         }
 
     }

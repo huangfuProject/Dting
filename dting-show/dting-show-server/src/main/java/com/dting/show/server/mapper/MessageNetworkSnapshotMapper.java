@@ -17,10 +17,10 @@ import java.util.List;
 public interface MessageNetworkSnapshotMapper extends BaseMapper<MessageNetworkSnapshot> {
 
     /**
-     * 忽略唯一性检查的 批量插入
+     * 批量插入
      *
      * @param messageNetworkSnapshotList 要插入的数据
      */
-    void ignoreOnlyBatchInsert(@Param("messageNetworkSnapshotList") List<MessageNetworkSnapshot> messageNetworkSnapshotList);
+    void batchInsert(@Param("messageNetworkSnapshotList") List<MessageNetworkSnapshot> messageNetworkSnapshotList);
 
 }

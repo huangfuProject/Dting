@@ -16,14 +16,19 @@ public class MemoryBatchCondition implements Serializable {
     private static final long serialVersionUID = -5028176883744292629L;
 
     /**
-     * 消息标签
+     * 实例名称
      */
-    private String messageTag;
+    private String instanceKey;
 
     /**
-     * 要查询的ip
+     * 服务的环境
      */
-    private String address;
+    private String serverEnv;
+
+    /**
+     * 服务的名称
+     */
+    private String serverKey;
 
     /**
      * 开始时间
