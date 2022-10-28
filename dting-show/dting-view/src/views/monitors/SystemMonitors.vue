@@ -8,6 +8,7 @@
 <script>
 import EchartsPackage from '../../components/echarts/EchartsPackage.vue'
 import {initWebSocket, sendData} from '../../utils/webSocket'
+import {post} from '../../utils/request'
 export default {
     name: "SystemMonitors",
     data(){
@@ -22,8 +23,7 @@ export default {
     },
     methods:{
         //websocket返回的消息的处理器
-        monitorsDataHandler(e) {
-            var data = e.data
+        monitorsDataHandler(data) {
             //格式化为对象
             var obj = JSON.parse(data); 
             // x轴坐标展示
@@ -40,6 +40,21 @@ export default {
         //发送消息后设置回调
         sendDataMessage(data){
             sendData(data, this.monitorsDataHandler)
+        },
+        //初始化内存数据
+        initMemoryData(){
+            var obj = {
+                instanceKey:"test-server-001",
+                serverEnv:"dev",
+                serverKey:"test-Server",
+                startTime:1666920510100,
+                endTime:-1
+            }
+            console.log(obj)
+            post('/memory/findMemoryData', obj).then(res => {
+                console.log("真实数据")
+                console.log(res)
+            })   
         }
     },
     computed: {
@@ -63,26 +78,7 @@ export default {
                     boundaryGap: false,
                     data: this.systemXAxisArray,
                     axisLabel: {
-                        interval: 2,
-                        //rotate: -60,//60 标签倾斜的角度
-                        // formatter: function (params) {
-                        //     let newParamsName = '';
-                        //     const paramsNameNumber = params.length; // 文字总长度
-                        //     const provideNumber = 4; //一行显示几个字
-                        //     const rowNumber = Math.ceil(paramsNameNumber / provideNumber);
-                        //     if (paramsNameNumber > provideNumber) {
-                        //     for (let p = 0; p < rowNumber; p++) {
-                        //         const start = p * provideNumber;
-                        //         const end = start + provideNumber;
-                        //         const tempStr = p === rowNumber - 1 ? params.substring(start, paramsNameNumber) : params.substring(start, end) + '\n';
-                        //         newParamsName += tempStr;
-                        //     }
-                        //     } else {
-                        //         newParamsName = params;
-                        //     }
-                        //     return newParamsName;
-                        // }
-
+                        interval: 2
                     }
                 },
                 yAxis: {
@@ -108,6 +104,7 @@ export default {
         }
     },
     created: function(){
+        this.initMemoryData(),
         //连接
         this.connectWebsocket(),
         //发送一个初始的查询条件

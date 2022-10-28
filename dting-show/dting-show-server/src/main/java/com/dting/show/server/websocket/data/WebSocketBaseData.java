@@ -20,6 +20,6 @@ public class WebSocketBaseData {
     private String dateValue;
 
     public void setDateValue(long dateTime) {
-        this.dateValue = DateUtil.format(new Date(dateTime), "yyyy/MM/dd HH:mm");
+        this.dateValue = DateUtil.format(new Date(dateTime), "yyyy/MM/dd HH:mm:ss");
     }
 }

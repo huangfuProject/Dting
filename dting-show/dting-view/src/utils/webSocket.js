@@ -4,7 +4,7 @@ let weboscket_callback = null
 
 //获取 websocket 推送的数据
 let websocketonmessage = e => {
- return weboscket_callback(e)
+ return weboscket_callback(e.data)
 }
 
 
