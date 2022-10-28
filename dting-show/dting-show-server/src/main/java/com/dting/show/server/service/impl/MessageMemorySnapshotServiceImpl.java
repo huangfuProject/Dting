@@ -37,7 +37,6 @@ public class MessageMemorySnapshotServiceImpl extends ServiceImpl<MessageMemoryS
             return new ArrayList<>();
         }
 
-        Integer id = memoryBatchCondition.getId();
         Long startTime = memoryBatchCondition.getStartTime();
         Long endTime = memoryBatchCondition.getEndTime();
 
@@ -45,9 +44,6 @@ public class MessageMemorySnapshotServiceImpl extends ServiceImpl<MessageMemoryS
         queryWrapper.eq("message_tag", messageTag);
         queryWrapper.eq("message_ip", address);
 
-        if (id != null) {
-            queryWrapper.ge("id", id);
-        }
         if (startTime != null && startTime > 0) {
             queryWrapper.gt("collect_time", startTime);
         }

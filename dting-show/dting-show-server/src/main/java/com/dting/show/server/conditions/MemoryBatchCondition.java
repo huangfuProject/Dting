@@ -14,10 +14,6 @@ import java.io.Serializable;
 public class MemoryBatchCondition implements Serializable {
 
     private static final long serialVersionUID = -5028176883744292629L;
-    /**
-     * 大于此id
-     */
-    private Integer id;
 
     /**
      * 消息标签
