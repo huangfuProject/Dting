@@ -5,6 +5,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 CREATE DATABASE `dting` CHARACTER SET 'utf8mb4';
 
 use dting;
+
 -- ----------------------------
 -- Table structure for message_cpu_snapshot
 -- ----------------------------
@@ -16,15 +17,15 @@ CREATE TABLE `message_cpu_snapshot`  (
                                          `instance_key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '实例主键，标记该消息对应的实例的名称，微服务',
                                          `message_ip` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '标记消息的ip地址',
                                          `collect_time` bigint(32) NOT NULL COMMENT '采集的时间戳',
-                                         `total_use` double(4, 2) NOT NULL COMMENT '总使用率',
-  `user_use` double(4, 2) NOT NULL DEFAULT 0.00 COMMENT '用户的使用率',
-  `system_use` double(4, 2) NOT NULL DEFAULT 0.00 COMMENT '系统使用率',
-  `wait` double(4, 2) NOT NULL DEFAULT 0.00 COMMENT '等待率',
-  `error` double(4, 2) NOT NULL DEFAULT 0.00 COMMENT '错误率',
-  `idle` double(4, 2) NOT NULL COMMENT '空闲率',
+                                         `total_use` double(12, 2) NOT NULL COMMENT '总使用率',
+  `user_use` double(12, 2) NOT NULL DEFAULT 0.00 COMMENT '用户的使用率',
+  `system_use` double(12, 2) NOT NULL DEFAULT 0.00 COMMENT '系统使用率',
+  `wait` double(12, 2) NOT NULL DEFAULT 0.00 COMMENT '等待率',
+  `error` double(12, 2) NOT NULL DEFAULT 0.00 COMMENT '错误率',
+  `idle` double(12, 2) NOT NULL COMMENT '空闲率',
   `cpu_info` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '每一个核心数的使用情况',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 310 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'cpu使用率的统计信息' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 344 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'cpu使用率的统计信息' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for message_memory_snapshot
@@ -44,7 +45,7 @@ CREATE TABLE `message_memory_snapshot`  (
                                             `total_swap` bigint(32) NOT NULL COMMENT '操作系统交换内存总容量',
                                             `use_swap` bigint(32) NOT NULL COMMENT '操作系统已经使用的交换内存总量',
                                             PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 310 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统内存以及JVM内存的统计信息数据' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 344 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '系统内存以及JVM内存的统计信息数据' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for message_network_snapshot
@@ -59,7 +60,7 @@ CREATE TABLE `message_network_snapshot`  (
                                              `collect_time` bigint(32) NOT NULL COMMENT '采集的时间戳',
                                              `network_data_key` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '网卡的数据集合',
                                              PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 310 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '网卡读写数据包的统计数据' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 344 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '网卡读写数据包的统计数据' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for message_task_run_snapshot
@@ -88,7 +89,7 @@ CREATE TABLE `message_task_run_snapshot`  (
                                               INDEX `message_tag_index`(`instance_key`) USING BTREE,
                                               INDEX `message_ip_index`(`message_ip`) USING BTREE,
                                               INDEX `thread_pool_name_index`(`thread_pool_name`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '线程池中，任务运行的日志情况' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '线程池中，任务运行的日志情况' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for message_thread_pool_snapshot
@@ -103,7 +104,7 @@ CREATE TABLE `message_thread_pool_snapshot`  (
                                                  `collect_time` bigint(32) NOT NULL COMMENT '采集的时间戳',
                                                  `collect_key` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '关联主键',
                                                  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 146 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '线程池的状态采集信息' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 162 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '线程池的状态采集信息' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for network_detailed_snapshot
@@ -125,7 +126,7 @@ CREATE TABLE `network_detailed_snapshot`  (
                                               `send_discarded_data_packet_count` bigint(64) NULL DEFAULT 0 COMMENT '发送的丢弃数据包数量',
                                               PRIMARY KEY (`id`) USING BTREE,
                                               INDEX `network_data_key`(`network_data_key`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 310 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '网卡读写数据包的统计数据,详细的网卡数据' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 412 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '网卡读写数据包的统计数据,详细的网卡数据' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Table structure for thread_pool_config
@@ -165,6 +166,6 @@ CREATE TABLE `thread_pool_detailed_snapshot`  (
                                                   `busy_weight` double(6, 0) NOT NULL COMMENT '线程池忙碌的数值，计算方式为 ((活跃数/核心数) + (活跃数/最大线程数) + (队列堆积数/队列总长度))*1000',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `collect_key_index`(`collect_key`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 146 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '线程池的状态采集信息按照时间定时采集的' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 162 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '线程池的状态采集信息按照时间定时采集的' ROW_FORMAT = DYNAMIC;
 
 SET FOREIGN_KEY_CHECKS = 1;

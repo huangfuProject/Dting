@@ -1,16 +1,14 @@
 package com.dting.show.server.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.dting.show.server.conditions.MemoryBatchCondition;
 import com.dting.show.server.entity.MessageMemorySnapshot;
 import com.dting.show.server.mapper.MessageMemorySnapshotMapper;
 import com.dting.show.server.service.MessageMemorySnapshotService;
-import com.dting.show.server.vos.monitoring.JvmMemoryData;
-import com.dting.show.server.vos.monitoring.MemoryDataVo;
-import com.dting.show.server.vos.monitoring.SystemMemoryData;
-import com.dting.show.server.vos.monitoring.SystemSwapData;
+import com.dting.show.server.vos.monitoring.*;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +33,17 @@ public class MessageMemorySnapshotServiceImpl implements MessageMemorySnapshotSe
     }
 
     @Override
+    public MemoryDataMonitoringVo memoryMonitoring(MemoryBatchCondition memoryBatchCondition) {
+        MemoryDataVo memoryDataVo = ((MessageMemorySnapshotService) AopContext.currentProxy()).memoryQueryByCondition(memoryBatchCondition);
+        MemoryDataMonitoringVo memoryDataMonitoringVo = new MemoryDataMonitoringVo();
+        String monitorId = IdUtil.fastSimpleUUID();
+        memoryDataMonitoringVo.setMonitorId(monitorId);
+        memoryDataMonitoringVo.setMemoryDataVo(memoryDataVo);
+        //生成任务
+        return memoryDataMonitoringVo;
+    }
+
+    @Override
     public MemoryDataVo memoryQueryByCondition(MemoryBatchCondition memoryBatchCondition) {
         //查询数据
         List<MessageMemorySnapshot> messageMemorySnapshots = ((MessageMemorySnapshotService) AopContext.currentProxy()).memoryBatchFindByCondition(memoryBatchCondition);
@@ -49,24 +58,37 @@ public class MessageMemorySnapshotServiceImpl implements MessageMemorySnapshotSe
             SystemSwapData systemSwapData = new SystemSwapData();
 
             //系统内存数据
-            systemMemoryData.setMaxSystemMemory(messageMemorySnapshot.getTotalMemory());
-            systemMemoryData.setUseSystemMemory(messageMemorySnapshot.getUseMemory());
-            systemMemoryData.setDateValue(messageMemorySnapshot.getCollectTime());
+            systemMemoryData.setMaxSystemMemory(memoryDataFormat(messageMemorySnapshot.getTotalMemory()));
+            systemMemoryData.setUseSystemMemory(memoryDataFormat(messageMemorySnapshot.getUseMemory()));
+            systemMemoryData.setDateValue(memoryDataFormat(messageMemorySnapshot.getCollectTime()));
             //jvm内存数据
-            jvmMemoryData.setMaxJvmMemory(messageMemorySnapshot.getJvmTotalMemory());
-            jvmMemoryData.setUseJvmMemory(messageMemorySnapshot.getJvmUseMemory());
-            jvmMemoryData.setDateValue(messageMemorySnapshot.getCollectTime());
+            jvmMemoryData.setMaxJvmMemory(memoryDataFormat(messageMemorySnapshot.getJvmTotalMemory()));
+            jvmMemoryData.setUseJvmMemory(memoryDataFormat(messageMemorySnapshot.getJvmUseMemory()));
+            jvmMemoryData.setDateValue(memoryDataFormat(messageMemorySnapshot.getCollectTime()));
             //交换区数据
-            systemSwapData.setMaxSystemSwap(messageMemorySnapshot.getTotalSwap());
-            systemSwapData.setUseSystemSwap(messageMemorySnapshot.getUseSwap());
-            systemSwapData.setDateValue(messageMemorySnapshot.getCollectTime());
+            systemSwapData.setMaxSystemSwap(memoryDataFormat(messageMemorySnapshot.getTotalSwap()));
+            systemSwapData.setUseSystemSwap(memoryDataFormat(messageMemorySnapshot.getUseSwap()));
+            systemSwapData.setDateValue(memoryDataFormat(messageMemorySnapshot.getCollectTime()));
             //开始追加数据
             memoryDataVo.addSystemMemoryData(systemMemoryData);
             memoryDataVo.addJvmMemoryData(jvmMemoryData);
             memoryDataVo.addSystemSwapData(systemSwapData);
 
         });
+        if(CollectionUtil.isNotEmpty(messageMemorySnapshots)) {
+            memoryDataVo.setLastTime(messageMemorySnapshots.get(messageMemorySnapshots.size() - 1).getCollectTime());
+        }
         return memoryDataVo;
+    }
+
+    /**
+     * 内存数据  将b转换为m
+     *
+     * @param memoryData 内存数据
+     * @return 转换号的数据
+     */
+    private long memoryDataFormat(long memoryData) {
+        return memoryData / 1024 / 1024;
     }
 
     @Override

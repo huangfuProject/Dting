@@ -138,8 +138,8 @@ public class DynamicIterativeTaskPoolService implements InitializingBean, Dispos
             messageMemorySnapshots.forEach(messageMemorySnapshot -> {
                 SystemMemoryData systemMemoryData = new SystemMemoryData();
                 systemMemoryData.setDateValue(messageMemorySnapshot.getCollectTime());
-                systemMemoryData.setSystemMaxMemory(messageMemorySnapshot.getTotalMemory());
-                systemMemoryData.setSystemUseMemory(messageMemorySnapshot.getUseMemory());
+                systemMemoryData.setSystemMaxMemory(messageMemorySnapshot.getTotalMemory()/1024/1024);
+                systemMemoryData.setSystemUseMemory(messageMemorySnapshot.getUseMemory()/1024/1024);
                 webSocket.sendMessage(JSON.toJSONString(systemMemoryData));
             });
         }

@@ -23,15 +23,16 @@ export default {
     },
     methods:{
         //websocket返回的消息的处理器
-        monitorsDataHandler(data) {
-            //格式化为对象
-            var obj = JSON.parse(data); 
+        monitorsDataHandler(obj) {
+            if (typeof obj == 'string') {
+                obj = JSON.parse(obj); 
+            }
             // x轴坐标展示
             this.systemXAxisArray.push(obj.dateValue)
             // 内存的使用数据
-            this.systemUseMemory.push(obj.systemUseMemory)
+            this.systemUseMemory.push(obj.useSystemMemory)
             //内存的最大值
-            this.systemMaxMemory.push(obj.systemMaxMemory)
+            this.systemMaxMemory.push(obj.maxSystemMemory)
         },
         //开始连接对象
         connectWebsocket(obj){
@@ -50,11 +51,16 @@ export default {
                 startTime:1666920510100,
                 endTime:-1
             }
-            console.log(obj)
-            post('/memory/findMemoryData', obj).then(res => {
-                console.log("真实数据")
-                console.log(res)
-            })   
+            post('/memory/memoryMonitoring', obj).then(res =>{
+                const memoryDataList = res.memoryDataVo.systemMemoryDataList
+                if(memoryDataList) {
+                    for(var memoryData of memoryDataList) {
+                        //调用消息回调
+                        this.monitorsDataHandler(memoryData)
+                    }
+
+                }
+            })
         }
     },
     computed: {
@@ -104,19 +110,19 @@ export default {
         }
     },
     created: function(){
-        this.initMemoryData(),
+        this.initMemoryData()
         //连接
-        this.connectWebsocket(),
+        //this.connectWebsocket(),
         //发送一个初始的查询条件
-        this.sendDataMessage({
-            sessionId:"1234567890",
-            purpose:"0",
-            serverEnv:"dev",
-            serverKey:"test-Server",
-            instanceKey:"test-server-001",
-            startTime:1666829350124,
-            endTime:-1
-        })
+        // this.sendDataMessage({
+        //     sessionId:"1234567890",
+        //     purpose:"0",
+        //     serverEnv:"dev",
+        //     serverKey:"test-Server",
+        //     instanceKey:"test-server-001",
+        //     startTime:1666829350124,
+        //     endTime:-1
+        // })
     },
     components:{
         EchartsPackage

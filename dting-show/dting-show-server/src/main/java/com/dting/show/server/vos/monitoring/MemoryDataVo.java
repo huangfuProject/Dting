@@ -31,6 +31,11 @@ public class MemoryDataVo implements Serializable {
     private final List<SystemSwapData> systemSwapDataList = new ArrayList<>();
 
     /**
+     * 排序后最后一条数据的采集时间
+     */
+    private long lastTime;
+
+    /**
      * 添加系统内存数据
      *
      * @param systemMemoryData 系统内存数据
