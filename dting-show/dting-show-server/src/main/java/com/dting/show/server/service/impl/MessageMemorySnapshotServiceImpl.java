@@ -60,15 +60,15 @@ public class MessageMemorySnapshotServiceImpl implements MessageMemorySnapshotSe
             //系统内存数据
             systemMemoryData.setMaxSystemMemory(memoryDataFormat(messageMemorySnapshot.getTotalMemory()));
             systemMemoryData.setUseSystemMemory(memoryDataFormat(messageMemorySnapshot.getUseMemory()));
-            systemMemoryData.setDateValue(memoryDataFormat(messageMemorySnapshot.getCollectTime()));
+            systemMemoryData.setDateValue(messageMemorySnapshot.getCollectTime());
             //jvm内存数据
             jvmMemoryData.setMaxJvmMemory(memoryDataFormat(messageMemorySnapshot.getJvmTotalMemory()));
             jvmMemoryData.setUseJvmMemory(memoryDataFormat(messageMemorySnapshot.getJvmUseMemory()));
-            jvmMemoryData.setDateValue(memoryDataFormat(messageMemorySnapshot.getCollectTime()));
+            jvmMemoryData.setDateValue(messageMemorySnapshot.getCollectTime());
             //交换区数据
             systemSwapData.setMaxSystemSwap(memoryDataFormat(messageMemorySnapshot.getTotalSwap()));
             systemSwapData.setUseSystemSwap(memoryDataFormat(messageMemorySnapshot.getUseSwap()));
-            systemSwapData.setDateValue(memoryDataFormat(messageMemorySnapshot.getCollectTime()));
+            systemSwapData.setDateValue(messageMemorySnapshot.getCollectTime());
             //开始追加数据
             memoryDataVo.addSystemMemoryData(systemMemoryData);
             memoryDataVo.addJvmMemoryData(jvmMemoryData);
