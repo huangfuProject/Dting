@@ -20,9 +20,10 @@ public interface MessageMemorySnapshotService {
      * 内存数据监听
      *
      * @param memoryBatchCondition 监听条件
+     * @param enablePlan           启动计划
      * @return 返回一个监听数据，并开启监听任务
      */
-    MemoryDataMonitoringVo memoryMonitoring(MemoryBatchCondition memoryBatchCondition);
+    MemoryDataMonitoringVo memoryMonitoring(MemoryBatchCondition memoryBatchCondition, boolean enablePlan);
 
 
     /**

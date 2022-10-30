@@ -35,6 +35,10 @@ let closewebsocket = () => {
  ws.close()
 }
 
+let setCallback = (callback) => {
+  weboscket_callback = callback
+}
+
 
 
 let initWebSocket = (connectionObj) => {
@@ -83,4 +87,4 @@ let sendData = (data, callback) => {
 
 
 // 导出
-export { initWebSocket, sendData, closewebsocket }
+export { initWebSocket, sendData, closewebsocket, setCallback }

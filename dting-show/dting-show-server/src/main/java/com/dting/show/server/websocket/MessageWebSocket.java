@@ -1,12 +1,9 @@
 package com.dting.show.server.websocket;
 
-import com.alibaba.fastjson.JSON;
 import org.yeauty.annotation.*;
 import org.yeauty.pojo.Session;
 
 import java.io.IOException;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 消息交互使用的websocket
@@ -18,22 +15,21 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MessageWebSocket {
 
     private Session session;
-    private WebsocketSendData websocketSendData;
 
-    private final static Map<String, MessageWebSocket> SOCKET_POOL = new ConcurrentHashMap<>(32);
+    private String sessionId;
 
 
     @OnOpen
     public void onOpen(Session session, @PathVariable String sessionId) {
         this.session = session;
+        this.sessionId = sessionId;
+        DynamicIterativeTaskPoolService.addConnection(this);
 
     }
 
     @OnClose
     public void onClose(Session session) throws IOException {
-        if(WebsocketSendData.LISTENING.equals(websocketSendData.getPurpose())) {
-            DynamicIterativeTaskPoolService.removeMessageWebSocket(this);
-        }
+        DynamicIterativeTaskPoolService.removeConnection(this.sessionId);
     }
 
     @OnError
@@ -43,13 +39,7 @@ public class MessageWebSocket {
 
     @OnMessage
     public void onMessage(Session session, String message) {
-        WebsocketSendData websocketSendData = JSON.parseObject(message, WebsocketSendData.class);
-        SOCKET_POOL.put(websocketSendData.getSessionId(), this);
-        this.websocketSendData = websocketSendData;
-        //如果是监听类型的
-        if(WebsocketSendData.LISTENING.equals(websocketSendData.getPurpose())) {
-            DynamicIterativeTaskPoolService.addMessageWebSocket(this);
-        }
+
     }
 
     /**
@@ -61,25 +51,12 @@ public class MessageWebSocket {
         session.sendText(message);
     }
 
-    /**
-     * 获取sessionId
-     *
-     * @param sessionId 获取sessionId
-     * @return 返回websocket的操作对象
-     */
-    public static MessageWebSocket getMessageWebSocket(String sessionId) {
-        return SOCKET_POOL.get(sessionId);
-    }
 
     public Session getSession() {
         return session;
     }
 
-    public WebsocketSendData getWebsocketSendData() {
-        return websocketSendData;
-    }
-
-    public void setWebsocketSendData(WebsocketSendData websocketSendData) {
-        this.websocketSendData = websocketSendData;
+    public String getSessionId() {
+        return sessionId;
     }
 }

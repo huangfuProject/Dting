@@ -27,7 +27,7 @@ public class SystemMemoryController {
 
     @PostMapping("memoryMonitoring")
     public MemoryDataMonitoringVo memoryMonitoring(@RequestBody MemoryBatchCondition memoryBatchCondition){
-        return messageMemorySnapshotService.memoryMonitoring(memoryBatchCondition);
+        return messageMemorySnapshotService.memoryMonitoring(memoryBatchCondition, true);
     }
 
     /**

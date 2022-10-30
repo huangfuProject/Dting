@@ -5,16 +5,21 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.dting.show.server.conditions.MemoryBatchCondition;
+import com.dting.show.server.constant.RedisKeyUtil;
 import com.dting.show.server.entity.MessageMemorySnapshot;
 import com.dting.show.server.mapper.MessageMemorySnapshotMapper;
 import com.dting.show.server.service.MessageMemorySnapshotService;
+import com.dting.show.server.tasks.MemoryDataRefreshTask;
+import com.dting.show.server.utils.ScheduledTaskManagement;
 import com.dting.show.server.vos.monitoring.*;
 import org.springframework.aop.framework.AopContext;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 内存业务实现类
@@ -28,18 +33,36 @@ public class MessageMemorySnapshotServiceImpl implements MessageMemorySnapshotSe
 
     private final MessageMemorySnapshotMapper messageMemorySnapshotMapper;
 
-    public MessageMemorySnapshotServiceImpl(MessageMemorySnapshotMapper messageMemorySnapshotMapper) {
+    private final StringRedisTemplate redisTemplate;
+
+    public MessageMemorySnapshotServiceImpl(MessageMemorySnapshotMapper messageMemorySnapshotMapper, StringRedisTemplate redisTemplate) {
         this.messageMemorySnapshotMapper = messageMemorySnapshotMapper;
+        this.redisTemplate = redisTemplate;
     }
 
     @Override
-    public MemoryDataMonitoringVo memoryMonitoring(MemoryBatchCondition memoryBatchCondition) {
+    public MemoryDataMonitoringVo memoryMonitoring(MemoryBatchCondition memoryBatchCondition, boolean enablePlan) {
+        long endTime = memoryBatchCondition.getEndTime();
+        if (endTime < 0) {
+            memoryBatchCondition.setEndTime(System.currentTimeMillis());
+        }
         MemoryDataVo memoryDataVo = ((MessageMemorySnapshotService) AopContext.currentProxy()).memoryQueryByCondition(memoryBatchCondition);
         MemoryDataMonitoringVo memoryDataMonitoringVo = new MemoryDataMonitoringVo();
         String monitorId = IdUtil.fastSimpleUUID();
         memoryDataMonitoringVo.setMonitorId(monitorId);
         memoryDataMonitoringVo.setMemoryDataVo(memoryDataVo);
-        //生成任务
+        if (enablePlan) {
+            //判断redis
+            String sessionActiveKey = RedisKeyUtil.sessionActiveKeyFormat(monitorId);
+            //开启数据 并设置过期时间
+            redisTemplate.opsForValue().set(sessionActiveKey, "1", 120, TimeUnit.SECONDS);
+            //将结束时间设置为开始时间
+            memoryBatchCondition.setStartTime(memoryBatchCondition.getEndTime());
+            //生成任务
+            MemoryDataRefreshTask memoryDataRefreshTask = new MemoryDataRefreshTask(memoryBatchCondition, monitorId);
+            //5秒后重新执行
+            ScheduledTaskManagement.addJob(memoryDataRefreshTask, System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(5));
+        }
         return memoryDataMonitoringVo;
     }
 
@@ -75,7 +98,7 @@ public class MessageMemorySnapshotServiceImpl implements MessageMemorySnapshotSe
             memoryDataVo.addSystemSwapData(systemSwapData);
 
         });
-        if(CollectionUtil.isNotEmpty(messageMemorySnapshots)) {
+        if (CollectionUtil.isNotEmpty(messageMemorySnapshots)) {
             memoryDataVo.setLastTime(messageMemorySnapshots.get(messageMemorySnapshots.size() - 1).getCollectTime());
         }
         return memoryDataVo;

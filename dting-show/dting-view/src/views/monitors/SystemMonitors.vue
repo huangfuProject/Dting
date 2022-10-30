@@ -7,7 +7,7 @@
 
 <script>
 import EchartsPackage from '../../components/echarts/EchartsPackage.vue'
-import {initWebSocket, sendData} from '../../utils/webSocket'
+import {initWebSocket, setCallback} from '../../utils/webSocket'
 import {post} from '../../utils/request'
 export default {
     name: "SystemMonitors",
@@ -22,8 +22,8 @@ export default {
         }
     },
     methods:{
-        //websocket返回的消息的处理器
-        monitorsDataHandler(obj) {
+        //websocket返回的内存消息的处理器
+        monitorsMemoryDataHandler(obj) {
             if (typeof obj == 'string') {
                 obj = JSON.parse(obj); 
             }
@@ -34,13 +34,22 @@ export default {
             //内存的最大值
             this.systemMaxMemory.push(obj.maxSystemMemory)
         },
+        //websocket 消息回调
+        websocketMessageCallback(obj){
+            if (typeof obj == 'string') {
+                obj = JSON.parse(obj); 
+            }
+            //内存数据
+            if(obj.type === '0') {
+                var bodyObj = obj.body
+                bodyObj = JSON.parse(bodyObj); 
+                this.refreshSystemMemoryData(bodyObj);
+            }
+        },
         //开始连接对象
         connectWebsocket(obj){
-            initWebSocket(obj)
-        },
-        //发送消息后设置回调
-        sendDataMessage(data){
-            sendData(data, this.monitorsDataHandler)
+            initWebSocket(obj);
+            setCallback(this.websocketMessageCallback)
         },
         //初始化内存数据
         initMemoryData(){
@@ -52,15 +61,21 @@ export default {
                 endTime:-1
             }
             post('/memory/memoryMonitoring', obj).then(res =>{
-                const memoryDataList = res.memoryDataVo.systemMemoryDataList
-                if(memoryDataList) {
-                    for(var memoryData of memoryDataList) {
-                        //调用消息回调
-                        this.monitorsDataHandler(memoryData)
-                    }
-
-                }
+                this.refreshSystemMemoryData(res);
+                const monitorId = res.monitorId;
+                this.connectWebsocket(monitorId);
             })
+        },
+        // 设置系统内存数据
+        refreshSystemMemoryData(res){
+            const memoryDataList = res.memoryDataVo.systemMemoryDataList
+            if(memoryDataList) {
+                for(var memoryData of memoryDataList) {
+                    //调用消息回调
+                    this.monitorsMemoryDataHandler(memoryData)
+                }
+
+            }
         }
     },
     computed: {
