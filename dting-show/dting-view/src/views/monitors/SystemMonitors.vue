@@ -1,7 +1,9 @@
 <template>
     <div>
         <!--系统内存监控折线图-->
-        <div><LineChart lineChartTitle="系统内存监控" :systemXAxisArray="systemXAxisArray" :systemUse="systemUseMemory" :systemMax="systemMaxMemory"/></div>
+        <div><LineChart lineChartTitle="系统内存监控" :systemXAxisArray="systemXAxisArray" :systemUse="systemUseMemory" :systemMax="systemMaxMemory" height="300px" width="400px"/></div>
+        <div><LineChart lineChartTitle="JVM内存监控" :systemXAxisArray="systemXAxisArray" :systemUse="systemUseMemory" :systemMax="systemMaxMemory"  height="300px" width="400px"/></div>
+        <div><LineChart lineChartTitle="系统Swap监控" :systemXAxisArray="systemXAxisArray" :systemUse="systemUseMemory" :systemMax="systemMaxMemory" height="300px" width="400px"/></div>
     </div>
 </template>
 

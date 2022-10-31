@@ -1,7 +1,7 @@
 <template>
     <div>
         <!--Dting使用的折线图相关-->
-        <EchartsPackage :options="optionData"/>
+        <EchartsPackage :options="optionData" :height="height" :width="width"/>
     </div>
 </template>
 
@@ -17,6 +17,14 @@ export default {
             type: String,
             default:""
         },
+        height: {
+            type:String,
+            default: "600px"
+        },
+        width: {
+            type:String,
+            default: "800px"
+        }
     },
     computed: {
         /**
