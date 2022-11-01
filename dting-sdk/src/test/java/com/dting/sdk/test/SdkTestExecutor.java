@@ -54,15 +54,7 @@ public class SdkTestExecutor {
         }));
 
         threadPoolExecutor.execute(new DtingRunnable("test-task", () -> {
-            List<String> datas = new ArrayList<>();
-            while (true) {
-                datas.add(IdUtil.fastSimpleUUID());
-
-                if(datas.size() > 10000000) {
-                    System.out.println("----------------------");
-                    datas.clear();
-                }
-            }
+            System.out.println("123");
         }));
 
 
