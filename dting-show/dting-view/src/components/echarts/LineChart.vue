@@ -11,8 +11,8 @@ export default {
     name: "LineChart",
     props:{
         xAxisArray:[],
-        use:[],
-        max:[],
+        legendData:[],
+        serviceData: [],
         lineChartTitle:{
             type: String,
             default:""
@@ -39,7 +39,7 @@ export default {
                     trigger: 'axis'
                 },
                 legend: {
-                data: ['总量','已使用']
+                data: this.legendData
                 },
                 xAxis: {
                     type: 'category',
@@ -53,22 +53,7 @@ export default {
                 yAxis: {
                     type: 'value'
                 },
-                series: [
-                    {
-                        name: '总量',
-                        type: 'line',
-                        step:true,
-                        data: this.max,
-                        showSymbol: false
-                    },
-                    {
-                        name: '已使用',
-                        type: 'line',
-                        step:false,
-                        data: this.use,
-                        showSymbol: false
-                    }
-                ]
+                series: this.serviceData
             }
         }
     },

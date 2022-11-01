@@ -1,9 +1,11 @@
 <template>
     <div>
         <!--系统内存监控折线图-->
-        <div><LineChart lineChartTitle="系统内存监控" :xAxisArray="systemXAxisArray" :use="systemUseMemory" :max="systemMaxMemory" /></div>
-        <div><LineChart lineChartTitle="JVM内存监控" :xAxisArray="systemXAxisArray" :use="jvmUseMemory" :max="jvmMaxMemory" /></div>
-        <div><LineChart lineChartTitle="系统Swap监控" :xAxisArray="systemXAxisArray" :use="swapUseMemory" :max="swapMaxMemory" /></div>
+        <div><LineChart lineChartTitle="系统内存监控" :xAxisArray="systemXAxisArray" :legendData="memoryLegendData" :serviceData="systemMemoryServiceData"/></div>
+        <!--jvm内存监控折线图-->
+        <div><LineChart lineChartTitle="JVM内存监控" :xAxisArray="systemXAxisArray"  :legendData="memoryLegendData" :serviceData="jvmMemoryServiceData"/></div>
+        <!--swap内存监控折线图-->
+        <div><LineChart lineChartTitle="系统Swap监控" :xAxisArray="systemXAxisArray" :legendData="memoryLegendData" :serviceData="swapMemoryServiceData"/></div>
     </div>
 </template>
 
@@ -15,6 +17,8 @@ export default {
     name: "SystemMonitors",
     data(){
         return {
+            memoryLegendData:["总量","已使用"],
+            
             //------------------------------------系统内存监控数据---------------------------------------------------------------
             systemXAxisArray:[],
             systemUseMemory:[],
@@ -119,6 +123,66 @@ export default {
     },
     components:{
         LineChart
+    },
+    computed: {
+        /**
+         * 系统内存折线图数据
+         */
+        systemMemoryServiceData(){
+            return [{
+                        name:'总量',
+                        type:'line',
+                        step:true,
+                        data:this.systemMaxMemory,
+                        showSymbol:false
+                    },
+                    {
+                        name:'已使用',
+                        type:'line',
+                        step:false,
+                        data:this.systemUseMemory,
+                        showSymbol:false
+                    }]
+        },
+        /**
+         * jvm折线图数据
+         */
+        jvmMemoryServiceData(){
+            return [{
+                        name:'总量',
+                        type:'line',
+                        step:true,
+                        data:this.jvmMaxMemory,
+                        showSymbol:false
+                    },
+                    {
+                        name:'已使用',
+                        type:'line',
+                        step:false,
+                        data:this.jvmUseMemory,
+                        showSymbol:false
+                    }
+                ]
+            },
+        /**
+         * jvm折线图数据
+         */
+        swapMemoryServiceData(){
+            return [{
+                        name:'总量',
+                        type:'line',
+                        step:true,
+                        data:this.swapMaxMemory,
+                        showSymbol:false
+                    },
+                    {
+                        name:'已使用',
+                        type:'line',
+                        step:false,
+                        data:this.swapUseMemory,
+                        showSymbol:false
+                    }]
+        }
     }
 }
 </script>
