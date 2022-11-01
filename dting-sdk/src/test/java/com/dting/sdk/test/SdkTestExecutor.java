@@ -1,17 +1,12 @@
 package com.dting.sdk.test;
 
-import cn.hutool.core.util.IdUtil;
-import com.dting.Subject;
 import com.dting.message.client.config.MessageClientConfig;
 import com.dting.sdk.reactor.MessageReactor;
 import com.dting.thread.pool.DtingRunnable;
 import com.dting.thread.pool.DtingThreadPoolExecutor;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
@@ -34,7 +29,7 @@ public class SdkTestExecutor {
 
         MessageReactor.start(Collections.singletonList(config));
 
-        DtingThreadPoolExecutor threadPoolExecutor = new DtingThreadPoolExecutor(1,1,60L, TimeUnit.SECONDS,new LinkedBlockingQueue<>(10),"tese-pool");
+        DtingThreadPoolExecutor threadPoolExecutor = new DtingThreadPoolExecutor(1, 1, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<>(10), "tese-pool");
 
         threadPoolExecutor.execute(new DtingRunnable("test-task", () -> {
             try {
