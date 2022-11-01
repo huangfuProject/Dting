@@ -1,5 +1,6 @@
 package com.dting.show.server.controller;
 
+import com.dting.show.server.annotations.GlobalResultPackage;
 import com.dting.show.server.conditions.MemoryBatchCondition;
 import com.dting.show.server.service.MessageMemorySnapshotService;
 import com.dting.show.server.vos.monitoring.MemoryDataMonitoringVo;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2022年10月28日15:23:30
  */
 @RestController
+@GlobalResultPackage
 @RequestMapping("/memory")
 public class SystemMemoryController {
 

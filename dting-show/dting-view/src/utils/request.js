@@ -39,11 +39,11 @@ instance.interceptors.response.use(
     // 对响应数据做点什么
     //进度条关闭
     NProgress.done();
-    // let result = response.data;
-    // if (result.code !== "000000") {
-    //   Promise.reject(result.msg);
-    //   return null;
-    // }
+    let result = response.data;
+    if (result.code !== "000000") {
+      alert(result.message)
+      return null;
+    }
     return response;
   },
   function(error) {

@@ -83,9 +83,11 @@ export default {
                 startTime:1666920510100,
                 endTime:-1
             }
+            //post方式请求后台获得初始化的表表数据
             post('/memory/memoryMonitoring', obj).then(res =>{
-                this.refreshSystemMemoryData(res);
-                const monitorId = res.monitorId;
+                const data = res.result;
+                this.refreshSystemMemoryData(data);
+                const monitorId = data.monitorId;
                 this.connectWebsocket(monitorId);
             })
         },
