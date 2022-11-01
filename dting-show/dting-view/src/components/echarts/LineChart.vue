@@ -10,20 +10,20 @@ import EchartsPackage from './EchartsPackage.vue'
 export default {
     name: "LineChart",
     props:{
-        systemXAxisArray:[],
-        systemUse:[],
-        systemMax:[],
+        xAxisArray:[],
+        use:[],
+        max:[],
         lineChartTitle:{
             type: String,
             default:""
         },
         height: {
             type:String,
-            default: "600px"
+            default: ""
         },
         width: {
             type:String,
-            default: "800px"
+            default: ""
         }
     },
     computed: {
@@ -45,7 +45,7 @@ export default {
                     type: 'category',
                     show: true,
                     boundaryGap: false,
-                    data: this.systemXAxisArray,
+                    data: this.xAxisArray,
                     axisLabel: {
                         interval: 2
                     }
@@ -58,14 +58,14 @@ export default {
                         name: '总量',
                         type: 'line',
                         step:true,
-                        data: this.systemMax,
+                        data: this.max,
                         showSymbol: false
                     },
                     {
                         name: '已使用',
                         type: 'line',
                         step:false,
-                        data: this.systemUse,
+                        data: this.use,
                         showSymbol: false
                     }
                 ]
@@ -76,9 +76,9 @@ export default {
         EchartsPackage
     },
     watch: {
-        systemXAxisArray(){
+        xAxisArray(){
             //动态变更首尾数据
-            this.optionData.xAxis.axisLabel.interval=this.systemXAxisArray.length-2
+            this.optionData.xAxis.axisLabel.interval=this.xAxisArray.length-2
         }
     }
 }

@@ -1,9 +1,9 @@
 <template>
     <div>
         <!--系统内存监控折线图-->
-        <div><LineChart lineChartTitle="系统内存监控" :systemXAxisArray="systemXAxisArray" :systemUse="systemUseMemory" :systemMax="systemMaxMemory" height="300px" width="400px"/></div>
-        <div><LineChart lineChartTitle="JVM内存监控" :systemXAxisArray="systemXAxisArray" :systemUse="systemUseMemory" :systemMax="systemMaxMemory"  height="300px" width="400px"/></div>
-        <div><LineChart lineChartTitle="系统Swap监控" :systemXAxisArray="systemXAxisArray" :systemUse="systemUseMemory" :systemMax="systemMaxMemory" height="300px" width="400px"/></div>
+        <div><LineChart lineChartTitle="系统内存监控" :xAxisArray="systemXAxisArray" :use="systemUseMemory" :max="systemMaxMemory" /></div>
+        <div><LineChart lineChartTitle="JVM内存监控" :xAxisArray="systemXAxisArray" :use="jvmUseMemory" :max="jvmMaxMemory" /></div>
+        <div><LineChart lineChartTitle="系统Swap监控" :xAxisArray="systemXAxisArray" :use="swapUseMemory" :max="swapMaxMemory" /></div>
     </div>
 </template>
 
@@ -18,23 +18,40 @@ export default {
             //------------------------------------系统内存监控数据---------------------------------------------------------------
             systemXAxisArray:[],
             systemUseMemory:[],
-            systemMaxMemory:[]
-            //------------------------------------jvm内存监控数据---------------------------------------------------------------
+            systemMaxMemory:[],
+            //------------------------------------jvm内存监控数据------------------------------------------------------------
+            jvmUseMemory:[],
+            jvmMaxMemory:[],
             //------------------------------------swap监控数据---------------------------------------------------------------
+            swapUseMemory:[],
+            swapMaxMemory:[],
         }
     },
     methods:{
         //可以将一个数据转换为图标需要的数据格式
-        monitorsMemoryDataHandler(obj) {
+        monitorsMemoryDataHandler(obj, type) {
             if (typeof obj == 'string') {
                 obj = JSON.parse(obj); 
             }
-            // x轴坐标展示
-            this.systemXAxisArray.push(obj.dateValue)
-            // 内存的使用数据
-            this.systemUseMemory.push(obj.useSystemMemory)
-            //内存的最大值
-            this.systemMaxMemory.push(obj.maxSystemMemory)
+            if(type === 'system') {
+                // x轴坐标展示
+                this.systemXAxisArray.push(obj.dateValue)
+                // 内存的使用数据
+                this.systemUseMemory.push(obj.useSystemMemory)
+                //内存的最大值
+                this.systemMaxMemory.push(obj.maxSystemMemory)
+            } else if(type === 'jvm') {
+                // jvm内存的使用数据
+                this.jvmUseMemory.push(obj.useJvmMemory)
+                // jvm内存的最大值
+                this.jvmMaxMemory.push(obj.maxJvmMemory)
+            } else if(type === 'swap') {
+                // swap内存的使用数据
+                this.swapUseMemory.push(obj.useSystemSwap)
+                // swap内存的最大值
+                this.swapMaxMemory.push(obj.maxSystemSwap)
+            }
+
         },
         //websocket 消息回调
         websocketMessageCallback(obj){
@@ -68,16 +85,33 @@ export default {
                 this.connectWebsocket(monitorId);
             })
         },
-        // 将后端的内存数据解包为图标需要数据格式
+        // 将后端的内存、jvm内存、交换区数据解包为图标需要数据格式
         refreshSystemMemoryData(res){
+            //系统内存数据
             const memoryDataList = res.memoryDataVo.systemMemoryDataList
             if(memoryDataList) {
                 for(var memoryData of memoryDataList) {
                     //开始将内存数据映射到图表
-                    this.monitorsMemoryDataHandler(memoryData)
+                    this.monitorsMemoryDataHandler(memoryData, 'system')
                 }
-
             }
+            //jvm内存数据
+            const jvmMemoryDataList = res.memoryDataVo.jvmMemoryDataList
+            if(jvmMemoryDataList) {
+                for(var jvmMemoryData of jvmMemoryDataList) {
+                    //开始将内存数据映射到图表
+                    this.monitorsMemoryDataHandler(jvmMemoryData, 'jvm')
+                }
+            }
+            //交换区数据
+            const systemSwapDataList = res.memoryDataVo.systemSwapDataList
+            if(systemSwapDataList) {
+                for(var systemSwapData of systemSwapDataList) {
+                    //开始将内存数据映射到图表
+                    this.monitorsMemoryDataHandler(systemSwapData, 'swap')
+                }
+            }
+            
         }
     },
     created: function(){

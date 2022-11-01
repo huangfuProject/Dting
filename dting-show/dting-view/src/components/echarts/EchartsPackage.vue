@@ -9,11 +9,11 @@ export default {
     props: {
         height: {
             type:String,
-            default: "600px"
+            default: ""
         },
         width: {
             type:String,
-            default: "800px"
+            default: ""
         },
         options: {}
     },
@@ -34,8 +34,8 @@ export default {
     computed:{
         style(){
             return {
-                    width: this.width,
-                    height: this.height
+                    width: this.width?this.width:'600px',
+                    height: this.height?this.height:'300px'
             }
         }
     },
