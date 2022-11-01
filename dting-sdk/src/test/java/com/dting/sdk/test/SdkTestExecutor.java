@@ -1,5 +1,6 @@
 package com.dting.sdk.test;
 
+import cn.hutool.core.util.IdUtil;
 import com.dting.Subject;
 import com.dting.message.client.config.MessageClientConfig;
 import com.dting.sdk.reactor.MessageReactor;
@@ -7,8 +8,10 @@ import com.dting.thread.pool.DtingRunnable;
 import com.dting.thread.pool.DtingThreadPoolExecutor;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
@@ -51,10 +54,14 @@ public class SdkTestExecutor {
         }));
 
         threadPoolExecutor.execute(new DtingRunnable("test-task", () -> {
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException interruptedException) {
-                interruptedException.printStackTrace();
+            List<String> datas = new ArrayList<>();
+            while (true) {
+                datas.add(IdUtil.fastSimpleUUID());
+
+                if(datas.size() > 10000000) {
+                    System.out.println("----------------------");
+                    datas.clear();
+                }
             }
         }));
 
