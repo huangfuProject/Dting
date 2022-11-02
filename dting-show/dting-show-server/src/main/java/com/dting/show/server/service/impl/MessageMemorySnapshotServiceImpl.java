@@ -50,8 +50,7 @@ public class MessageMemorySnapshotServiceImpl implements MessageMemorySnapshotSe
             monitorBatchCondition.setEndTime(System.currentTimeMillis());
         }
         MemoryDataVo memoryDataVo = ((MessageMemorySnapshotService) AopContext.currentProxy()).memoryQueryByCondition(monitorBatchCondition);
-        String monitorId = IdUtil.fastSimpleUUID();
-        memoryDataVo.setMonitorId(monitorId);
+        String monitorId = memoryDataVo.getMonitorId();
         if (enablePlan) {
             //判断redis
             String sessionActiveKey = RedisKeyUtil.sessionActiveKeyFormat(monitorId);
@@ -102,6 +101,8 @@ public class MessageMemorySnapshotServiceImpl implements MessageMemorySnapshotSe
         if (CollectionUtil.isNotEmpty(messageMemorySnapshots)) {
             memoryDataVo.setLastTime(messageMemorySnapshots.get(messageMemorySnapshots.size() - 1).getCollectTime());
         }
+        String monitorId = IdUtil.fastSimpleUUID();
+        memoryDataVo.setMonitorId(monitorId);
         return memoryDataVo;
     }
 

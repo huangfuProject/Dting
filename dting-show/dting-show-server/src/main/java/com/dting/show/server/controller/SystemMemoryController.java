@@ -30,15 +30,4 @@ public class SystemMemoryController {
     public MemoryDataVo memoryMonitoring(@RequestBody MonitorBatchCondition monitorBatchCondition) {
         return messageMemorySnapshotService.memoryMonitoring(monitorBatchCondition, true);
     }
-
-    /**
-     * 批量的根据条件获取内存数据
-     *
-     * @param monitorBatchCondition 内存批处理条件
-     * @return 返回所有的内存数据
-     */
-    @PostMapping("findMemoryData")
-    public MemoryDataVo findMemoryData(@RequestBody MonitorBatchCondition monitorBatchCondition) {
-        return messageMemorySnapshotService.memoryQueryByCondition(monitorBatchCondition);
-    }
 }

@@ -51,10 +51,7 @@ public class MessageCpuSnapshotServiceImpl implements MessageCpuSnapshotService 
             monitorBatchCondition.setEndTime(System.currentTimeMillis());
         }
         SystemCpuDataVo systemCpuDataVo = ((MessageCpuSnapshotServiceImpl) AopContext.currentProxy()).cpuQueryByCondition(monitorBatchCondition);
-        String monitorId = IdUtil.fastSimpleUUID();
-        systemCpuDataVo.setMonitorId(monitorId);
-
-
+        String monitorId = systemCpuDataVo.getMonitorId();
         if (enablePlan) {
             //判断redis
             String sessionActiveKey = RedisKeyUtil.sessionActiveKeyFormat(monitorId);
@@ -67,8 +64,7 @@ public class MessageCpuSnapshotServiceImpl implements MessageCpuSnapshotService 
             //5秒后重新执行
             ScheduledTaskManagement.addJob(cpuDataRefreshTask, System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(5));
         }
-
-        return null;
+        return systemCpuDataVo;
     }
 
     @Override
@@ -84,6 +80,8 @@ public class MessageCpuSnapshotServiceImpl implements MessageCpuSnapshotService 
             return systemCpuData;
         }).collect(Collectors.toList());
         systemCpuDataVo.setSystemCpuDataList(cpuDataList);
+        String monitorId = IdUtil.fastSimpleUUID();
+        systemCpuDataVo.setMonitorId(monitorId);
         return systemCpuDataVo;
     }
 
