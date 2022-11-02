@@ -1,9 +1,7 @@
-package com.dting.show.server.vos.monitoring;
+package com.dting.show.server.vos.data;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.io.Serializable;
 
 /**
  * 系统内存数据

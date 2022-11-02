@@ -11,6 +11,9 @@ import com.dting.show.server.mapper.MessageMemorySnapshotMapper;
 import com.dting.show.server.service.MessageMemorySnapshotService;
 import com.dting.show.server.tasks.MemoryDataRefreshTask;
 import com.dting.show.server.utils.ScheduledTaskManagement;
+import com.dting.show.server.vos.data.JvmMemoryData;
+import com.dting.show.server.vos.data.SystemMemoryData;
+import com.dting.show.server.vos.data.SystemSwapData;
 import com.dting.show.server.vos.monitoring.*;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -41,16 +44,14 @@ public class MessageMemorySnapshotServiceImpl implements MessageMemorySnapshotSe
     }
 
     @Override
-    public MemoryDataMonitoringVo memoryMonitoring(MemoryBatchCondition memoryBatchCondition, boolean enablePlan) {
+    public MemoryDataVo memoryMonitoring(MemoryBatchCondition memoryBatchCondition, boolean enablePlan) {
         long endTime = memoryBatchCondition.getEndTime();
         if (endTime < 0) {
             memoryBatchCondition.setEndTime(System.currentTimeMillis());
         }
         MemoryDataVo memoryDataVo = ((MessageMemorySnapshotService) AopContext.currentProxy()).memoryQueryByCondition(memoryBatchCondition);
-        MemoryDataMonitoringVo memoryDataMonitoringVo = new MemoryDataMonitoringVo();
         String monitorId = IdUtil.fastSimpleUUID();
-        memoryDataMonitoringVo.setMonitorId(monitorId);
-        memoryDataMonitoringVo.setMemoryDataVo(memoryDataVo);
+        memoryDataVo.setMonitorId(monitorId);
         if (enablePlan) {
             //判断redis
             String sessionActiveKey = RedisKeyUtil.sessionActiveKeyFormat(monitorId);
@@ -63,7 +64,7 @@ public class MessageMemorySnapshotServiceImpl implements MessageMemorySnapshotSe
             //5秒后重新执行
             ScheduledTaskManagement.addJob(memoryDataRefreshTask, System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(5));
         }
-        return memoryDataMonitoringVo;
+        return memoryDataVo;
     }
 
     @Override

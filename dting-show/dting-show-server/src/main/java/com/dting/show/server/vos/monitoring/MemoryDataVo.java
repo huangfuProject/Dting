@@ -1,6 +1,11 @@
 package com.dting.show.server.vos.monitoring;
 
+import cn.hutool.core.collection.CollectionUtil;
+import com.dting.show.server.vos.data.JvmMemoryData;
+import com.dting.show.server.vos.data.SystemMemoryData;
+import com.dting.show.server.vos.data.SystemSwapData;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,7 +18,8 @@ import java.util.List;
  * @date 2022年10月28日15:34:07
  */
 @Data
-public class MemoryDataVo implements Serializable {
+@EqualsAndHashCode(callSuper = true)
+public class MemoryDataVo extends BaseMonitorVo implements Serializable {
     private static final long serialVersionUID = 5840542101463789141L;
     /**
      * 内存数据
@@ -60,5 +66,12 @@ public class MemoryDataVo implements Serializable {
      */
     public void addSystemSwapData(SystemSwapData systemSwapData) {
         this.systemSwapDataList.add(systemSwapData);
+    }
+
+    public boolean isEmpty() {
+        List<JvmMemoryData> jvmMemoryDataList = this.getJvmMemoryDataList();
+        List<SystemMemoryData> systemMemoryDataList = this.getSystemMemoryDataList();
+        List<SystemSwapData> systemSwapDataList = this.getSystemSwapDataList();
+        return CollectionUtil.isEmpty(jvmMemoryDataList) && CollectionUtil.isEmpty(systemMemoryDataList) && CollectionUtil.isEmpty(systemSwapDataList);
     }
 }

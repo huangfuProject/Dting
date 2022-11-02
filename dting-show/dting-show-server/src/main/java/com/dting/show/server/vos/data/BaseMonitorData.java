@@ -1,4 +1,4 @@
-package com.dting.show.server.vos.monitoring;
+package com.dting.show.server.vos.data;
 
 import cn.hutool.core.date.DateUtil;
 import lombok.Data;
@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 基类数据
+ * 监控的数据相关的基类
  *
  * @author huangfu
  * @date 2022年10月28日15:35:52

@@ -2,7 +2,6 @@ package com.dting.show.server.service;
 
 import com.dting.show.server.conditions.MemoryBatchCondition;
 import com.dting.show.server.entity.MessageMemorySnapshot;
-import com.dting.show.server.vos.monitoring.MemoryDataMonitoringVo;
 import com.dting.show.server.vos.monitoring.MemoryDataVo;
 
 import java.util.List;
@@ -23,7 +22,7 @@ public interface MessageMemorySnapshotService {
      * @param enablePlan           启动计划
      * @return 返回一个监听数据，并开启监听任务
      */
-    MemoryDataMonitoringVo memoryMonitoring(MemoryBatchCondition memoryBatchCondition, boolean enablePlan);
+    MemoryDataVo memoryMonitoring(MemoryBatchCondition memoryBatchCondition, boolean enablePlan);
 
 
     /**

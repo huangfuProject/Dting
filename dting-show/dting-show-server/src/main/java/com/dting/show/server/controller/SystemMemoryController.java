@@ -3,7 +3,6 @@ package com.dting.show.server.controller;
 import com.dting.show.server.annotations.GlobalResultPackage;
 import com.dting.show.server.conditions.MemoryBatchCondition;
 import com.dting.show.server.service.MessageMemorySnapshotService;
-import com.dting.show.server.vos.monitoring.MemoryDataMonitoringVo;
 import com.dting.show.server.vos.monitoring.MemoryDataVo;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +27,7 @@ public class SystemMemoryController {
     }
 
     @PostMapping("memoryMonitoring")
-    public MemoryDataMonitoringVo memoryMonitoring(@RequestBody MemoryBatchCondition memoryBatchCondition){
+    public MemoryDataVo memoryMonitoring(@RequestBody MemoryBatchCondition memoryBatchCondition) {
         return messageMemorySnapshotService.memoryMonitoring(memoryBatchCondition, true);
     }
 

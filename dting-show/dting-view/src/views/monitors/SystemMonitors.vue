@@ -17,6 +17,9 @@ export default {
     name: "SystemMonitors",
     data(){
         return {
+            // 监控的id
+            sessionId:"",
+
             memoryLegendData:["总量","已使用"],
             
             //------------------------------------系统内存监控数据---------------------------------------------------------------
@@ -89,12 +92,13 @@ export default {
                 this.refreshSystemMemoryData(data);
                 const monitorId = data.monitorId;
                 this.connectWebsocket(monitorId);
+                this.sessionId = monitorId;
             })
         },
         // 将后端的内存、jvm内存、交换区数据解包为图标需要数据格式
         refreshSystemMemoryData(res){
             //系统内存数据
-            const memoryDataList = res.memoryDataVo.systemMemoryDataList
+            const memoryDataList = res.systemMemoryDataList
             if(memoryDataList) {
                 for(var memoryData of memoryDataList) {
                     //开始将内存数据映射到图表
@@ -102,7 +106,7 @@ export default {
                 }
             }
             //jvm内存数据
-            const jvmMemoryDataList = res.memoryDataVo.jvmMemoryDataList
+            const jvmMemoryDataList = res.jvmMemoryDataList
             if(jvmMemoryDataList) {
                 for(var jvmMemoryData of jvmMemoryDataList) {
                     //开始将内存数据映射到图表
@@ -110,7 +114,7 @@ export default {
                 }
             }
             //交换区数据
-            const systemSwapDataList = res.memoryDataVo.systemSwapDataList
+            const systemSwapDataList = res.systemSwapDataList
             if(systemSwapDataList) {
                 for(var systemSwapData of systemSwapDataList) {
                     //开始将内存数据映射到图表

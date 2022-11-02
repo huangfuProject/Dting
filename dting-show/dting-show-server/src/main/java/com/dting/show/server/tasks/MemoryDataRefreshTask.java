@@ -7,7 +7,7 @@ import com.dting.show.server.constant.RedisKeyUtil;
 import com.dting.show.server.service.MessageMemorySnapshotService;
 import com.dting.show.server.utils.ScheduledTaskManagement;
 import com.dting.show.server.utils.SpringUtil;
-import com.dting.show.server.vos.monitoring.MemoryDataMonitoringVo;
+import com.dting.show.server.vos.monitoring.MemoryDataVo;
 import io.netty.util.Timeout;
 import io.netty.util.TimerTask;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -84,11 +84,11 @@ public class MemoryDataRefreshTask implements TimerTask {
         POOL_EXECUTOR.execute(() -> {
             try {
                 //获取内存数据
-                MemoryDataMonitoringVo memoryDataMonitoringVo = messageMemorySnapshotService.memoryMonitoring(this.memoryBatchCondition, false);
+                MemoryDataVo memoryDataVo = messageMemorySnapshotService.memoryMonitoring(this.memoryBatchCondition, false);
                 String dtingMemoryCacheKey = RedisKeyUtil.dtingMemoryCacheFormat(this.sessionId);
-                if (!memoryDataMonitoringVo.isEmpty()) {
+                if (!memoryDataVo.isEmpty()) {
                     //缓存到redis中
-                    stringRedisTemplate.opsForList().leftPush(dtingMemoryCacheKey, JSON.toJSONString(memoryDataMonitoringVo));
+                    stringRedisTemplate.opsForList().leftPush(dtingMemoryCacheKey, JSON.toJSONString(memoryDataVo));
                 }
                 //设置过期时间为2分钟  对数据续约
                 stringRedisTemplate.expire(dtingMemoryCacheKey, 120, TimeUnit.SECONDS);
@@ -103,7 +103,7 @@ public class MemoryDataRefreshTask implements TimerTask {
                     memoryBatchConditionCopy.setEndTime(System.currentTimeMillis());
                     //重新加载任务
                     MemoryDataRefreshTask memoryDataRefreshTask = new MemoryDataRefreshTask(memoryBatchConditionCopy, sessionId);
-                    //15秒后重新执行
+                    //5秒后重新执行
                     ScheduledTaskManagement.addJob(memoryDataRefreshTask, System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(5));
                 }
             }
