@@ -4,7 +4,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.dting.show.server.conditions.MemoryBatchCondition;
+import com.dting.show.server.conditions.MonitorBatchCondition;
 import com.dting.show.server.constant.RedisKeyUtil;
 import com.dting.show.server.entity.MessageMemorySnapshot;
 import com.dting.show.server.mapper.MessageMemorySnapshotMapper;
@@ -44,12 +44,12 @@ public class MessageMemorySnapshotServiceImpl implements MessageMemorySnapshotSe
     }
 
     @Override
-    public MemoryDataVo memoryMonitoring(MemoryBatchCondition memoryBatchCondition, boolean enablePlan) {
-        long endTime = memoryBatchCondition.getEndTime();
+    public MemoryDataVo memoryMonitoring(MonitorBatchCondition monitorBatchCondition, boolean enablePlan) {
+        long endTime = monitorBatchCondition.getEndTime();
         if (endTime < 0) {
-            memoryBatchCondition.setEndTime(System.currentTimeMillis());
+            monitorBatchCondition.setEndTime(System.currentTimeMillis());
         }
-        MemoryDataVo memoryDataVo = ((MessageMemorySnapshotService) AopContext.currentProxy()).memoryQueryByCondition(memoryBatchCondition);
+        MemoryDataVo memoryDataVo = ((MessageMemorySnapshotService) AopContext.currentProxy()).memoryQueryByCondition(monitorBatchCondition);
         String monitorId = IdUtil.fastSimpleUUID();
         memoryDataVo.setMonitorId(monitorId);
         if (enablePlan) {
@@ -58,9 +58,9 @@ public class MessageMemorySnapshotServiceImpl implements MessageMemorySnapshotSe
             //开启数据 并设置过期时间
             redisTemplate.opsForValue().set(sessionActiveKey, "1", 120, TimeUnit.SECONDS);
             //将结束时间设置为开始时间
-            memoryBatchCondition.setStartTime(memoryBatchCondition.getEndTime());
+            monitorBatchCondition.setStartTime(monitorBatchCondition.getEndTime());
             //生成任务
-            MemoryDataRefreshTask memoryDataRefreshTask = new MemoryDataRefreshTask(memoryBatchCondition, monitorId);
+            MemoryDataRefreshTask memoryDataRefreshTask = new MemoryDataRefreshTask(monitorBatchCondition, monitorId);
             //5秒后重新执行
             ScheduledTaskManagement.addJob(memoryDataRefreshTask, System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(5));
         }
@@ -68,9 +68,9 @@ public class MessageMemorySnapshotServiceImpl implements MessageMemorySnapshotSe
     }
 
     @Override
-    public MemoryDataVo memoryQueryByCondition(MemoryBatchCondition memoryBatchCondition) {
+    public MemoryDataVo memoryQueryByCondition(MonitorBatchCondition monitorBatchCondition) {
         //查询数据
-        List<MessageMemorySnapshot> messageMemorySnapshots = ((MessageMemorySnapshotService) AopContext.currentProxy()).memoryBatchFindByCondition(memoryBatchCondition);
+        List<MessageMemorySnapshot> messageMemorySnapshots = ((MessageMemorySnapshotService) AopContext.currentProxy()).memoryBatchFindByCondition(monitorBatchCondition);
         //数据转换
         MemoryDataVo memoryDataVo = new MemoryDataVo();
         messageMemorySnapshots.forEach(messageMemorySnapshot -> {
@@ -116,20 +116,20 @@ public class MessageMemorySnapshotServiceImpl implements MessageMemorySnapshotSe
     }
 
     @Override
-    public List<MessageMemorySnapshot> memoryBatchFindByCondition(MemoryBatchCondition memoryBatchCondition) {
+    public List<MessageMemorySnapshot> memoryBatchFindByCondition(MonitorBatchCondition monitorBatchCondition) {
         QueryWrapper<MessageMemorySnapshot> queryWrapper = new QueryWrapper<>();
 
-        String serverEnv = memoryBatchCondition.getServerEnv();
-        String serverKey = memoryBatchCondition.getServerKey();
-        String instanceKey = memoryBatchCondition.getInstanceKey();
+        String serverEnv = monitorBatchCondition.getServerEnv();
+        String serverKey = monitorBatchCondition.getServerKey();
+        String instanceKey = monitorBatchCondition.getInstanceKey();
 
 
         if (StrUtil.isBlank(serverEnv) || StrUtil.isBlank(serverKey) || StrUtil.isBlank(instanceKey)) {
             return new ArrayList<>();
         }
 
-        Long startTime = memoryBatchCondition.getStartTime();
-        Long endTime = memoryBatchCondition.getEndTime();
+        Long startTime = monitorBatchCondition.getStartTime();
+        Long endTime = monitorBatchCondition.getEndTime();
 
         // 消息标签
         queryWrapper.eq("server_env", serverEnv);

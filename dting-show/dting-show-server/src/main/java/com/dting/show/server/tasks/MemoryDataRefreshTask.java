@@ -2,7 +2,7 @@ package com.dting.show.server.tasks;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.alibaba.fastjson.JSON;
-import com.dting.show.server.conditions.MemoryBatchCondition;
+import com.dting.show.server.conditions.MonitorBatchCondition;
 import com.dting.show.server.constant.RedisKeyUtil;
 import com.dting.show.server.service.MessageMemorySnapshotService;
 import com.dting.show.server.utils.ScheduledTaskManagement;
@@ -49,7 +49,7 @@ public class MemoryDataRefreshTask implements TimerTask {
     /**
      * 本次内存查询的条件
      */
-    private final MemoryBatchCondition memoryBatchCondition;
+    private final MonitorBatchCondition monitorBatchCondition;
 
     /**
      * 会话id
@@ -66,8 +66,8 @@ public class MemoryDataRefreshTask implements TimerTask {
      */
     private final MessageMemorySnapshotService messageMemorySnapshotService;
 
-    public MemoryDataRefreshTask(MemoryBatchCondition memoryBatchCondition, String sessionId) {
-        this.memoryBatchCondition = memoryBatchCondition;
+    public MemoryDataRefreshTask(MonitorBatchCondition monitorBatchCondition, String sessionId) {
+        this.monitorBatchCondition = monitorBatchCondition;
         this.sessionId = sessionId;
         this.stringRedisTemplate = SpringUtil.getBean(StringRedisTemplate.class);
         this.messageMemorySnapshotService = SpringUtil.getBean(MessageMemorySnapshotService.class);
@@ -84,7 +84,7 @@ public class MemoryDataRefreshTask implements TimerTask {
         POOL_EXECUTOR.execute(() -> {
             try {
                 //获取内存数据
-                MemoryDataVo memoryDataVo = messageMemorySnapshotService.memoryMonitoring(this.memoryBatchCondition, false);
+                MemoryDataVo memoryDataVo = messageMemorySnapshotService.memoryMonitoring(this.monitorBatchCondition, false);
                 String dtingMemoryCacheKey = RedisKeyUtil.dtingMemoryCacheFormat(this.sessionId);
                 if (!memoryDataVo.isEmpty()) {
                     //缓存到redis中
@@ -97,12 +97,12 @@ public class MemoryDataRefreshTask implements TimerTask {
                 String sessionActiveKey = RedisKeyUtil.sessionActiveKeyFormat(this.sessionId);
                 Boolean hasKey = stringRedisTemplate.hasKey(sessionActiveKey);
                 if (hasKey != null && hasKey) {
-                    MemoryBatchCondition memoryBatchConditionCopy = new MemoryBatchCondition();
-                    BeanUtil.copyProperties(memoryBatchCondition, memoryBatchConditionCopy);
-                    memoryBatchConditionCopy.setStartTime(memoryBatchConditionCopy.getEndTime());
-                    memoryBatchConditionCopy.setEndTime(System.currentTimeMillis());
+                    MonitorBatchCondition monitorBatchConditionCopy = new MonitorBatchCondition();
+                    BeanUtil.copyProperties(monitorBatchCondition, monitorBatchConditionCopy);
+                    monitorBatchConditionCopy.setStartTime(monitorBatchConditionCopy.getEndTime());
+                    monitorBatchConditionCopy.setEndTime(System.currentTimeMillis());
                     //重新加载任务
-                    MemoryDataRefreshTask memoryDataRefreshTask = new MemoryDataRefreshTask(memoryBatchConditionCopy, sessionId);
+                    MemoryDataRefreshTask memoryDataRefreshTask = new MemoryDataRefreshTask(monitorBatchConditionCopy, sessionId);
                     //5秒后重新执行
                     ScheduledTaskManagement.addJob(memoryDataRefreshTask, System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(5));
                 }

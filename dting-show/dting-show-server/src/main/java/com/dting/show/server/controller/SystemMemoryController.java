@@ -1,7 +1,7 @@
 package com.dting.show.server.controller;
 
 import com.dting.show.server.annotations.GlobalResultPackage;
-import com.dting.show.server.conditions.MemoryBatchCondition;
+import com.dting.show.server.conditions.MonitorBatchCondition;
 import com.dting.show.server.service.MessageMemorySnapshotService;
 import com.dting.show.server.vos.monitoring.MemoryDataVo;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,18 +27,18 @@ public class SystemMemoryController {
     }
 
     @PostMapping("memoryMonitoring")
-    public MemoryDataVo memoryMonitoring(@RequestBody MemoryBatchCondition memoryBatchCondition) {
-        return messageMemorySnapshotService.memoryMonitoring(memoryBatchCondition, true);
+    public MemoryDataVo memoryMonitoring(@RequestBody MonitorBatchCondition monitorBatchCondition) {
+        return messageMemorySnapshotService.memoryMonitoring(monitorBatchCondition, true);
     }
 
     /**
      * 批量的根据条件获取内存数据
      *
-     * @param memoryBatchCondition 内存批处理条件
+     * @param monitorBatchCondition 内存批处理条件
      * @return 返回所有的内存数据
      */
     @PostMapping("findMemoryData")
-    public MemoryDataVo findMemoryData(@RequestBody MemoryBatchCondition memoryBatchCondition) {
-        return messageMemorySnapshotService.memoryQueryByCondition(memoryBatchCondition);
+    public MemoryDataVo findMemoryData(@RequestBody MonitorBatchCondition monitorBatchCondition) {
+        return messageMemorySnapshotService.memoryQueryByCondition(monitorBatchCondition);
     }
 }

@@ -5,13 +5,13 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * 系统级内存的查询条件
+ * 系统级监控的查询条件
  *
  * @author huangfu
  * @date 2022年10月27日08:37:38
  */
 @Data
-public class MemoryBatchCondition implements Serializable {
+public class MonitorBatchCondition implements Serializable {
 
     private static final long serialVersionUID = -5028176883744292629L;
 
