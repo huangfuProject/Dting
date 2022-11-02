@@ -14,7 +14,13 @@ public class MessageEntity {
     public static final String MEMORY_DATA_TYPE = "0";
 
     /**
+     * cpu数据
+     */
+    public static final String CPU_DATA_TYPE = "1";
+
+    /**
      * 0：内存数据
+     * 1: Cpu数据
      */
     private final String type;
 

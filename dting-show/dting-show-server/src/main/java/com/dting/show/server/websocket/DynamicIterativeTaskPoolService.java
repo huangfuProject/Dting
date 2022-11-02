@@ -3,10 +3,10 @@ package com.dting.show.server.websocket;
 
 import com.dting.show.server.constant.RedisKeyUtil;
 import com.dting.show.server.utils.SpringUtil;
+import com.dting.show.server.websocket.tasks.CpuRefreshTask;
 import com.dting.show.server.websocket.tasks.MemoryRefreshTask;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -43,6 +43,11 @@ public class DynamicIterativeTaskPoolService implements InitializingBean, Dispos
     private final static AtomicInteger MEMORY_THREAD_ID = new AtomicInteger(0);
 
     /**
+     * CPU的线程的id
+     */
+    private final static AtomicInteger CPU_THREAD_ID = new AtomicInteger(0);
+
+    /**
      * 线程池
      */
     private final static ScheduledThreadPoolExecutor DYNAMIC_THREAD = new ScheduledThreadPoolExecutor(1, r -> {
@@ -58,6 +63,16 @@ public class DynamicIterativeTaskPoolService implements InitializingBean, Dispos
     private final static ThreadPoolExecutor DYNAMIC_THREAD_MEMORY = new ThreadPoolExecutor(CORE_SIZE, CORE_SIZE * 2, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<>(1024), r -> {
         Thread thread = new Thread(r);
         thread.setName(String.format("DYNAMIC_THREAD_MEMORY:%s", MEMORY_THREAD_ID.incrementAndGet()));
+        return thread;
+    }, new ThreadPoolExecutor.CallerRunsPolicy());
+
+
+    /**
+     * 线程池 CPU动态更新线程池
+     */
+    private final static ThreadPoolExecutor DYNAMIC_THREAD_CPU = new ThreadPoolExecutor(CORE_SIZE, CORE_SIZE * 2, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<>(1024), r -> {
+        Thread thread = new Thread(r);
+        thread.setName(String.format("DYNAMIC_THREAD_CPU:%s", CPU_THREAD_ID.incrementAndGet()));
         return thread;
     }, new ThreadPoolExecutor.CallerRunsPolicy());
 
@@ -100,6 +115,8 @@ public class DynamicIterativeTaskPoolService implements InitializingBean, Dispos
                 SOCKET_POOL.forEach((sessionId, messageWebSocket) -> {
                     //内存数据监听
                     DYNAMIC_THREAD_MEMORY.execute(new MemoryRefreshTask(sessionId, messageWebSocket));
+                    //CPU数据监听
+                    DYNAMIC_THREAD_CPU.execute(new CpuRefreshTask(sessionId, messageWebSocket));
                 });
             }
         }, 1, 3, TimeUnit.SECONDS);
