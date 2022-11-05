@@ -26,6 +26,21 @@ export default {
             default: ""
         }
     },
+    methods:{
+
+        legendDataHandler(legendData){
+            var data = []
+            debugger
+            for(var i=0;i<legendData.length;i++){
+                if (i%2==0) {
+                    data.push("")
+                }
+                data.push(this.legendData[i]);
+            }
+
+            return data
+        },
+    },
     computed: {
         /**
          * 资源用量
@@ -39,7 +54,10 @@ export default {
                     trigger: 'axis'
                 },
                 legend: {
-                data: this.legendData
+                data: this.legendDataHandler(this.legendData)
+                },
+                grid: {
+                    top: 80
                 },
                 xAxis: {
                     type: 'category',

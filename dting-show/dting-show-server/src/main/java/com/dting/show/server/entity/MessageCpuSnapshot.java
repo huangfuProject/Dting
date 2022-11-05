@@ -23,12 +23,12 @@ public class MessageCpuSnapshot extends DtingMessageBaseEntity{
     /**
      * 用户使用比率
      */
-    private Double userUes;
+    private Double userUse;
 
     /**
      * 系统使用比率
      */
-    private Double systemUes;
+    private Double systemUse;
 
     /**
      * 等待率

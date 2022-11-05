@@ -8,8 +8,8 @@
         values
         <foreach collection="messageCpuSnapshotList" item="messageCpuSnapshot" separator=",">
             (#{messageCpuSnapshot.serverEnv}, #{messageCpuSnapshot.serverKey}, #{messageCpuSnapshot.instanceKey}, #{messageCpuSnapshot.messageIp},
-            #{messageCpuSnapshot.collectTime}, #{messageCpuSnapshot.totalUse}, #{messageCpuSnapshot.userUes},
-            #{messageCpuSnapshot.systemUes}, #{messageCpuSnapshot.wait}, #{messageCpuSnapshot.error}, #{messageCpuSnapshot.idle},
+            #{messageCpuSnapshot.collectTime}, #{messageCpuSnapshot.totalUse}, #{messageCpuSnapshot.userUse},
+            #{messageCpuSnapshot.systemUse}, #{messageCpuSnapshot.wait}, #{messageCpuSnapshot.error}, #{messageCpuSnapshot.idle},
             #{messageCpuSnapshot.cpuInfo})
         </foreach>
     </insert>

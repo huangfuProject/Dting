@@ -39,4 +39,9 @@ public class MonitorBatchCondition implements Serializable {
      * 结束时间
      */
     private Long endTime;
+
+    /**
+     * 当前的sessionId
+     */
+    private String sessionId;
 }

@@ -196,9 +196,9 @@ public class SystemInfoDataBufferReactor extends MessageBufferReactor<SystemInfo
             //总使用比率
             messageCpuSnapshot.setTotalUse(systemCpuGroupCollect.getCpuTotal());
             //用户使用比率
-            messageCpuSnapshot.setUserUes(systemCpuGroupCollect.getCpuUserUse());
+            messageCpuSnapshot.setUserUse(systemCpuGroupCollect.getCpuUserUse());
             //系统使用比率
-            messageCpuSnapshot.setSystemUes(systemCpuGroupCollect.getCpuSystemUse());
+            messageCpuSnapshot.setSystemUse(systemCpuGroupCollect.getCpuSystemUse());
             //等待率
             messageCpuSnapshot.setWait(systemCpuGroupCollect.getCpuWait());
             //错误率

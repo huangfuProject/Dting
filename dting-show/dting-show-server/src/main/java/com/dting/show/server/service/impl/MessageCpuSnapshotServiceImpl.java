@@ -70,18 +70,22 @@ public class MessageCpuSnapshotServiceImpl implements MessageCpuSnapshotService 
     @Override
     public SystemCpuDataVo cpuQueryByCondition(MonitorBatchCondition monitorBatchCondition) {
         //查询数据
-        List<MessageCpuSnapshot> messageMemorySnapshots = ((MessageCpuSnapshotService) AopContext.currentProxy()).cpuBatchFindByCondition(monitorBatchCondition);
+        List<MessageCpuSnapshot> messageCpuSnapshots = ((MessageCpuSnapshotService) AopContext.currentProxy()).cpuBatchFindByCondition(monitorBatchCondition);
         //数据转换
         SystemCpuDataVo systemCpuDataVo = new SystemCpuDataVo();
-        List<SystemCpuData> cpuDataList = messageMemorySnapshots.stream().map(messageMemorySnapshot -> {
+        List<SystemCpuData> cpuDataList = messageCpuSnapshots.stream().map(messageMemorySnapshot -> {
             SystemCpuData systemCpuData = new SystemCpuData();
             BeanUtil.copyProperties(messageMemorySnapshot, systemCpuData);
             systemCpuData.setDateValue(messageMemorySnapshot.getCollectTime());
             return systemCpuData;
         }).collect(Collectors.toList());
         systemCpuDataVo.setSystemCpuDataList(cpuDataList);
-        String monitorId = IdUtil.fastSimpleUUID();
-        systemCpuDataVo.setMonitorId(monitorId);
+        String sessionId = monitorBatchCondition.getSessionId();
+        systemCpuDataVo.setMonitorId(sessionId);
+        if(StrUtil.isBlank(sessionId)) {
+            throw new IllegalArgumentException("监控id为空！");
+        }
+
         return systemCpuDataVo;
     }
 

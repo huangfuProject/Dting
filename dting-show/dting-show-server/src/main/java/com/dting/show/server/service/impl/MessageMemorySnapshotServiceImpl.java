@@ -101,8 +101,11 @@ public class MessageMemorySnapshotServiceImpl implements MessageMemorySnapshotSe
         if (CollectionUtil.isNotEmpty(messageMemorySnapshots)) {
             memoryDataVo.setLastTime(messageMemorySnapshots.get(messageMemorySnapshots.size() - 1).getCollectTime());
         }
-        String monitorId = IdUtil.fastSimpleUUID();
-        memoryDataVo.setMonitorId(monitorId);
+        String sessionId = monitorBatchCondition.getSessionId();
+        memoryDataVo.setMonitorId(sessionId);
+        if(StrUtil.isBlank(sessionId)) {
+            throw new IllegalArgumentException("监控id为空！");
+        }
         return memoryDataVo;
     }
 

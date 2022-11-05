@@ -29,6 +29,12 @@ public class ResponseResult<T> {
      */
     private T result;
 
+    public ResponseResult(String code, String message, T result) {
+        this.code = code;
+        this.message = message;
+        this.result = result;
+    }
+
     public ResponseResult(String code, T result) {
         this.code = code;
         this.result = result;
@@ -50,7 +56,7 @@ public class ResponseResult<T> {
      * @return 包装结果
      */
     public static <T> ResponseResult<T> success(T result) {
-        return new ResponseResult(CurrencyRequestEnum.REQUEST_SUCCESS.getCode(), result);
+        return new ResponseResult(CurrencyRequestEnum.REQUEST_SUCCESS.getCode(),CurrencyRequestEnum.REQUEST_SUCCESS.getMessage(), result);
     }
 
     /**

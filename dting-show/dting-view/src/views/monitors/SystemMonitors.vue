@@ -6,6 +6,8 @@
         <div><LineChart lineChartTitle="JVM内存监控" :xAxisArray="systemXAxisArray"  :legendData="memoryLegendData" :serviceData="jvmMemoryServiceData"/></div>
         <!--swap内存监控折线图-->
         <div><LineChart lineChartTitle="系统Swap监控" :xAxisArray="systemXAxisArray" :legendData="memoryLegendData" :serviceData="swapMemoryServiceData"/></div>
+        <!--cpu使用折线图-->
+        <div><LineChart lineChartTitle="系统CPU监控(%)" :xAxisArray="systemCpuXAxisArray" :legendData="cpuLegendData" :serviceData="cpuServiceData"/></div>
     </div>
 </template>
 
@@ -13,14 +15,15 @@
 import LineChart from '../../components/echarts/LineChart.vue'
 import {initWebSocket, setCallback} from '../../utils/webSocket'
 import {post} from '../../utils/request'
+import {guid} from '../../utils/idUtil'
 export default {
     name: "SystemMonitors",
     data(){
         return {
             // 监控的id
-            sessionId:"",
-
+            sessionId:guid(),
             memoryLegendData:["总量","已使用"],
+            cpuLegendData:["CPU总使用率","CPU用户使用率","CPU系统使用率","CPU等待率","CPU错误率"], 
             
             //------------------------------------系统内存监控数据---------------------------------------------------------------
             systemXAxisArray:[],
@@ -32,6 +35,19 @@ export default {
             //------------------------------------swap监控数据---------------------------------------------------------------
             swapUseMemory:[],
             swapMaxMemory:[],
+            //------------------------------------CPU数据--------------------------------------------------------------
+            //时间数据
+            systemCpuXAxisArray:[],
+            //cpu的总使用数据
+            cpuTotalUse:[],
+            //cpu的用户使用数据
+            cpuUserUes:[],
+            //cpu的系统使用数据
+            cpuSystemUes:[],
+            //cpu的等待率
+            cpuWait:[],
+            //cpu的错误率
+            cpuError:[]
         }
     },
     methods:{
@@ -57,6 +73,18 @@ export default {
                 this.swapUseMemory.push(obj.useSystemSwap)
                 // swap内存的最大值
                 this.swapMaxMemory.push(obj.maxSystemSwap)
+            }else if(type === 'cpu') {
+                this.systemCpuXAxisArray.push(obj.dateValue)
+                //时间维度的数据
+                this.cpuTotalUse.push(obj.totalUse)
+                // cpu的用户使用数据
+                this.cpuUserUes.push(obj.userUse)
+                // cpu的系统使用数据
+                this.cpuSystemUes.push(obj.systemUse)
+                // cpu的等待率
+                this.cpuWait.push(obj.wait)
+                // cpu的错误率
+                this.cpuError.push(obj.error)
             }
 
         },
@@ -67,9 +95,11 @@ export default {
             }
             //内存数据
             if(obj.type === '0') {
-                var bodyObj = obj.body
-                bodyObj = JSON.parse(bodyObj); 
-                this.refreshSystemMemoryData(bodyObj);
+                const bodyObj = obj.body
+                this.refreshSystemMemoryData(JSON.parse(bodyObj));
+            }else if(obj.type === '1') {
+                const bodyObj = obj.body
+                this.refreshSystemCpuData(JSON.parse(bodyObj))
             }
         },
         //开始连接对象
@@ -79,22 +109,24 @@ export default {
         },
         //初始化内存数据
         initMemoryData(){
-            var obj = {
-                instanceKey:"test-server-001",
-                serverEnv:"dev",
-                serverKey:"test-Server",
-                startTime:1666920510100,
-                endTime:-1
-            }
+            let obj = this.objParam;
             //post方式请求后台获得初始化的表表数据
             post('/memory/memoryMonitoring', obj).then(res =>{
                 const data = res.result;
                 this.refreshSystemMemoryData(data);
                 const monitorId = data.monitorId;
                 this.connectWebsocket(monitorId);
-                this.sessionId = monitorId;
             })
         },
+        // 初始化cpu数据
+        initCpuData(){
+            let obj = this.objParam;
+            post('/cpu/cpuMonitoring', obj).then(res =>{
+                const data = res.result;
+                this.refreshSystemCpuData(data);
+            });
+        },
+
         // 将后端的内存、jvm内存、交换区数据解包为图标需要数据格式
         refreshSystemMemoryData(res){
             //系统内存数据
@@ -122,15 +154,36 @@ export default {
                 }
             }
             
+        },
+        //刷新CPU数据
+        refreshSystemCpuData(res) {
+            const systemCpuDataList = res.systemCpuDataList
+            if(systemCpuDataList) {
+                for(var systemCpuData of systemCpuDataList) {
+                    this.monitorsMemoryDataHandler(systemCpuData, 'cpu')
+                }
+                
+            }
         }
     },
     created: function(){
         this.initMemoryData()
+        this.initCpuData()
     },
     components:{
         LineChart
     },
     computed: {
+        objParam() {
+                return {
+                    instanceKey:"test-server-001",
+                    serverEnv:"dev",
+                    serverKey:"test-Server",
+                    startTime:1666920510100,
+                    endTime:-1,
+                    sessionId:this.sessionId
+                }
+            },
         /**
          * 系统内存折线图数据
          */
@@ -186,6 +239,43 @@ export default {
                         type:'line',
                         step:false,
                         data:this.swapUseMemory,
+                        showSymbol:false
+                    }]
+        },
+        cpuServiceData(){
+            return [{
+                        name:'CPU总使用率',
+                        type:'line',
+                        step:true,
+                        data:this.cpuTotalUse,
+                        showSymbol:false
+                    },
+                    {
+                        name:'CPU用户使用率',
+                        type:'line',
+                        step:true,
+                        data:this.cpuUserUes,
+                        showSymbol:false
+                    },
+                    {
+                        name:'CPU系统使用率',
+                        type:'line',
+                        step:true,
+                        data:this.cpuSystemUes,
+                        showSymbol:false
+                    },
+                    {
+                        name:'CPU等待率',
+                        type:'line',
+                        step:true,
+                        data:this.cpuWait,
+                        showSymbol:false
+                    },
+                    {
+                        name:'CPU错误率',
+                        type:'line',
+                        step:true,
+                        data:this.cpuError,
                         showSymbol:false
                     }]
         }
