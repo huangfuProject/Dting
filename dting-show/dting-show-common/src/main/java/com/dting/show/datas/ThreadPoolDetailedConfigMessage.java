@@ -1,11 +1,12 @@
 package com.dting.show.datas;
 
+import com.dting.common.datas.ThreadPoolDataCollect;
 import com.dting.message.common.agreement.packet.DtingMessage;
 
 import java.io.Serializable;
 
 /**
- * 线程池配置详细信息
+ * 线程池配置详细信息  这里与 {@link ThreadPoolDataCollect} 不同的是，这里只会记录当前线程究竟是如何进行配置的，以便于控制中心能够修改参数
  *
  * @author huangfu
  * @date 2022年10月19日08:49:59

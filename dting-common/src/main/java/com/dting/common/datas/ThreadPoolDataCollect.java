@@ -3,7 +3,7 @@ package com.dting.common.datas;
 import java.io.Serializable;
 
 /**
- * 线程池的信息
+ * 线程池的信息  这里是线程池的即时快照，即在某一刻的线程池的负载状态
  *
  * @author huangfu
  * @date 2022年10月18日17:53:18

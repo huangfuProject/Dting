@@ -8,8 +8,6 @@ import com.dting.sdk.reactor.MessageReactor;
 import com.dting.show.datas.ThreadPoolDetailedConfigMessage;
 
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -27,8 +25,6 @@ public class ThreadPoolDetailedCollectedHandler {
         return thread;
     });
 
-    private final static Set<String> REGISTER_THREAD_POOL_NAME = new CopyOnWriteArraySet<>();
-
     /**
      * 服务启动汇报一次
      */
@@ -38,14 +34,12 @@ public class ThreadPoolDetailedCollectedHandler {
             List<ThreadPoolDataCollect> threadPoolDatumCollects = DtingThreadPoolCache.threadPoolInfos();
 
             threadPoolDatumCollects.forEach(info -> {
-                if(REGISTER_THREAD_POOL_NAME.add(info.getPoolName())) {
-                    ThreadPoolDetailedConfigMessage threadPoolDetailedConfigMessage = new ThreadPoolDetailedConfigMessage();
-                    BeanUtil.copyProperties(info, threadPoolDetailedConfigMessage);
-                    threadPoolDetailedConfigMessage.setQueueTotalSize(info.getQueueUseSize() + info.getQueueRemainingCapacity());
-                    MessageReactor.sendMessage(new MessageBuffer(threadPoolDetailedConfigMessage));
-                }
+                ThreadPoolDetailedConfigMessage threadPoolDetailedConfigMessage = new ThreadPoolDetailedConfigMessage();
+                BeanUtil.copyProperties(info, threadPoolDetailedConfigMessage);
+                threadPoolDetailedConfigMessage.setQueueTotalSize(info.getQueueUseSize() + info.getQueueRemainingCapacity());
+                MessageReactor.sendMessage(new MessageBuffer(threadPoolDetailedConfigMessage));
             });
-        }, 20L, 120, TimeUnit.SECONDS);
+        }, 5L, 20, TimeUnit.SECONDS);
 
     }
 
