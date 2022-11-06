@@ -30,7 +30,6 @@ export default {
 
         legendDataHandler(legendData){
             var data = []
-            debugger
             for(var i=0;i<legendData.length;i++){
                 if (i%2==0) {
                     data.push("")

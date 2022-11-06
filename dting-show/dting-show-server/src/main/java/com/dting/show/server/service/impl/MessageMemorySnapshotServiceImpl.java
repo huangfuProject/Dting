@@ -158,4 +158,8 @@ public class MessageMemorySnapshotServiceImpl implements MessageMemorySnapshotSe
             messageMemorySnapshotMapper.batchInsert(messageMemorySnapshotList);
         }
     }
+
+    public static void main(String[] args) {
+        System.out.println(System.currentTimeMillis());
+    }
 }

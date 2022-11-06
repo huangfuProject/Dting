@@ -1,18 +1,26 @@
 <template>
     <div>
         <!--系统内存监控折线图-->
-        <div><LineChart lineChartTitle="系统内存监控" :xAxisArray="systemXAxisArray" :legendData="memoryLegendData" :serviceData="systemMemoryServiceData"/></div>
+        <div><LineChart lineChartTitle="系统内存使用趋势" :xAxisArray="systemXAxisArray" :legendData="memoryLegendData" :serviceData="systemMemoryServiceData"/></div>
         <!--jvm内存监控折线图-->
-        <div><LineChart lineChartTitle="JVM内存监控" :xAxisArray="systemXAxisArray"  :legendData="memoryLegendData" :serviceData="jvmMemoryServiceData"/></div>
+        <div><LineChart lineChartTitle="JVM内存使用趋势" :xAxisArray="systemXAxisArray"  :legendData="memoryLegendData" :serviceData="jvmMemoryServiceData"/></div>
         <!--swap内存监控折线图-->
-        <div><LineChart lineChartTitle="系统Swap监控" :xAxisArray="systemXAxisArray" :legendData="memoryLegendData" :serviceData="swapMemoryServiceData"/></div>
+        <div><LineChart lineChartTitle="系统Swap使用趋势" :xAxisArray="systemXAxisArray" :legendData="memoryLegendData" :serviceData="swapMemoryServiceData"/></div>
         <!--cpu使用折线图-->
-        <div><LineChart lineChartTitle="系统CPU监控(%)" :xAxisArray="systemCpuXAxisArray" :legendData="cpuLegendData" :serviceData="cpuServiceData"/></div>
+        <div><LineChart lineChartTitle="系统CPU使用趋势(%)" :xAxisArray="systemCpuXAxisArray" :legendData="cpuLegendData" :serviceData="cpuServiceData"/></div>
+
+        <div>
+            <GaugeChart :serviceData="systemMemoryGaugeData"></GaugeChart>
+            <GaugeChart :serviceData="jvmMemoryGaugeData"></GaugeChart>
+            <GaugeChart :serviceData="swapMemoryGaugeData"></GaugeChart>
+            <GaugeChart :serviceData="cpuMemoryGaugeData"></GaugeChart>
+        </div>
     </div>
 </template>
 
 <script>
 import LineChart from '../../components/echarts/LineChart.vue'
+import GaugeChart from '../../components/echarts/GaugeChart.vue'
 import {initWebSocket, setCallback} from '../../utils/webSocket'
 import {post} from '../../utils/request'
 import {guid} from '../../utils/idUtil'
@@ -171,7 +179,8 @@ export default {
         this.initCpuData()
     },
     components:{
-        LineChart
+        LineChart,
+        GaugeChart
     },
     computed: {
         objParam() {
@@ -185,12 +194,44 @@ export default {
                 }
             },
         /**
+         * 系统使用比率
+         */
+        systemUseProportion(){
+            const max = this.systemMaxMemory[this.systemMaxMemory.length - 1]
+            const use = this.systemUseMemory[this.systemUseMemory.length - 1]
+            return Math.floor((use/max)*100)
+        },
+        /**
+         * jvm使用比率
+         */
+         jvmUseProportion(){
+            const max = this.jvmMaxMemory[this.jvmMaxMemory.length - 1]
+            const use = this.jvmUseMemory[this.jvmUseMemory.length - 1]
+            return Math.floor((use/max)*100)
+        },
+        /**
+         * SWAP使用比率
+         */
+         swapUseProportion(){
+            const max = this.swapMaxMemory[this.swapMaxMemory.length - 1]
+            const use = this.swapUseMemory[this.swapUseMemory.length - 1]
+            return Math.floor((use/max)*100)
+        },
+        /**
+         * CPU使用比率
+         */
+         cpuUseProportion(){
+            const use = this.cpuTotalUse[this.systemUseMemory.length - 1]
+            return use
+        },
+        /**
          * 系统内存折线图数据
          */
         systemMemoryServiceData(){
             return [{
                         name:'总量',
                         type:'line',
+                        areaStyle: {},
                         step:true,
                         data:this.systemMaxMemory,
                         showSymbol:false
@@ -198,6 +239,7 @@ export default {
                     {
                         name:'已使用',
                         type:'line',
+                        areaStyle: {},
                         step:false,
                         data:this.systemUseMemory,
                         showSymbol:false
@@ -210,6 +252,7 @@ export default {
             return [{
                         name:'总量',
                         type:'line',
+                        areaStyle: {},
                         step:true,
                         data:this.jvmMaxMemory,
                         showSymbol:false
@@ -217,6 +260,7 @@ export default {
                     {
                         name:'已使用',
                         type:'line',
+                        areaStyle: {},
                         step:false,
                         data:this.jvmUseMemory,
                         showSymbol:false
@@ -230,6 +274,7 @@ export default {
             return [{
                         name:'总量',
                         type:'line',
+                        areaStyle: {},
                         step:true,
                         data:this.swapMaxMemory,
                         showSymbol:false
@@ -237,6 +282,7 @@ export default {
                     {
                         name:'已使用',
                         type:'line',
+                        areaStyle: {},
                         step:false,
                         data:this.swapUseMemory,
                         showSymbol:false
@@ -278,6 +324,42 @@ export default {
                         data:this.cpuError,
                         showSymbol:false
                     }]
+        },
+        systemMemoryGaugeData(){
+            const obj = this
+            return [
+                {
+                    value: obj.systemUseProportion,
+                    name:"系统内存"
+                }
+            ]
+        },
+        jvmMemoryGaugeData(){
+            const obj = this
+            return [
+                {
+                    value: obj.jvmUseProportion,
+                    name:"jvm内存"
+                }
+            ]
+        },
+        swapMemoryGaugeData(){
+            const obj = this
+            return [
+                {
+                    value: obj.swapUseProportion,
+                    name:"swap内存"
+                }
+            ]
+        },
+        cpuMemoryGaugeData(){
+            const obj = this
+            return [
+                {
+                    value: obj.cpuUseProportion,
+                    name:"CPU"
+                }
+            ]
         }
     }
 }
