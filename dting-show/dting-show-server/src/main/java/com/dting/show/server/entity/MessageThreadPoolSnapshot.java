@@ -19,7 +19,7 @@ public class MessageThreadPoolSnapshot extends DtingMessageBaseEntity implements
     private static final long serialVersionUID = 62511851809033177L;
 
     /**
-     * 关联主键
+     * 关联主键  关联同一时刻内采集的一组线程池的快照信息 {@link ThreadPoolDetailedSnapshot}
      */
     private String collectKey;
 }

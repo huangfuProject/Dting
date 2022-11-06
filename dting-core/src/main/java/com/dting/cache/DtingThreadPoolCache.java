@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * dting线程池的缓存池
@@ -72,6 +73,7 @@ public class DtingThreadPoolCache {
             threadPoolDataCollect.setCurrentRunningCompletedTaskCount(threadPool.getCompletedTaskCount());
             threadPoolDataCollect.setCurrentRunningRejectCount(threadPool.getRejectedTaskCount());
             threadPoolDataCollect.setRejectHandlerName(threadPool.getRejectedExecutionHandler().getClass().getName());
+            threadPoolDataCollect.setKeepAliveTime(threadPool.getKeepAliveTime(TimeUnit.MILLISECONDS));
             threadPoolDatumCollects.add(threadPoolDataCollect);
         });
         return threadPoolDatumCollects;

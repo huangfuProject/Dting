@@ -20,7 +20,7 @@ public class MessageTaskRunSnapshot extends DtingMessageBaseEntity {
     private String threadPoolName;
 
     /**
-     * 线程池的组名称 拼接规则为 message_ip:thread_pool_name
+     * 线程池的组名称 拼接规则为 server_env:server_key:instance_key:thread_pool_name
      */
     private String threadPoolGroupName;
 

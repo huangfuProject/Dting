@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
- * 线程池的状态采集每一个线程池的状态信息
+ * 线程池的状态采集每一个线程池的状态信息  {@link MessageThreadPoolSnapshot}
  *
  * @author huangfu
  * @date 2022年10月20日15:09:06

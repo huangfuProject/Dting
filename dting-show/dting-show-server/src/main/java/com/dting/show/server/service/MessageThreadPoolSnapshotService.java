@@ -14,7 +14,7 @@ public interface MessageThreadPoolSnapshotService {
     /**
      * 批量保存
      *
-     * @param messageThreadPoolSnapshotList 网卡数据
+     * @param messageThreadPoolSnapshotList 线程池的配置信息
      */
     void batchSave(List<MessageThreadPoolSnapshot> messageThreadPoolSnapshotList);
 }

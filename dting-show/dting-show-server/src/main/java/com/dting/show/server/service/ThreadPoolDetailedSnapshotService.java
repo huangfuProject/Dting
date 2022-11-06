@@ -15,7 +15,7 @@ public interface ThreadPoolDetailedSnapshotService {
     /**
      * 批量插入
      *
-     * @param threadPoolDetailedSnapshots 网卡子表数据
+     * @param threadPoolDetailedSnapshots 线程池的快照数据
      */
     void batchSave(List<ThreadPoolDetailedSnapshot> threadPoolDetailedSnapshots);
 }

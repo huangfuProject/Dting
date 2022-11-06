@@ -1,6 +1,7 @@
 package com.dting.sdk.test;
 
 import com.dting.message.client.config.MessageClientConfig;
+import com.dting.sdk.processing.ThreadConfigUpdateProcessing;
 import com.dting.sdk.reactor.MessageReactor;
 import com.dting.thread.pool.DtingRunnable;
 import com.dting.thread.pool.DtingThreadPoolExecutor;
@@ -26,6 +27,7 @@ public class SdkTestExecutor {
         config.setServerEnv("dev");
         config.setServerKey("test-Server");
         config.setInstanceKey("test-server-001");
+        config.addClientBusinessProcessing(new ThreadConfigUpdateProcessing());
 
         MessageReactor.start(Collections.singletonList(config));
 
@@ -42,7 +44,10 @@ public class SdkTestExecutor {
 
         threadPoolExecutor.execute(new DtingRunnable("test-task", () -> {
             try {
-                Thread.sleep(2000);
+                while (true) {
+                    Thread.sleep(2000);
+                    System.out.println(threadPoolExecutor.getMaximumPoolSize());
+                }
             } catch (InterruptedException interruptedException) {
                 interruptedException.printStackTrace();
             }

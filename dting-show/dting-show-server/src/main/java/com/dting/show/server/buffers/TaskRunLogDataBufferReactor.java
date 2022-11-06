@@ -33,7 +33,7 @@ public class TaskRunLogDataBufferReactor extends MessageBufferReactor<TaskInfoMe
                 //人物名
                 messageTaskRunSnapshot.setThreadPoolName(taskLogCollect.getThreadPoolName());
                 // 执行组
-                messageTaskRunSnapshot.setThreadPoolGroupName(String.format("%s:%s", source.getMessageSourceAddress(), taskLogCollect.getThreadPoolName()));
+                messageTaskRunSnapshot.setThreadPoolGroupName(String.format("%s:%s:%s:%s", source.getServerEnv(),source.getServerKey(),source.getInstanceKey(), taskLogCollect.getThreadPoolName()));
                 //任务数量
                 messageTaskRunSnapshot.setTaskName(taskLogCollect.getTaskName());
                 //开始时间

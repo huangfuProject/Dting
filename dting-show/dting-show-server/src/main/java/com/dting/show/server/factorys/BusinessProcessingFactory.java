@@ -3,6 +3,7 @@ package com.dting.show.server.factorys;
 import com.dting.show.server.buffers.SystemInfoDataBufferReactor;
 import com.dting.show.server.buffers.TaskRunLogDataBufferReactor;
 import com.dting.show.server.buffers.ThreadPoolDataBufferReactor;
+import com.dting.show.server.buffers.ThreadPoolDetailedConfigReactor;
 import com.dting.show.server.processing.SystemInfoBusinessProcessing;
 import com.dting.show.server.processing.TaskInfoServerBusinessProcessing;
 import com.dting.show.server.processing.ThreadPoolDetailedBusinessProcessing;
@@ -55,7 +56,7 @@ public class BusinessProcessingFactory {
      * @return 线上线程池的状态上报处理器
      */
     @Bean
-    public ThreadPoolDetailedBusinessProcessing threadPoolDetailedBusinessProcessing() {
-        return new ThreadPoolDetailedBusinessProcessing();
+    public ThreadPoolDetailedBusinessProcessing threadPoolDetailedBusinessProcessing(ThreadPoolDetailedConfigReactor threadPoolDetailedConfigReactor) {
+        return new ThreadPoolDetailedBusinessProcessing(threadPoolDetailedConfigReactor);
     }
 }

@@ -31,6 +31,11 @@ public class ThreadPoolDataCollect implements Serializable {
      */
     private int maxSize;
 
+    /**
+     * 线程休眠时间
+     */
+    private Long keepAliveTime;
+
 
     /**
      * 队列类型名称
@@ -141,5 +146,13 @@ public class ThreadPoolDataCollect implements Serializable {
 
     public void setRejectHandlerName(String rejectHandlerName) {
         this.rejectHandlerName = rejectHandlerName;
+    }
+
+    public Long getKeepAliveTime() {
+        return keepAliveTime;
+    }
+
+    public void setKeepAliveTime(Long keepAliveTime) {
+        this.keepAliveTime = keepAliveTime;
     }
 }

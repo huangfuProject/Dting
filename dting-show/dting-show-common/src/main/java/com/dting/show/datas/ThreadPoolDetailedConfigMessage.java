@@ -34,6 +34,11 @@ public class ThreadPoolDetailedConfigMessage extends DtingMessage implements Ser
     private int queueTotalSize;
 
     /**
+     * 线程休眠时间
+     */
+    private Long keepAliveTime;
+
+    /**
      * 拒绝策略
      */
     private String rejectHandlerName;
@@ -89,5 +94,26 @@ public class ThreadPoolDetailedConfigMessage extends DtingMessage implements Ser
 
     public void setQueueTypeName(String queueTypeName) {
         this.queueTypeName = queueTypeName;
+    }
+
+    @Override
+    public String toString() {
+        return "ThreadPoolDetailedConfigMessage{" +
+                "poolName='" + poolName + '\'' +
+                ", coreSize=" + coreSize +
+                ", maxSize=" + maxSize +
+                ", queueTotalSize=" + queueTotalSize +
+                ", keepAliveTime=" + keepAliveTime +
+                ", rejectHandlerName='" + rejectHandlerName + '\'' +
+                ", queueTypeName='" + queueTypeName + '\'' +
+                '}';
+    }
+
+    public Long getKeepAliveTime() {
+        return keepAliveTime;
+    }
+
+    public void setKeepAliveTime(Long keepAliveTime) {
+        this.keepAliveTime = keepAliveTime;
     }
 }
