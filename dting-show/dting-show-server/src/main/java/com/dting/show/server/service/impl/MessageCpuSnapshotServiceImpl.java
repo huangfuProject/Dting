@@ -2,7 +2,6 @@ package com.dting.show.server.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.dting.show.server.conditions.MonitorBatchCondition;
@@ -11,7 +10,6 @@ import com.dting.show.server.entity.MessageCpuSnapshot;
 import com.dting.show.server.mapper.MessageCpuSnapshotMapper;
 import com.dting.show.server.service.MessageCpuSnapshotService;
 import com.dting.show.server.tasks.CpuDataRefreshTask;
-import com.dting.show.server.tasks.MemoryDataRefreshTask;
 import com.dting.show.server.utils.ScheduledTaskManagement;
 import com.dting.show.server.vos.data.SystemCpuData;
 import com.dting.show.server.vos.monitoring.SystemCpuDataVo;
@@ -82,7 +80,7 @@ public class MessageCpuSnapshotServiceImpl implements MessageCpuSnapshotService 
         systemCpuDataVo.setSystemCpuDataList(cpuDataList);
         String sessionId = monitorBatchCondition.getSessionId();
         systemCpuDataVo.setMonitorId(sessionId);
-        if(StrUtil.isBlank(sessionId)) {
+        if (StrUtil.isBlank(sessionId)) {
             throw new IllegalArgumentException("监控id为空！");
         }
 
@@ -110,13 +108,8 @@ public class MessageCpuSnapshotServiceImpl implements MessageCpuSnapshotService 
         queryWrapper.eq("server_key", serverKey);
         queryWrapper.eq("instance_key", instanceKey);
 
-        if (startTime != null && startTime > 0) {
-            queryWrapper.gt("collect_time", startTime);
-        }
-
-        if (endTime != null && endTime > 0) {
-            queryWrapper.le("collect_time", endTime);
-        }
+        queryWrapper.gt(startTime != null && startTime > 0, "collect_time", startTime);
+        queryWrapper.le(endTime != null && endTime > 0, "collect_time", endTime);
         //根据时间 正序排列
         queryWrapper.orderByAsc("collect_time");
         return messageCpuSnapshotMapper.selectList(queryWrapper);

@@ -1,7 +1,6 @@
 package com.dting.show.server.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.dting.show.server.conditions.MonitorBatchCondition;
@@ -103,7 +102,7 @@ public class MessageMemorySnapshotServiceImpl implements MessageMemorySnapshotSe
         }
         String sessionId = monitorBatchCondition.getSessionId();
         memoryDataVo.setMonitorId(sessionId);
-        if(StrUtil.isBlank(sessionId)) {
+        if (StrUtil.isBlank(sessionId)) {
             throw new IllegalArgumentException("监控id为空！");
         }
         return memoryDataVo;
@@ -140,13 +139,8 @@ public class MessageMemorySnapshotServiceImpl implements MessageMemorySnapshotSe
         queryWrapper.eq("server_key", serverKey);
         queryWrapper.eq("instance_key", instanceKey);
 
-        if (startTime != null && startTime > 0) {
-            queryWrapper.gt("collect_time", startTime);
-        }
-
-        if (endTime != null && endTime > 0) {
-            queryWrapper.le("collect_time", endTime);
-        }
+        queryWrapper.gt((startTime != null && startTime > 0), "collect_time", startTime);
+        queryWrapper.le((endTime != null && endTime > 0), "collect_time", endTime);
         //根据时间 正序排列
         queryWrapper.orderByAsc("collect_time");
         return messageMemorySnapshotMapper.selectList(queryWrapper);
