@@ -21,9 +21,18 @@ public interface ThreadPoolConfigService {
     ThreadPoolConfig findThreadPoolConfigByThreadPoolGroupName(String threadPoolGroupName);
 
     /**
+     * 更新操作
+     *
+     * @param threadPoolConfig 修改更新的信息
+     */
+    void updateById(ThreadPoolConfig threadPoolConfig);
+
+    /**
      * 保存一个对象
      *
      * @param threadPoolConfig 需要保存的配置
      */
     void save(ThreadPoolConfig threadPoolConfig);
+
+
 }

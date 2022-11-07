@@ -35,6 +35,15 @@ public class ThreadPoolConfigServiceImpl implements ThreadPoolConfigService {
         queryWrapper.eq("thread_pool_group_name", threadPoolGroupName);
         return threadPoolConfigMapper.selectOne(queryWrapper);
     }
+
+    @Override
+    public void updateById(ThreadPoolConfig threadPoolConfig) {
+        if(threadPoolConfig == null || threadPoolConfig.getId() == null) {
+            return;
+        }
+        threadPoolConfigMapper.updateById(threadPoolConfig);
+    }
+
     @Override
     public void save(ThreadPoolConfig entity) {
         threadPoolConfigMapper.insert(entity);
