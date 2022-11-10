@@ -1,5 +1,6 @@
 package com.dting.show.server.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.dting.message.common.agreement.packet.DtingMessage;
 import lombok.Data;
@@ -16,7 +17,7 @@ public class DtingMessageBaseEntity {
     /**
      * 主键
      */
-    @TableId
+    @TableId(type = IdType.AUTO)
     private Integer id;
 
     /**

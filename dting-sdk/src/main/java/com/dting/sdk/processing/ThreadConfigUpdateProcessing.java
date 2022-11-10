@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 public class ThreadConfigUpdateProcessing extends DtingSimpleChannelInboundHandler<ThreadPoolDetailedConfigMessage> {
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, ThreadPoolDetailedConfigMessage threadPoolDetailedConfigMessage) throws Exception {
-        System.out.println("发现与远程配置不同的信心，远程控制在中心发起修改操作 ：" + threadPoolDetailedConfigMessage);
+        System.out.println("发现与远程配置不同，远程控制在中心发起修改操作 ：" + threadPoolDetailedConfigMessage);
         DtingThreadPoolExecutor threadPool = DtingThreadPoolCache.getThreadPool(threadPoolDetailedConfigMessage.getPoolName());
         if (threadPool != null) {
             //核心数
@@ -36,7 +36,7 @@ public class ThreadConfigUpdateProcessing extends DtingSimpleChannelInboundHandl
             //服务端核心数
             int coreSizeServer = threadPoolDetailedConfigMessage.getCoreSize();
             if (corePoolSize != coreSizeServer) {
-                threadPool.setCorePoolSize(corePoolSize);
+                threadPool.setCorePoolSize(coreSizeServer);
             }
             //服务端最大核心数
             int maxSizeServer = threadPoolDetailedConfigMessage.getMaxSize();

@@ -1,5 +1,6 @@
 package com.dting.show.server.service;
 
+import com.dting.show.server.dto.ThreadPoolConfigDto;
 import com.dting.show.server.entity.ThreadPoolConfig;
 
 /**
@@ -26,6 +27,13 @@ public interface ThreadPoolConfigService {
      * @param threadPoolConfig 修改更新的信息
      */
     void updateById(ThreadPoolConfig threadPoolConfig);
+
+    /**
+     * 更新操作
+     *
+     * @param threadPoolConfigDto 修改更新的信息
+     */
+    void updateById(ThreadPoolConfigDto threadPoolConfigDto);
 
     /**
      * 保存一个对象
