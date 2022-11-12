@@ -1,6 +1,6 @@
 package com.dting.sdk.reactor;
 
-import com.dting.Subject;
+import com.dting.subject.Subject;
 import com.dting.message.client.cache.ServerCommunicationConnectionPool;
 import com.dting.message.client.config.MessageClientConfig;
 import com.dting.message.common.agreement.packet.DtingMessage;

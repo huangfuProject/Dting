@@ -1,4 +1,4 @@
-package com.dting;
+package com.dting.subject;
 
 /**
  * 观察者

@@ -1,11 +1,10 @@
-package com.dting;
+package com.dting.subject;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.dting.utils.DtingReflectionUtil;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * 被观察者

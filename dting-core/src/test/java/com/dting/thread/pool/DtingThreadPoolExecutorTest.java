@@ -1,8 +1,8 @@
 package com.dting.thread.pool;
 
 
-import com.dting.DtingObserver;
-import com.dting.Subject;
+import com.dting.subject.DtingObserver;
+import com.dting.subject.Subject;
 import com.dting.model.TaskInfoSubject;
 import org.junit.Test;
 

@@ -1,7 +1,6 @@
 package com.dting.sdk.observers;
 
-import cn.hutool.core.bean.BeanUtil;
-import com.dting.DtingObserver;
+import com.dting.subject.DtingObserver;
 import com.dting.model.TaskInfoSubject;
 import com.dting.sdk.reactor.MessageBuffer;
 import com.dting.sdk.reactor.MessageReactor;

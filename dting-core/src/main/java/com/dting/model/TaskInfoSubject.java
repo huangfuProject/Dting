@@ -1,6 +1,6 @@
 package com.dting.model;
 
-import com.dting.Subject;
+import com.dting.subject.Subject;
 import com.dting.common.datas.TaskLogCollect;
 
 import java.io.Serializable;

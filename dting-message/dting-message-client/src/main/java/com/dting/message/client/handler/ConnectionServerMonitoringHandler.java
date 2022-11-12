@@ -11,7 +11,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
  * @author huangfu
  * @date 2022年10月12日09:22:17
  */
-public class ConnectionMonitoringHandler extends SimpleChannelInboundHandler<ConnectionMessage> {
+public class ConnectionServerMonitoringHandler extends SimpleChannelInboundHandler<ConnectionMessage> {
 
     /**
      * 实例名称
@@ -28,7 +28,7 @@ public class ConnectionMonitoringHandler extends SimpleChannelInboundHandler<Con
      */
     private final String serverKey;
 
-    public ConnectionMonitoringHandler(String instanceKey, String serverEnv, String serverKey) {
+    public ConnectionServerMonitoringHandler(String instanceKey, String serverEnv, String serverKey) {
         this.instanceKey = instanceKey;
         this.serverEnv = serverEnv;
         this.serverKey = serverKey;
@@ -37,7 +37,12 @@ public class ConnectionMonitoringHandler extends SimpleChannelInboundHandler<Con
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         System.out.println(">>>>>>>>>>>连接服务端成功<<<<<<<<<<<<<");
+        ConnectionMessage connectionMessage = new ConnectionMessage();
+        connectionMessage.setServerEnv(serverEnv);
+        connectionMessage.setServerKey(serverKey);
+        connectionMessage.setInstanceKey(instanceKey);
         ServerCommunicationConnectionPool.addConnection(ctx.channel(), instanceKey, serverEnv, serverKey);
+        ctx.writeAndFlush(connectionMessage);
     }
 
     @Override

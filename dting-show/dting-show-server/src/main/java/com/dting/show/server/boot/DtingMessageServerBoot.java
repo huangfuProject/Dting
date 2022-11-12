@@ -5,7 +5,9 @@ import com.dting.message.common.handlers.DtingSimpleChannelInboundHandler;
 import com.dting.message.server.DtingMessageServerQuickStart;
 import com.dting.message.server.config.MessageServerConfig;
 import com.dting.show.server.config.DtingMessageConfig;
+import com.dting.show.server.observers.ConnectionMonitoringObservers;
 import com.dting.show.server.utils.SpringUtil;
+import com.dting.subject.Subject;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -36,6 +38,7 @@ public class DtingMessageServerBoot implements InitializingBean, DisposableBean 
 
     @Override
     public void afterPropertiesSet() throws Exception {
+        Subject.attachObserver(new ConnectionMonitoringObservers());
         MessageServerConfig config = new MessageServerConfig(messageCommunicationConfig, properties.getPort());
         Map<String, DtingSimpleChannelInboundHandler> dtingSimpleChannelInboundHandlerMap = SpringUtil.getBeansOfType(DtingSimpleChannelInboundHandler.class);
         dtingSimpleChannelInboundHandlerMap.forEach(config::addServerBusinessProcessing);

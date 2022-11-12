@@ -3,6 +3,7 @@ package com.dting.message.server.cache;
 import com.dting.message.common.Communication;
 import com.dting.message.common.agreement.packet.DtingMessage;
 import com.dting.message.common.utils.ChannelUtil;
+import com.dting.message.server.subjects.ConnectionMonitoringSubject;
 import io.netty.channel.Channel;
 
 import java.util.Collection;
@@ -39,6 +40,8 @@ public class ClientCommunicationConnectionPool {
     public static void addConnection(Channel channel, String instanceKey, String serverEnv, String serverKey) {
         Communication communication = new Communication(channel, instanceKey, serverEnv, serverKey);
         CONNECTION_POOL.put(communication.getAddress(), communication);
+        ConnectionMonitoringSubject subject = new ConnectionMonitoringSubject(serverEnv, serverKey, instanceKey);
+        subject.noticeAllDtingObserver();
     }
 
     /**
