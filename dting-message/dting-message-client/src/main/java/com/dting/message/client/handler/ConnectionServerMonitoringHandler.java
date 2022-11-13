@@ -28,10 +28,16 @@ public class ConnectionServerMonitoringHandler extends SimpleChannelInboundHandl
      */
     private final String serverKey;
 
-    public ConnectionServerMonitoringHandler(String instanceKey, String serverEnv, String serverKey) {
+    /**
+     * 超时时间
+     */
+    private final Long timeout;
+
+    public ConnectionServerMonitoringHandler(String instanceKey, String serverEnv, String serverKey, Long timeout) {
         this.instanceKey = instanceKey;
         this.serverEnv = serverEnv;
         this.serverKey = serverKey;
+        this.timeout = timeout;
     }
 
     @Override
@@ -41,7 +47,8 @@ public class ConnectionServerMonitoringHandler extends SimpleChannelInboundHandl
         connectionMessage.setServerEnv(serverEnv);
         connectionMessage.setServerKey(serverKey);
         connectionMessage.setInstanceKey(instanceKey);
-        ServerCommunicationConnectionPool.addConnection(ctx.channel(), instanceKey, serverEnv, serverKey);
+        connectionMessage.setTimeout(timeout);
+        ServerCommunicationConnectionPool.addConnection(ctx.channel(), instanceKey, serverEnv, serverKey, timeout);
         ctx.writeAndFlush(connectionMessage);
     }
 

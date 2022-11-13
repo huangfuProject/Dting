@@ -1,12 +1,13 @@
 package com.dting.show.server.observers;
 
-import com.alibaba.fastjson.JSON;
 import com.dting.message.server.subjects.ConnectionMonitoringSubject;
+import com.dting.show.server.buffers.ConnectionMonitoringMessageBufferReactor;
+import com.dting.show.server.utils.SpringUtil;
 import com.dting.subject.DtingObserver;
 
 /**
  * *************************************************<br/>
- * s<br/>
+ * 链接信息监视者<br/>
  * ************************************************<br/>
  *
  * @author huangfu
@@ -15,6 +16,7 @@ import com.dting.subject.DtingObserver;
 public class ConnectionMonitoringObservers extends DtingObserver<ConnectionMonitoringSubject> {
     @Override
     public void doUpdate(ConnectionMonitoringSubject data) {
-        System.out.println("监听者监听到服务的链接：" + JSON.toJSONString(data));
+        ConnectionMonitoringMessageBufferReactor messageBufferReactor = SpringUtil.getBean(ConnectionMonitoringMessageBufferReactor.class);
+        messageBufferReactor.addMaterial(data);
     }
 }

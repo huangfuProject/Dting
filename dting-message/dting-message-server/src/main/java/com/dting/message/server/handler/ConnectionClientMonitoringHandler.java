@@ -19,7 +19,7 @@ public class ConnectionClientMonitoringHandler extends SimpleChannelInboundHandl
 
         if (ConnectionMessage.ConnectionStatus.OPEN.equals(connectionStatus)) {
             System.out.println(">>>>>>>>>>>新服务连接接入<<<<<<<<<<<<<"+  connectionMessage.getServerEnv() + "--" + connectionMessage.getServerKey() + "--" + connectionMessage.getInstanceKey());
-            ClientCommunicationConnectionPool.addConnection(channelHandlerContext.channel(), connectionMessage.getInstanceKey(), connectionMessage.getServerEnv(), connectionMessage.getServerKey());
+            ClientCommunicationConnectionPool.addConnection(channelHandlerContext.channel(), connectionMessage.getInstanceKey(), connectionMessage.getServerEnv(), connectionMessage.getServerKey(), connectionMessage.getTimeout());
         } else {
             System.out.println(">>>>>>>>>>>服务连接关闭<<<<<<<<<<<<<");
             ClientCommunicationConnectionPool.removeConnection(channelHandlerContext.channel());

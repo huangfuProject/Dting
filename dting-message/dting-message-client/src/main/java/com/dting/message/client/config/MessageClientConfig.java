@@ -49,6 +49,11 @@ public class MessageClientConfig implements Serializable {
     private String serverKey;
 
     /**
+     * 实例信息超时时间
+     */
+    private Long timeout = -1L;
+
+    /**
      * 构建一个业务处理器 客户端
      */
     private final Map<String, DtingSimpleChannelInboundHandler<? extends DtingMessage>> clientBusinessProcessingUnit = new ConcurrentHashMap<>(8);
@@ -124,6 +129,14 @@ public class MessageClientConfig implements Serializable {
 
     public String getServerKey() {
         return serverKey;
+    }
+
+    public Long getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(Long timeout) {
+        this.timeout = timeout;
     }
 
     public void setServerKey(String serverKey) {

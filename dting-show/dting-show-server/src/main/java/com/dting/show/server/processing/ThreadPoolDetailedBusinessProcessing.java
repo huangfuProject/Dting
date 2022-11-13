@@ -1,6 +1,5 @@
 package com.dting.show.server.processing;
 
-import com.alibaba.fastjson.JSON;
 import com.dting.message.common.Communication;
 import com.dting.message.common.handlers.DtingSimpleChannelInboundHandler;
 import com.dting.show.datas.ThreadPoolDetailedConfigMessage;
@@ -26,7 +25,7 @@ public class ThreadPoolDetailedBusinessProcessing extends DtingSimpleChannelInbo
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, ThreadPoolDetailedConfigMessage threadPoolDetailedConfigMessage) throws Exception {
         DtingMessageSupplement.supplement(channelHandlerContext, threadPoolDetailedConfigMessage);
         //包装为一个通讯设施
-        Communication communication = new Communication(channelHandlerContext.channel(), threadPoolDetailedConfigMessage.getInstanceKey(), threadPoolDetailedConfigMessage.getServerEnv(), threadPoolDetailedConfigMessage.getServerKey());
+        Communication communication = new Communication(channelHandlerContext.channel(), threadPoolDetailedConfigMessage.getInstanceKey(), threadPoolDetailedConfigMessage.getServerEnv(), threadPoolDetailedConfigMessage.getServerKey(), threadPoolDetailedConfigMessage.getTimeout());
         //提交到处理的线程池中
         threadPoolDetailedConfigReactor.addMaterial(new ThreadPoolDetailedConfigReactor.ReactionMaterial(communication, threadPoolDetailedConfigMessage));
     }

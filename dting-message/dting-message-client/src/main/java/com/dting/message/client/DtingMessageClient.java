@@ -5,7 +5,6 @@ import com.dting.message.client.handler.ConnectionServerMonitoringHandler;
 import com.dting.message.common.DefaultMessageCommunicationConfig;
 import com.dting.message.common.agreement.AgreementChoreography;
 import com.dting.message.common.agreement.implementation.PacketSegmentationHandler;
-import com.dting.message.common.agreement.packet.ConnectionMessage;
 import com.dting.message.common.agreement.packet.DtingMessage;
 import com.dting.message.common.handlers.DtingSimpleChannelInboundHandler;
 import com.dting.message.common.handlers.PacketCodecHandler;
@@ -82,7 +81,7 @@ public class DtingMessageClient {
                 //写入数据编解码器
                 socketChannel.pipeline().addLast("PacketCodecHandler", new PacketCodecHandler(communicationConfig));
                 //连接监控
-                socketChannel.pipeline().addLast("ConnectionMonitoringHandler", new ConnectionServerMonitoringHandler(config.getInstanceKey(), config.getServerEnv(), config.getServerKey()));
+                socketChannel.pipeline().addLast("ConnectionMonitoringHandler", new ConnectionServerMonitoringHandler(config.getInstanceKey(), config.getServerEnv(), config.getServerKey(), config.getTimeout()));
                 //开始写入业务处理器
                 businessProcessingUnit.forEach((handlerName, handler) -> socketChannel.pipeline().addLast(handlerName, handler));
             }

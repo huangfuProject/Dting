@@ -1,12 +1,10 @@
 package com.dting.show.server.factorys;
 
-import com.dting.show.server.buffers.SystemInfoDataBufferReactor;
-import com.dting.show.server.buffers.TaskRunLogDataBufferReactor;
-import com.dting.show.server.buffers.ThreadPoolDataBufferReactor;
-import com.dting.show.server.buffers.ThreadPoolDetailedConfigReactor;
+import com.dting.show.server.buffers.*;
 import com.dting.show.server.service.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 /**
  * 反应堆的工厂
@@ -43,5 +41,10 @@ public class MessageBufferReactorFactory {
     @Bean
     public ThreadPoolDetailedConfigReactor threadPoolDetailedConfigReactor(ThreadPoolConfigService threadPoolConfigService) {
         return new ThreadPoolDetailedConfigReactor(threadPoolConfigService);
+    }
+
+    @Bean
+    public ConnectionMonitoringMessageBufferReactor connectionMonitoringMessageBufferReactor(StringRedisTemplate stringRedisTemplate, DtingEnvService dtingEnvService, DtingServerService dtingServerService, DtingInstanceService dtingInstanceService) {
+        return new ConnectionMonitoringMessageBufferReactor(stringRedisTemplate, dtingEnvService, dtingServerService, dtingInstanceService);
     }
 }

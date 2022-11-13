@@ -1,9 +1,10 @@
 package com.dting.show.server.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.dting.message.common.agreement.packet.DtingMessage;
+import com.dting.show.server.dto.InstanceData;
+import com.dting.show.server.utils.InstanceUtil;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 基类
@@ -11,29 +12,17 @@ import lombok.Data;
  * @author huangfu
  * @date 2022年10月19日13:32:52
  */
+
 @Data
-public class DtingMessageBaseEntity {
+@EqualsAndHashCode(callSuper = true)
+public class DtingMessageBaseEntity extends BaseDting {
 
-    /**
-     * 主键
-     */
-    @TableId(type = IdType.AUTO)
-    private Integer id;
 
+    private static final long serialVersionUID = 7122544941697112753L;
     /**
-     * 实例名称
+     * 归属的实例的Id
      */
-    private String instanceKey;
-
-    /**
-     * 服务的环境
-     */
-    private String serverEnv;
-
-    /**
-     * 服务的名称
-     */
-    private String serverKey;
+    private Integer instanceId;
 
     /**
      * 消息的来源地址
@@ -53,13 +42,10 @@ public class DtingMessageBaseEntity {
     public void commonDataSetting(DtingMessage dtingMessage) {
         //消息来源
         this.setMessageIp(dtingMessage.getMessageSourceAddress());
-        //服务环境
-        this.setServerEnv(dtingMessage.getServerEnv());
-        //服务名称
-        this.setServerKey(dtingMessage.getServerKey());
-        //实例名称
-        this.setInstanceKey(dtingMessage.getInstanceKey());
         //消息采集时间
         this.setCollectTime(System.currentTimeMillis());
+
+        InstanceData saveAndCache = InstanceUtil.findAndSaveAndCache(dtingMessage.getServerEnv(), dtingMessage.getServerKey(), dtingMessage.getInstanceKey(), dtingMessage.getTimeout());
+        this.instanceId = saveAndCache.getDtingInstance().getId();
     }
 }

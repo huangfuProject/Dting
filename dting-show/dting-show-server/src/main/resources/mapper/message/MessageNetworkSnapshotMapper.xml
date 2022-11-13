@@ -4,11 +4,10 @@
 
     <insert id="batchInsert">
         insert into
-        message_network_snapshot(`server_env`,`server_key`,`instance_key`,`message_ip`,`collect_time`,`network_data_key`)
+        message_network_snapshot(`instance_id`,`message_ip`,`collect_time`,`network_data_key`)
         values
         <foreach collection="messageNetworkSnapshotList" item="messageNetworkSnapshot" separator=",">
-            (#{messageNetworkSnapshot.serverEnv}, #{messageNetworkSnapshot.serverKey}, #{messageNetworkSnapshot.instanceKey},
-            #{messageNetworkSnapshot.messageIp}, #{messageNetworkSnapshot.collectTime}, #{messageNetworkSnapshot.networkDataKey})
+            (#{messageNetworkSnapshot.instanceId}, #{messageNetworkSnapshot.messageIp}, #{messageNetworkSnapshot.collectTime}, #{messageNetworkSnapshot.networkDataKey})
         </foreach>
     </insert>
 </mapper>

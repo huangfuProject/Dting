@@ -4,12 +4,11 @@
 
     <insert id="batchInsert">
         insert into
-        message_thread_pool_snapshot(`server_env`, `server_key`, `instance_key`,`message_ip`,`collect_time`,`collect_key`)
+        message_thread_pool_snapshot(`instance_id`,`message_ip`,`collect_time`,`collect_key`)
         values
         <foreach collection="messageThreadPoolSnapshotList" item="messageThreadPoolSnapshot" separator=",">
             (
-                #{messageThreadPoolSnapshot.instanceKey}, #{messageThreadPoolSnapshot.serverEnv}, #{messageThreadPoolSnapshot.serverKey},
-                #{messageThreadPoolSnapshot.messageIp}, #{messageThreadPoolSnapshot.collectTime}, #{messageThreadPoolSnapshot.collectKey}
+                #{messageThreadPoolSnapshot.instanceId}, #{messageThreadPoolSnapshot.messageIp}, #{messageThreadPoolSnapshot.collectTime}, #{messageThreadPoolSnapshot.collectKey}
             )
         </foreach>
     </insert>

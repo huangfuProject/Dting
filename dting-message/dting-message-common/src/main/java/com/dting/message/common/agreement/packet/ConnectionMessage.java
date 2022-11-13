@@ -17,6 +17,7 @@ public class ConnectionMessage extends DtingMessage implements Serializable {
      */
     private ConnectionStatus connectionStatus = ConnectionStatus.OPEN;
 
+
     public ConnectionStatus getConnectionStatus() {
         return connectionStatus;
     }

@@ -4,10 +4,10 @@
 
     <insert id="batchInsert">
         insert into
-        message_memory_snapshot(`server_env`,`server_key`,`instance_key`,`message_ip`,`collect_time`,`jvm_total_memory`,`total_memory`,`jvm_use_memory`,`use_memory`,`total_swap`,`use_swap`)
+        message_memory_snapshot(`instance_id`,`message_ip`,`collect_time`,`jvm_total_memory`,`total_memory`,`jvm_use_memory`,`use_memory`,`total_swap`,`use_swap`)
         values
         <foreach collection="messageMemorySnapshotList" item="messageMemory" separator=",">
-            (#{messageMemory.serverEnv}, #{messageMemory.serverKey}, #{messageMemory.instanceKey}, #{messageMemory.messageIp},
+            (#{messageMemory.instanceId}, #{messageMemory.messageIp},
             #{messageMemory.collectTime}, #{messageMemory.jvmTotalMemory}, #{messageMemory.totalMemory},
             #{messageMemory.jvmUseMemory}, #{messageMemory.useMemory}, #{messageMemory.totalSwap},
             #{messageMemory.useSwap})

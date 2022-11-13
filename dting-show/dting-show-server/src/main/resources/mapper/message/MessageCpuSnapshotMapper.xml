@@ -4,10 +4,10 @@
 
     <insert id="batchInsert">
         insert into
-        message_cpu_snapshot(`server_env`,`server_key`,`instance_key` ,`message_ip`,`collect_time`,`total_use`,`user_use`,`system_use`,`wait`,`error`,`idle`,`cpu_info`)
+        message_cpu_snapshot(`instance_id` ,`message_ip`,`collect_time`,`total_use`,`user_use`,`system_use`,`wait`,`error`,`idle`,`cpu_info`)
         values
         <foreach collection="messageCpuSnapshotList" item="messageCpuSnapshot" separator=",">
-            (#{messageCpuSnapshot.serverEnv}, #{messageCpuSnapshot.serverKey}, #{messageCpuSnapshot.instanceKey}, #{messageCpuSnapshot.messageIp},
+            (#{messageCpuSnapshot.instanceId}, #{messageCpuSnapshot.messageIp},
             #{messageCpuSnapshot.collectTime}, #{messageCpuSnapshot.totalUse}, #{messageCpuSnapshot.userUse},
             #{messageCpuSnapshot.systemUse}, #{messageCpuSnapshot.wait}, #{messageCpuSnapshot.error}, #{messageCpuSnapshot.idle},
             #{messageCpuSnapshot.cpuInfo})

@@ -1,7 +1,6 @@
 package com.dting.message.client.cache;
 
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.util.IdUtil;
 import com.dting.message.client.DtingMessageClient;
 import com.dting.message.client.config.MessageClientConfig;
 import com.dting.message.common.Communication;
@@ -45,8 +44,8 @@ public class ServerCommunicationConnectionPool {
      * @param serverEnv   服务环境
      * @param serverKey   服务主键
      */
-    public static void addConnection(Channel channel, String instanceKey, String serverEnv, String serverKey) {
-        Communication communication = new Communication(channel, instanceKey, serverEnv, serverKey);
+    public static void addConnection(Channel channel, String instanceKey, String serverEnv, String serverKey, Long timeout) {
+        Communication communication = new Communication(channel, instanceKey, serverEnv, serverKey, timeout);
         CONNECTION_POOL.put(communication.getAddress(), communication);
     }
 

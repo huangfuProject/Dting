@@ -27,6 +27,11 @@ public class DtingMessage implements Serializable {
     private String serverKey;
 
     /**
+     * 超时时间
+     */
+    private Long timeout;
+
+    /**
      * 消息来源ip
      */
     private String messageSourceAddress;
@@ -71,5 +76,13 @@ public class DtingMessage implements Serializable {
 
     public void setServerKey(String serverKey) {
         this.serverKey = serverKey;
+    }
+
+    public Long getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(Long timeout) {
+        this.timeout = timeout;
     }
 }

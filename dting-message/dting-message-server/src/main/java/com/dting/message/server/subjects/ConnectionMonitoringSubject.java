@@ -15,7 +15,7 @@ import java.io.Serializable;
 public class ConnectionMonitoringSubject extends Subject implements Serializable {
     private static final long serialVersionUID = 8631528961273963988L;
 
-    public ConnectionMonitoringSubject(String env, String serverKey, String instanceName) {
+    public ConnectionMonitoringSubject(String env, String serverKey, String instanceName, Long timeout) {
         this.env = env;
         this.serverKey = serverKey;
         this.instanceName = instanceName;
@@ -35,6 +35,11 @@ public class ConnectionMonitoringSubject extends Subject implements Serializable
      * 实例名称
      */
     private String instanceName;
+
+    /**
+     * 实例超时时间
+     */
+    private Long timeout;
 
     public String getEnv() {
         return env;
@@ -58,6 +63,14 @@ public class ConnectionMonitoringSubject extends Subject implements Serializable
 
     public void setInstanceName(String instanceName) {
         this.instanceName = instanceName;
+    }
+
+    public Long getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(Long timeout) {
+        this.timeout = timeout;
     }
 
     @Override

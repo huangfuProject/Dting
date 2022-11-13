@@ -42,12 +42,18 @@ public class Communication implements Serializable {
      */
     private final String serverKey;
 
-    public Communication(Channel channel, String instanceKey, String serverEnv, String serverKey) {
+    /**
+     * 超时时间
+     */
+    private final Long timeout;
+
+    public Communication(Channel channel, String instanceKey, String serverEnv, String serverKey, Long timeout) {
         this.channel = channel;
         this.address = ChannelUtil.getChannelRemoteAddress(channel);
         this.instanceKey = instanceKey;
         this.serverEnv = serverEnv;
         this.serverKey = serverKey;
+        this.timeout = timeout;
     }
 
     /**
@@ -59,6 +65,7 @@ public class Communication implements Serializable {
         dtingMessage.setServerEnv(serverEnv);
         dtingMessage.setInstanceKey(instanceKey);
         dtingMessage.setServerKey(serverKey);
+        dtingMessage.setTimeout(timeout);
         channel.writeAndFlush(dtingMessage);
     }
 

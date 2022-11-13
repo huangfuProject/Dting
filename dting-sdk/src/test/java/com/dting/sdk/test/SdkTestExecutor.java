@@ -27,6 +27,7 @@ public class SdkTestExecutor {
         config.setServerEnv("dev");
         config.setServerKey("test-Server");
         config.setInstanceKey("test-server-001");
+        config.setTimeout(TimeUnit.HOURS.toMillis(5));
         config.addClientBusinessProcessing(new ThreadConfigUpdateProcessing());
 
         MessageReactor.start(Collections.singletonList(config));

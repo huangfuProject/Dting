@@ -37,10 +37,10 @@ public class ClientCommunicationConnectionPool {
      *
      * @param channel 通道
      */
-    public static void addConnection(Channel channel, String instanceKey, String serverEnv, String serverKey) {
-        Communication communication = new Communication(channel, instanceKey, serverEnv, serverKey);
+    public static void addConnection(Channel channel, String instanceKey, String serverEnv, String serverKey,  Long timeout) {
+        Communication communication = new Communication(channel, instanceKey, serverEnv, serverKey, timeout);
         CONNECTION_POOL.put(communication.getAddress(), communication);
-        ConnectionMonitoringSubject subject = new ConnectionMonitoringSubject(serverEnv, serverKey, instanceKey);
+        ConnectionMonitoringSubject subject = new ConnectionMonitoringSubject(serverEnv, serverKey, instanceKey, timeout);
         subject.noticeAllDtingObserver();
     }
 
