@@ -199,7 +199,12 @@ export default {
         systemUseProportion(){
             const max = this.systemMaxMemory[this.systemMaxMemory.length - 1]
             const use = this.systemUseMemory[this.systemUseMemory.length - 1]
-            return Math.floor((use/max)*100)
+
+            let systemUse = Math.floor((use/max)*100)
+            if(isNaN(systemUse)) {
+                systemUse = 0.0
+            }
+            return systemUse
         },
         /**
          * jvm使用比率
@@ -207,7 +212,11 @@ export default {
          jvmUseProportion(){
             const max = this.jvmMaxMemory[this.jvmMaxMemory.length - 1]
             const use = this.jvmUseMemory[this.jvmUseMemory.length - 1]
-            return Math.floor((use/max)*100)
+            let jvmUse = Math.floor((use/max)*100)
+            if(isNaN(jvmUse)) {
+                jvmUse = 0.0
+            }
+            return jvmUse
         },
         /**
          * SWAP使用比率
@@ -215,14 +224,21 @@ export default {
          swapUseProportion(){
             const max = this.swapMaxMemory[this.swapMaxMemory.length - 1]
             const use = this.swapUseMemory[this.swapUseMemory.length - 1]
-            return Math.floor((use/max)*100)
+            let swapUse = Math.floor((use/max)*100)
+            if(isNaN(swapUse)) {
+                swapUse = 0.0
+            }
+            return swapUse
         },
         /**
          * CPU使用比率
          */
          cpuUseProportion(){
-            const use = this.cpuTotalUse[this.systemUseMemory.length - 1]
-            return use
+            let cpuTotalUse = this.cpuTotalUse[this.systemUseMemory.length - 1]
+            if(isNaN(cpuTotalUse)) {
+                cpuTotalUse = 0.0;
+            }
+            return cpuTotalUse
         },
         /**
          * 系统内存折线图数据

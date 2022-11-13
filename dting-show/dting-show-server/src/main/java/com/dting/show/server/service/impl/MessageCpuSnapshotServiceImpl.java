@@ -6,10 +6,12 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.dting.show.server.conditions.MonitorBatchCondition;
 import com.dting.show.server.constant.RedisKeyUtil;
+import com.dting.show.server.dto.InstanceData;
 import com.dting.show.server.entity.MessageCpuSnapshot;
 import com.dting.show.server.mapper.MessageCpuSnapshotMapper;
 import com.dting.show.server.service.MessageCpuSnapshotService;
 import com.dting.show.server.tasks.CpuDataRefreshTask;
+import com.dting.show.server.utils.InstanceUtil;
 import com.dting.show.server.utils.ScheduledTaskManagement;
 import com.dting.show.server.vos.data.SystemCpuData;
 import com.dting.show.server.vos.monitoring.SystemCpuDataVo;
@@ -99,14 +101,16 @@ public class MessageCpuSnapshotServiceImpl implements MessageCpuSnapshotService 
         if (StrUtil.isBlank(serverEnv) || StrUtil.isBlank(serverKey) || StrUtil.isBlank(instanceKey)) {
             return new ArrayList<>();
         }
+        InstanceData andCacheInstance = InstanceUtil.findAndCacheInstance(serverEnv, serverKey, instanceKey);
+        if(andCacheInstance == null) {
+            return new ArrayList<>();
+        }
 
         Long startTime = monitorBatchCondition.getStartTime();
         Long endTime = monitorBatchCondition.getEndTime();
 
         // 消息标签
-        queryWrapper.eq("server_env", serverEnv);
-        queryWrapper.eq("server_key", serverKey);
-        queryWrapper.eq("instance_key", instanceKey);
+        queryWrapper.eq("instance_id", andCacheInstance.getDtingInstance().getId());
 
         queryWrapper.gt(startTime != null && startTime > 0, "collect_time", startTime);
         queryWrapper.le(endTime != null && endTime > 0, "collect_time", endTime);

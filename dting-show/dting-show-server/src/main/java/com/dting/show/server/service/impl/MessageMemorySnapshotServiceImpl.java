@@ -5,15 +5,17 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.dting.show.server.conditions.MonitorBatchCondition;
 import com.dting.show.server.constant.RedisKeyUtil;
+import com.dting.show.server.dto.InstanceData;
 import com.dting.show.server.entity.MessageMemorySnapshot;
 import com.dting.show.server.mapper.MessageMemorySnapshotMapper;
 import com.dting.show.server.service.MessageMemorySnapshotService;
 import com.dting.show.server.tasks.MemoryDataRefreshTask;
+import com.dting.show.server.utils.InstanceUtil;
 import com.dting.show.server.utils.ScheduledTaskManagement;
 import com.dting.show.server.vos.data.JvmMemoryData;
 import com.dting.show.server.vos.data.SystemMemoryData;
 import com.dting.show.server.vos.data.SystemSwapData;
-import com.dting.show.server.vos.monitoring.*;
+import com.dting.show.server.vos.monitoring.MemoryDataVo;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -131,13 +133,16 @@ public class MessageMemorySnapshotServiceImpl implements MessageMemorySnapshotSe
             return new ArrayList<>();
         }
 
+        InstanceData andCacheInstance = InstanceUtil.findAndCacheInstance(serverEnv, serverKey, instanceKey);
+        if (andCacheInstance == null) {
+            return new ArrayList<>();
+        }
+
         Long startTime = monitorBatchCondition.getStartTime();
         Long endTime = monitorBatchCondition.getEndTime();
 
         // 消息标签
-        queryWrapper.eq("server_env", serverEnv);
-        queryWrapper.eq("server_key", serverKey);
-        queryWrapper.eq("instance_key", instanceKey);
+        queryWrapper.eq("instance_id", andCacheInstance.getDtingInstance().getId());
 
         queryWrapper.gt((startTime != null && startTime > 0), "collect_time", startTime);
         queryWrapper.le((endTime != null && endTime > 0), "collect_time", endTime);

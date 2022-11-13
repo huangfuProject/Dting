@@ -1,5 +1,6 @@
 package com.dting.show.server.utils;
 
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.dting.show.server.constant.RedisKeyUtil;
 import com.dting.show.server.dto.InstanceData;
@@ -24,6 +25,57 @@ import java.util.concurrent.TimeUnit;
  */
 @SuppressWarnings("all")
 public class InstanceUtil {
+
+
+    /**
+     * 查询缓存的实例
+     *
+     * @param envName      环境名称
+     * @param serverName   服务名称
+     * @param instanceName 实例名称
+     * @return 实例数据
+     */
+    public static InstanceData findAndCacheInstance(String envName, String serverName, String instanceName) {
+        DtingEnvService dtingEnvService = SpringUtil.getBean(DtingEnvService.class);
+        DtingServerService dtingServerService = SpringUtil.getBean(DtingServerService.class);
+        DtingInstanceService dtingInstanceService = SpringUtil.getBean(DtingInstanceService.class);
+        StringRedisTemplate redisTemplate = SpringUtil.getBean(StringRedisTemplate.class);
+        String dtingInstanceCacheFormat = RedisKeyUtil.dtingInstanceCacheFormat(envName, serverName, instanceName);
+        //查询redis中是否存在
+        if (!redisTemplate.hasKey(dtingInstanceCacheFormat)) {
+            //查询数据库是否存在
+            DtingEnv env = dtingEnvService.findByName(envName);
+            if (env == null) {
+                return null;
+
+            }
+            //查询服务
+            Integer envId = env.getId();
+            DtingServer server = dtingServerService.findByEnvIdAndServerName(envId, serverName);
+            if (server == null) {
+                return null;
+            }
+
+            Integer serverId = server.getId();
+            DtingInstance instance = dtingInstanceService.findByServerIdAndInstanceName(serverId, instanceName);
+            if (instance == null) {
+                return null;
+            }
+
+            InstanceData instanceData = new InstanceData();
+            instanceData.setDtingEnv(env);
+            instanceData.setDtingServer(server);
+            instanceData.setDtingInstance(instance);
+            redisTemplate.opsForValue().set(dtingInstanceCacheFormat, JSON.toJSONString(instanceData), 1, TimeUnit.HOURS);
+            return instanceData;
+        } else {
+            String instanceDataStr = redisTemplate.opsForValue().get(dtingInstanceCacheFormat);
+            if (StrUtil.isNotBlank(instanceDataStr)) {
+                return JSON.parseObject(instanceDataStr, InstanceData.class);
+            }
+        }
+        return null;
+    }
 
     /**
      * 查询 保存 缓存实例数据
