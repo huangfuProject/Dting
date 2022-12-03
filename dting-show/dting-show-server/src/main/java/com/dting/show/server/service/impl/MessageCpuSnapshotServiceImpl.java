@@ -47,8 +47,15 @@ public class MessageCpuSnapshotServiceImpl implements MessageCpuSnapshotService 
     @Override
     public SystemCpuDataVo cpuMonitoring(MonitorBatchCondition monitorBatchCondition, boolean enablePlan) {
         long endTime = monitorBatchCondition.getEndTime();
+        Long startTime = monitorBatchCondition.getStartTime();
         if (endTime < 0) {
             monitorBatchCondition.setEndTime(System.currentTimeMillis());
+        } else if (endTime <= startTime) {
+            monitorBatchCondition.setEndTime(startTime);
+            enablePlan = false;
+        } else {
+            //当时间是一个确定值的时候 就不开启实时监听
+            enablePlan = false;
         }
         SystemCpuDataVo systemCpuDataVo = ((MessageCpuSnapshotServiceImpl) AopContext.currentProxy()).cpuQueryByCondition(monitorBatchCondition);
         String monitorId = systemCpuDataVo.getMonitorId();

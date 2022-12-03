@@ -47,8 +47,15 @@ public class MessageMemorySnapshotServiceImpl implements MessageMemorySnapshotSe
     @Override
     public MemoryDataVo memoryMonitoring(MonitorBatchCondition monitorBatchCondition, boolean enablePlan) {
         long endTime = monitorBatchCondition.getEndTime();
+        Long startTime = monitorBatchCondition.getStartTime();
         if (endTime < 0) {
             monitorBatchCondition.setEndTime(System.currentTimeMillis());
+        } else if (endTime <= startTime) {
+            monitorBatchCondition.setEndTime(startTime);
+            enablePlan = false;
+        } else {
+            //当时间是一个确定值的时候 就不需要开启计划了
+            enablePlan = false;
         }
         MemoryDataVo memoryDataVo = ((MessageMemorySnapshotService) AopContext.currentProxy()).memoryQueryByCondition(monitorBatchCondition);
         String monitorId = memoryDataVo.getMonitorId();
