@@ -49,7 +49,7 @@ public class DtingServerServiceImpl implements DtingServerService {
         String serverRegularName = serverCondition.getServerRegularName();
         Long endTime = serverCondition.getEndTime();
         Long startTime = serverCondition.getStartTime();
-
+        queryWrapper.eq("env_id", envId);
         if (endTime != null && startTime != null) {
             queryWrapper.between(endTime >= startTime, "create_date", startTime, endTime);
         }

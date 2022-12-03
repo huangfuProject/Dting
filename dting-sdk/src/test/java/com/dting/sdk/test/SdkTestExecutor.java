@@ -24,8 +24,8 @@ public class SdkTestExecutor {
     public void threadPoolExecThread() throws InterruptedException {
         MessageClientConfig config = new MessageClientConfig("127.0.0.1", 8888);
 
-        config.setServerEnv("dev");
-        config.setServerKey("test-Server");
+        config.setServerEnv("test");
+        config.setServerKey("test-Server-test");
         config.setInstanceKey("test-server-001");
         config.setTimeout(TimeUnit.HOURS.toMillis(5));
         config.addClientBusinessProcessing(new ThreadConfigUpdateProcessing());
