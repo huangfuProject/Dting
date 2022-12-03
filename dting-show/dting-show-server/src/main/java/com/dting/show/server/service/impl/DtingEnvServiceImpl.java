@@ -1,10 +1,14 @@
 package com.dting.show.server.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.dting.show.server.conditions.EnvCondition;
 import com.dting.show.server.entity.DtingEnv;
 import com.dting.show.server.mapper.DtingEnvMapper;
 import com.dting.show.server.service.DtingEnvService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * *************************************************<br/>
@@ -36,5 +40,19 @@ public class DtingEnvServiceImpl implements DtingEnvService {
     @Override
     public void save(DtingEnv dtingEnv) {
         dtingEnvMapper.insert(dtingEnv);
+    }
+
+    @Override
+    public List<DtingEnv> findByEnvCondition(EnvCondition envCondition) {
+        QueryWrapper<DtingEnv> queryWrapper = new QueryWrapper<>();
+        String envRegularName = envCondition.getEnvRegularName();
+        Long startTime = envCondition.getStartTime();
+        Long endTime = envCondition.getEndTime();
+
+        if (startTime != null && endTime != null) {
+            queryWrapper.between(endTime >= startTime, "create_date", startTime, endTime);
+        }
+        queryWrapper.apply(StrUtil.isNotBlank(envRegularName), String.format("env_name REGEXP '%s'", envRegularName));
+        return dtingEnvMapper.selectList(queryWrapper);
     }
 }

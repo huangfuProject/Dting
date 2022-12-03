@@ -40,6 +40,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseResult exceptionHandler(Exception e) {
         log.error(DtingLogUtil.messageRead(e, true));
-        return ResponseResult.error(CurrencyRequestEnum.REQUEST_ERROR.getCode(), DtingLogUtil.messageRead(e));
+        return ResponseResult.error(CurrencyRequestEnum.REQUEST_ERROR.getCode(), DtingLogUtil.CONVENTION_LOG);
     }
 }

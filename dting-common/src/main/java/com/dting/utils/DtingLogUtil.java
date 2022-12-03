@@ -11,6 +11,8 @@ import java.io.StringWriter;
  */
 public class DtingLogUtil {
 
+    public final static String CONVENTION_LOG = "网络异常，请稍后再试!";
+
     /**
      * 异常堆栈兑取
      *

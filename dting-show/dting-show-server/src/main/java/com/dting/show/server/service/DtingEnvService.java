@@ -1,6 +1,9 @@
 package com.dting.show.server.service;
 
+import com.dting.show.server.conditions.EnvCondition;
 import com.dting.show.server.entity.DtingEnv;
+
+import java.util.List;
 
 /**
  * *************************************************<br/>
@@ -26,4 +29,6 @@ public interface DtingEnvService {
      * @param dtingEnv 环境信息
      */
     void save(DtingEnv dtingEnv);
+
+    List<DtingEnv> findByEnvCondition(EnvCondition envCondition);
 }
