@@ -28,7 +28,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IException.class)
     public ResponseResult iExceptionHandler(IException e) {
         log.error(e.getExceptionCode().defaultMessage());
-        return ResponseResult.error(CurrencyRequestEnum.REQUEST_ERROR.getCode(), DtingLogUtil.messageRead(e));
+        log.error(DtingLogUtil.messageRead(e));
+        return ResponseResult.error(CurrencyRequestEnum.REQUEST_ERROR.getCode(), e.getExceptionCode().getMessage());
     }
 
     /**

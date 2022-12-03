@@ -8,23 +8,26 @@ import java.io.Serializable;
 
 /**
  * *************************************************<br/>
- * 环境信息的查询条件<br/>
+ * 服务列表查询条件<br/>
  * ************************************************<br/>
  *
  * @author huangfu
- * @date 2022/12/3 13:27
+ * @date 2022/12/3 13:58
  */
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EnvCondition  implements Serializable {
+public class ServerCondition implements Serializable {
+    private static final long serialVersionUID = 473007345758870493L;
 
-    private static final long serialVersionUID = -5302318139623924073L;
+    private Integer envId;
+
     /**
-     * 环境的正则表达式名称
+     * 服务的正则表达式名称
      */
-    private String envRegularName;
-
+    private String serverRegularName;
+    
     /**
      * 开始时间
      */

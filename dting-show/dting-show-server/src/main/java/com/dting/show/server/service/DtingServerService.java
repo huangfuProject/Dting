@@ -1,5 +1,6 @@
 package com.dting.show.server.service;
 
+import com.dting.show.server.conditions.ServerCondition;
 import com.dting.show.server.entity.DtingServer;
 
 import java.util.List;
@@ -21,6 +22,15 @@ public interface DtingServerService {
      */
     List<DtingServer> findByEnvId(Integer envId);
 
+
+    /**
+     * 根据提交查询服务列表
+     *
+     * @param serverCondition 查询条件
+     * @return 服务列表
+     */
+    List<DtingServer> findByServerCondition(ServerCondition serverCondition);
+
     /**
      * 根据环境id和服务名称查询
      *
@@ -36,4 +46,5 @@ public interface DtingServerService {
      * @param dtingServer 服务
      */
     void save(DtingServer dtingServer);
+
 }
