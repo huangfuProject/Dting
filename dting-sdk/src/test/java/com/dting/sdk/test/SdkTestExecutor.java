@@ -29,7 +29,6 @@ public class SdkTestExecutor {
         config.setInstanceKey("test-server-001");
         config.setTimeout(TimeUnit.HOURS.toMillis(5));
         config.addClientBusinessProcessing(new ThreadConfigUpdateProcessing());
-
         MessageReactor.start(Collections.singletonList(config));
 
         DtingThreadPoolExecutor threadPoolExecutor = new DtingThreadPoolExecutor(1, 1, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<>(10), "tese-pool");

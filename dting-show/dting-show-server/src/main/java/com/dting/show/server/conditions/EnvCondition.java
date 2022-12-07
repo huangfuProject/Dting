@@ -26,6 +26,11 @@ public class EnvCondition  implements Serializable {
     private String envRegularName;
 
     /**
+     * 服务id
+     */
+    private Integer serverId;
+
+    /**
      * 开始时间
      */
     private Long startTime;

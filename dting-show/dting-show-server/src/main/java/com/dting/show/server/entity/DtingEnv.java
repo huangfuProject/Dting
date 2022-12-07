@@ -28,6 +28,11 @@ public class DtingEnv extends BaseDting {
     private String envName;
 
     /**
+     * 服务id
+     */
+    private Integer serverId;
+
+    /**
      * 创建时间
      */
     private Long createDate;

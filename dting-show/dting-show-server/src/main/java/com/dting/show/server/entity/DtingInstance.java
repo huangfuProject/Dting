@@ -23,9 +23,9 @@ public class DtingInstance extends BaseDting {
     private String instanceName;
 
     /**
-     * 所属的服务id
+     * 实例环境
      */
-    private Integer serverId;
+    private Integer envId;
 
     /**
      * 状态

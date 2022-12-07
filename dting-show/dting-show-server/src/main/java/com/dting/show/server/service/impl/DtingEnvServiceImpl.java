@@ -4,6 +4,8 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.dting.show.server.conditions.EnvCondition;
 import com.dting.show.server.entity.DtingEnv;
+import com.dting.show.server.exceptions.ServerDataException;
+import com.dting.show.server.exceptions.status.ServerDataExceptionStatus;
 import com.dting.show.server.mapper.DtingEnvMapper;
 import com.dting.show.server.service.DtingEnvService;
 import org.springframework.stereotype.Service;
@@ -31,8 +33,9 @@ public class DtingEnvServiceImpl implements DtingEnvService {
     }
 
     @Override
-    public DtingEnv findByName(String envName) {
+    public DtingEnv findByServerIdAndName(Integer serverId , String envName) {
         QueryWrapper<DtingEnv> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("server_id", serverId);
         queryWrapper.eq("env_name", envName);
         return dtingEnvMapper.selectOne(queryWrapper);
     }
@@ -44,10 +47,17 @@ public class DtingEnvServiceImpl implements DtingEnvService {
 
     @Override
     public List<DtingEnv> findByEnvCondition(EnvCondition envCondition) {
+        Integer serverId = envCondition.getServerId();
+
+        if (serverId == null) {
+            throw new ServerDataException(ServerDataExceptionStatus.UNKNOWN_SERVER_INFORMATION);
+        }
+
         QueryWrapper<DtingEnv> queryWrapper = new QueryWrapper<>();
         String envRegularName = envCondition.getEnvRegularName();
         Long startTime = envCondition.getStartTime();
         Long endTime = envCondition.getEndTime();
+        queryWrapper.eq("server_id", serverId);
 
         if (startTime != null && endTime != null) {
             queryWrapper.between(endTime >= startTime, "create_date", startTime, endTime);

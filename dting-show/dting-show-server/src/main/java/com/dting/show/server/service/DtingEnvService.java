@@ -17,11 +17,11 @@ public interface DtingEnvService {
 
     /**
      * 查询 根据环境名
-     *
+     * @param serverId 服务Id
      * @param envName 环境名称
      * @return 环境信息
      */
-    DtingEnv findByName(String envName);
+    DtingEnv findByServerIdAndName(Integer serverId, String envName);
 
     /**
      * 环境信息保存

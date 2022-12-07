@@ -28,7 +28,7 @@ public class ThreadPoolDetailedSnapshotServiceImpl implements ThreadPoolDetailed
     @Override
     public void batchSave(List<ThreadPoolDetailedSnapshot> threadPoolDetailedSnapshots) {
         if(CollectionUtil.isNotEmpty(threadPoolDetailedSnapshots)) {
-            threadPoolDetailedSnapshotMapper.batchInsert(threadPoolDetailedSnapshots);
+                threadPoolDetailedSnapshotMapper.batchInsert(threadPoolDetailedSnapshots);
         }
     }
 }

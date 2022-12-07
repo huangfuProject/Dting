@@ -25,11 +25,6 @@ public class DtingServer extends BaseDting implements Serializable {
     private String serverName;
 
     /**
-     * 环境id
-     */
-    private Integer envId;
-
-    /**
      * 创建时间
      */
     private Long createDate;

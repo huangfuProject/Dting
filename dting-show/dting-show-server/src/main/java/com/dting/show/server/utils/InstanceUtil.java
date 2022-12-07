@@ -26,6 +26,8 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings("all")
 public class InstanceUtil {
 
+    private static final Object LOCK_OBJ = new Object();
+
 
     /**
      * 查询缓存的实例
@@ -43,21 +45,24 @@ public class InstanceUtil {
         String dtingInstanceCacheFormat = RedisKeyUtil.dtingInstanceCacheFormat(envName, serverName, instanceName);
         //查询redis中是否存在
         if (!redisTemplate.hasKey(dtingInstanceCacheFormat)) {
-            //查询数据库是否存在
-            DtingEnv env = dtingEnvService.findByName(envName);
+
+            DtingServer server = dtingServerService.findByEnvIdAndServerName(serverName);
+            if (server == null) {
+                return null;
+            }
+            Integer serverId = server.getId();
+
+            //查询数据库是否存在 查询环境
+            DtingEnv env = dtingEnvService.findByServerIdAndName(serverId, envName);
             if (env == null) {
                 return null;
 
             }
             //查询服务
             Integer envId = env.getId();
-            DtingServer server = dtingServerService.findByEnvIdAndServerName(envId, serverName);
-            if (server == null) {
-                return null;
-            }
 
-            Integer serverId = server.getId();
-            DtingInstance instance = dtingInstanceService.findByServerIdAndInstanceName(serverId, instanceName);
+            //根据环境查询实例
+            DtingInstance instance = dtingInstanceService.findByServerIdAndInstanceName(envId, instanceName);
             if (instance == null) {
                 return null;
             }
@@ -95,46 +100,54 @@ public class InstanceUtil {
         String dtingInstanceCacheFormat = RedisKeyUtil.dtingInstanceCacheFormat(envName, serverName, instanceName);
         //查询redis中是否存在
         if (!redisTemplate.hasKey(dtingInstanceCacheFormat)) {
-            //查询数据库是否存在
-            DtingEnv env = dtingEnvService.findByName(envName);
-            if (env == null) {
-                //保存环境信息
-                env = new DtingEnv();
-                env.setCreateDate(System.currentTimeMillis());
-                env.setEnvName(envName);
-                dtingEnvService.save(env);
+            synchronized (LOCK_OBJ) {
+                if(!redisTemplate.hasKey(dtingInstanceCacheFormat)) {
+                    //查询数据库是否存在
+                    DtingServer server = dtingServerService.findByEnvIdAndServerName(serverName);
+                    if (server == null) {
+                        server = new DtingServer();
+                        server.setServerName(serverName);
+                        server.setCreateDate(System.currentTimeMillis());
+                        dtingServerService.save(server);
+                    }
+                    Integer serverId = server.getId();
+
+
+                    //查询数据库是否存在
+                    DtingEnv env = dtingEnvService.findByServerIdAndName(serverId, envName);
+                    if (env == null) {
+                        //保存环境信息
+                        env = new DtingEnv();
+                        env.setCreateDate(System.currentTimeMillis());
+                        env.setServerId(serverId);
+                        env.setEnvName(envName);
+                        dtingEnvService.save(env);
+
+                    }
+                    //查询服务
+                    Integer envId = env.getId();
+
+                    DtingInstance instance = dtingInstanceService.findByServerIdAndInstanceName(envId, instanceName);
+                    if (instance == null) {
+                        instance = new DtingInstance();
+                        instance.setInstanceName(instanceName);
+                        instance.setState(InstanceState.UP.getCode());
+                        instance.setCreateDate(System.currentTimeMillis());
+                        instance.setTimeout(timeout == null ? TimeUnit.DAYS.toMillis(1) : timeout);
+                        instance.setEnvId(envId);
+                        instance.setLastUpdateTime(System.currentTimeMillis());
+                        dtingInstanceService.save(instance);
+                    }
+
+                    InstanceData instanceData = new InstanceData();
+                    instanceData.setDtingEnv(env);
+                    instanceData.setDtingServer(server);
+                    instanceData.setDtingInstance(instance);
+                    redisTemplate.opsForValue().set(dtingInstanceCacheFormat, JSON.toJSONString(instanceData), 1, TimeUnit.HOURS);
+                    return instanceData;
+                }
 
             }
-            //查询服务
-            Integer envId = env.getId();
-            DtingServer server = dtingServerService.findByEnvIdAndServerName(envId, serverName);
-            if (server == null) {
-                server = new DtingServer();
-                server.setServerName(serverName);
-                server.setEnvId(envId);
-                server.setCreateDate(System.currentTimeMillis());
-                dtingServerService.save(server);
-            }
-
-            Integer serverId = server.getId();
-            DtingInstance instance = dtingInstanceService.findByServerIdAndInstanceName(serverId, instanceName);
-            if (instance == null) {
-                instance = new DtingInstance();
-                instance.setInstanceName(instanceName);
-                instance.setState(InstanceState.UP.getCode());
-                instance.setCreateDate(System.currentTimeMillis());
-                instance.setTimeout(timeout == null ? TimeUnit.DAYS.toMillis(1) : timeout);
-                instance.setServerId(serverId);
-                instance.setLastUpdateTime(System.currentTimeMillis());
-                dtingInstanceService.save(instance);
-            }
-
-            InstanceData instanceData = new InstanceData();
-            instanceData.setDtingEnv(env);
-            instanceData.setDtingServer(server);
-            instanceData.setDtingInstance(instance);
-            redisTemplate.opsForValue().set(dtingInstanceCacheFormat, JSON.toJSONString(instanceData), 1, TimeUnit.HOURS);
-            return instanceData;
         }
 
         String instanceDataStr = redisTemplate.opsForValue().get(dtingInstanceCacheFormat);

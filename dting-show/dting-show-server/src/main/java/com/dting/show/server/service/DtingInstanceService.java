@@ -1,7 +1,8 @@
 package com.dting.show.server.service;
 
-import com.dting.show.server.dto.InstanceData;
+import com.dting.show.server.conditions.InstanceCondition;
 import com.dting.show.server.entity.DtingInstance;
+import com.dting.show.server.entity.DtingServer;
 
 import java.util.List;
 
@@ -46,6 +47,14 @@ public interface DtingInstanceService {
      * @param dtingInstance 实例
      */
     void save(DtingInstance dtingInstance);
+
+    /**
+     * 根据实例条件查询实例
+     *
+     * @param instanceCondition 实例查询条件
+     * @return 实例信息
+     */
+    List<DtingInstance> findByInstanceCondition(InstanceCondition instanceCondition);
 }
 
 

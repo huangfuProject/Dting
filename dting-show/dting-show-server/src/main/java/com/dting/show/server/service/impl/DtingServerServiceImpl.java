@@ -42,14 +42,10 @@ public class DtingServerServiceImpl implements DtingServerService {
     @Override
     public List<DtingServer> findByServerCondition(ServerCondition serverCondition) {
         QueryWrapper<DtingServer> queryWrapper = new QueryWrapper<>();
-        Integer envId = serverCondition.getEnvId();
-        if (envId == null) {
-            throw new ServerDataException(ServerDataExceptionStatus.UNKNOWN_ENVIRONMENT_INFORMATION);
-        }
+
         String serverRegularName = serverCondition.getServerRegularName();
         Long endTime = serverCondition.getEndTime();
         Long startTime = serverCondition.getStartTime();
-        queryWrapper.eq("env_id", envId);
         if (endTime != null && startTime != null) {
             queryWrapper.between(endTime >= startTime, "create_date", startTime, endTime);
         }
@@ -58,9 +54,8 @@ public class DtingServerServiceImpl implements DtingServerService {
     }
 
     @Override
-    public DtingServer findByEnvIdAndServerName(Integer envId, String serverName) {
+    public DtingServer findByEnvIdAndServerName(String serverName) {
         QueryWrapper<DtingServer> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("env_id", envId);
         queryWrapper.eq("server_name", serverName);
         return dtingServerMapper.selectOne(queryWrapper);
     }

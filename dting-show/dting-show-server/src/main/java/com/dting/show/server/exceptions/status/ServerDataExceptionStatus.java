@@ -14,7 +14,12 @@ public enum ServerDataExceptionStatus implements IExceptionCode {
     /**
      * 未知的环境信息
      */
-    UNKNOWN_ENVIRONMENT_INFORMATION("server_0", "未知的环境信息！");
+    UNKNOWN_ENVIRONMENT_INFORMATION("server_0", "未知的环境信息！"),
+    /**
+     * 未知的服务信息
+     */
+    UNKNOWN_SERVER_INFORMATION("server_1", "未知的服务信息！"),
+    ;
 
     /**
      * 错误码

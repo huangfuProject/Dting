@@ -51,8 +51,10 @@ class DtingRejectedExecutionHandler implements RejectedExecutionHandler {
 
         try {
             rejectedExecutionHandler.rejectedExecution(r, executor);
+            taskLogCollect.setSuccess(true);
         } catch (Throwable e) {
             taskLogCollect.setErrorMsg(DtingLogUtil.messageRead(e, false));
+            taskLogCollect.setSuccess(false);
             throw e;
         } finally {
             if (r instanceof DtingRunnable) {
@@ -61,7 +63,6 @@ class DtingRejectedExecutionHandler implements RejectedExecutionHandler {
             }
 
             taskLogCollect.setRejected(true);
-            taskLogCollect.setSuccess(false);
             taskLogCollect.setEndTime(System.currentTimeMillis());
             TaskInfoSubject taskInfoSubject = new TaskInfoSubject(taskLogCollect);
             //通知观察者

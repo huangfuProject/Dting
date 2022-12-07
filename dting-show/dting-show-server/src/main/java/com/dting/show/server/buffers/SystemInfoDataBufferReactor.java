@@ -105,7 +105,7 @@ public class SystemInfoDataBufferReactor extends MessageBufferReactor<SystemInfo
          *
          * @param source 来自客户端的消息
          */
-        public void conversion(List<SystemInfoMessage> source) {
+        public synchronized void conversion(List<SystemInfoMessage> source) {
             messageCpuSnapshotList.clear();
             messageMemorySnapshotList.clear();
             messageNetworkSnapshotList.clear();

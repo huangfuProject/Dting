@@ -1,9 +1,11 @@
 package com.dting.show.server.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.dting.show.server.dto.InstanceData;
-import com.dting.show.server.entity.DtingEnv;
+import com.dting.show.server.conditions.InstanceCondition;
 import com.dting.show.server.entity.DtingInstance;
+import com.dting.show.server.exceptions.ServerDataException;
+import com.dting.show.server.exceptions.status.ServerDataExceptionStatus;
 import com.dting.show.server.mapper.DtingInstanceMapper;
 import com.dting.show.server.service.DtingEnvService;
 import com.dting.show.server.service.DtingInstanceService;
@@ -53,7 +55,7 @@ public class DtingInstanceServiceImpl implements DtingInstanceService {
     @Override
     public DtingInstance findByServerIdAndInstanceName(Integer serverId, String instanceName) {
         QueryWrapper<DtingInstance> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("server_id", serverId);
+        queryWrapper.eq("env_id", serverId);
         queryWrapper.eq("instance_name", instanceName);
         return dtingInstanceMapper.selectOne(queryWrapper);
     }
@@ -72,6 +74,24 @@ public class DtingInstanceServiceImpl implements DtingInstanceService {
     @Override
     public void save(DtingInstance dtingInstance) {
         dtingInstanceMapper.insert(dtingInstance);
+    }
+
+    @Override
+    public List<DtingInstance> findByInstanceCondition(InstanceCondition instanceCondition) {
+        Integer envId = instanceCondition.getEnvId();
+        if (envId == null) {
+            throw new ServerDataException(ServerDataExceptionStatus.UNKNOWN_ENVIRONMENT_INFORMATION);
+        }
+        QueryWrapper<DtingInstance> queryWrapper = new QueryWrapper<>();
+        String instanceRegularName = instanceCondition.getInstanceRegularName();
+        Long startTime = instanceCondition.getStartTime();
+        Long endTime = instanceCondition.getEndTime();
+        queryWrapper.eq("env_id", envId);
+        if (startTime != null && endTime != null) {
+            queryWrapper.between(endTime >= startTime, "create_date", startTime, endTime);
+        }
+        queryWrapper.apply(StrUtil.isNotBlank(instanceRegularName), String.format("env_name REGEXP '%s'", instanceRegularName));
+        return dtingInstanceMapper.selectList(queryWrapper);
     }
 
 }

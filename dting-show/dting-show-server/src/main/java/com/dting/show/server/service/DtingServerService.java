@@ -34,11 +34,10 @@ public interface DtingServerService {
     /**
      * 根据环境id和服务名称查询
      *
-     * @param envId      环境id
      * @param serverName 服务名称
      * @return 服务信息
      */
-    DtingServer findByEnvIdAndServerName(Integer envId, String serverName);
+    DtingServer findByEnvIdAndServerName(String serverName);
 
     /**
      * 服务保存

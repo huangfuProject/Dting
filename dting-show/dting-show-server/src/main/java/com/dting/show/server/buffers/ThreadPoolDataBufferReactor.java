@@ -57,6 +57,9 @@ public class ThreadPoolDataBufferReactor extends MessageBufferReactor<ThreadPool
                         threadPoolDetailedSnapshot.setQueueTotalSize(threadPoolDataCollect.getQueueUseSize() + threadPoolDataCollect.getQueueRemainingCapacity());
                         //计算繁忙程度 ((活跃数/核心数) + (活跃数/最大线程数) + (队列堆积数/队列总长度))*1000
                         double value = ((double) threadPoolDataCollect.getActiveSize()/ threadPoolDataCollect.getCoreSize() + ((double)threadPoolDataCollect.getActiveSize()/ threadPoolDataCollect.getMaxSize()) + ((double)threadPoolDataCollect.getQueueUseSize()/threadPoolDetailedSnapshot.getQueueTotalSize())) * 1000;
+                        if(Double.isNaN(value)) {
+                            value = 0;
+                        }
                         threadPoolDetailedSnapshot.setBusyWeight(value);
                         return threadPoolDetailedSnapshot;
                     }).collect(Collectors.toList());

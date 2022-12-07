@@ -1,31 +1,31 @@
 package com.dting.show.server.conditions;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 /**
  * *************************************************<br/>
- * 服务列表查询条件<br/>
+ * 实例查询条件<br/>
  * ************************************************<br/>
  *
  * @author huangfu
- * @date 2022/12/3 13:58
+ * @date 2022/12/7 16:48
  */
-
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class ServerCondition implements Serializable {
-    private static final long serialVersionUID = 473007345758870493L;
+public class InstanceCondition implements Serializable {
+    private static final long serialVersionUID = 1436066793206671843L;
 
     /**
-     * 服务的正则表达式名称
+     * 环境主键
      */
-    private String serverRegularName;
-    
+    private Integer envId;
+
+    /**
+     * 实例名称
+     */
+    private String instanceRegularName;
+
     /**
      * 开始时间
      */
@@ -35,4 +35,5 @@ public class ServerCondition implements Serializable {
      * 结束时间
      */
     private Long endTime;
+
 }
